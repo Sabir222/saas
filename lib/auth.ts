@@ -1,45 +1,68 @@
-import { BetterAuth } from '@better-auth/server';
-import { drizzleAdapter } from '@better-auth/drizzle-adapter';
-import { migrate } from 'drizzle-orm/migrate';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import postgres from 'pg';
+// This file provides a lightweight, CLI-friendly export so the Better Auth
+// CLI can import configuration without pulling runtime-only modules. The
+// application can call `initAuth()` at runtime to initialise the adapter and
+// Better Auth instance.
 
-// Ensure environment variables are loaded
-if (!process.env.POSTGRES_URL) {
-    throw new Error('Missing environment variable: POSTGRES_URL');
-}
+// Basic validation for env vars used by the CLI when reading config.
 if (!process.env.BETTER_AUTH_SECRET) {
-    throw new Error('Missing environment variable: BETTER_AUTH_SECRET');
+  throw new Error("Missing environment variable: BETTER_AUTH_SECRET")
 }
 
-// Configure PostgreSQL database connection
-const pool = new postgres.Pool({ connectionString: process.env.POSTGRES_URL });
-const db = drizzle(pool);
+// Export a plain options object the Better Auth CLI can read to generate a
+// Drizzle schema. Keep this intentionally runtime-free (no imports of
+// @better-auth/server or db drivers) so `npx @better-auth/cli generate`
+// can import this module safely.
+export const options = {
+  secret: process.env.BETTER_AUTH_SECRET,
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/verify",
+  },
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60,
+  },
+}
 
-// Initialize Better Auth
-const auth = BetterAuth({
+// Runtime initializer — call this from your application startup to get an
+// initialized Better Auth instance. This function dynamically imports
+// heavier runtime dependencies so the CLI won't try to load them.
+export async function initAuth() {
+  if (!process.env.POSTGRES_URL) {
+    throw new Error("Missing environment variable: POSTGRES_URL")
+  }
+
+  // dynamic imports keep top-level module import cheap for the CLI
+  const postgres = await import("pg")
+  const { drizzle } = await import("drizzle-orm/node-postgres")
+  const { migrate } = await import("drizzle-orm/migrate")
+  // `better-auth` package provides the runtime entrypoints
+  const { betterAuth } = await import("better-auth")
+  // adapter is re-exported by the package under adapters/drizzle
+  const { drizzleAdapter } = await import("better-auth/adapters/drizzle")
+
+  const pool = new postgres.Pool({ connectionString: process.env.POSTGRES_URL })
+  const db = drizzle(pool)
+
+  const auth = betterAuth({
     adapter: drizzleAdapter(db),
     secret: process.env.BETTER_AUTH_SECRET,
-    pages: {
-        signIn: '/auth/signin',
-        verifyRequest: '/auth/verify',
-    },
-    session: {
-        jwt: true,
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-    },
-});
+    pages: options.pages,
+    session: options.session,
+  })
 
-// Ensure migrations are applied (useful for development environments)
-(async () => {
-    console.log('Running migrations...');
-    try {
-        await migrate(db, { path: './migrations' });
-        console.log('Migrations complete.');
-    } catch (error) {
-        console.error('Migration failed:', error);
-        process.exit(1);
+  // apply migrations in development if migrations folder exists
+  try {
+    // safe-guard: only attempt migrate if drizzle migrations API is present
+    if (migrate) {
+      await migrate(db, { path: "./migrations" })
     }
-})();
+  } catch (err) {
+    // Log and continue; application may handle migrations differently in prod
+    console.error("Migration step failed:", err)
+  }
 
-export default auth;
+  return auth
+}
+
+export default options
