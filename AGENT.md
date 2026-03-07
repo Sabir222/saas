@@ -4,7 +4,7 @@
 
 - Clarity and consistency over cleverness. Minimal changes. Match existing patterns.
 - Keep components/functions short; break down when it improves structure.
-- TypeScript everywhere; no `any` unless isolated and necessary.
+- TypeScript everywhere; do not use `any` anywhere in the codebase. If an unknown shape is unavoidable for a short-lived experiment, document a narrow, named placeholder type (for example `type UnknownX = { /* TODO: refine */ }`) and open a task in `tasks/` that tracks replacing it with a concrete type. CI and code review should reject changes that introduce `any` without an approved task file.
 - No unnecessary `try/catch`. Avoid casting; use narrowing.
 - Named exports only (no default exports, except Next.js pages).
 - Absolute imports via `@/` unless same directory.
