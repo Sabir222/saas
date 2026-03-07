@@ -1,45 +1,73 @@
-import { BetterAuth } from '@better-auth/server';
-import { drizzleAdapter } from '@better-auth/drizzle-adapter';
-import { migrate } from 'drizzle-orm/migrate';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import postgres from 'pg';
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { nextCookies } from "better-auth/next-js"
 
-// Ensure environment variables are loaded
-if (!process.env.POSTGRES_URL) {
-    throw new Error('Missing environment variable: POSTGRES_URL');
+import { db } from "@/lib/drizzle"
+import { env } from "@/lib/Env"
+import { schema } from "@/db/schema"
+
+async function sendAuthEmail(props: {
+  action: "reset-password" | "verify-email"
+  email: string
+  url: string
+}) {
+  console.info(
+    `[better-auth:${props.action}] Email sending is not configured yet for ${props.email}. Open this URL manually during development: ${props.url}`
+  )
 }
-if (!process.env.BETTER_AUTH_SECRET) {
-    throw new Error('Missing environment variable: BETTER_AUTH_SECRET');
-}
 
-// Configure PostgreSQL database connection
-const pool = new postgres.Pool({ connectionString: process.env.POSTGRES_URL });
-const db = drizzle(pool);
-
-// Initialize Better Auth
-const auth = BetterAuth({
-    adapter: drizzleAdapter(db),
-    secret: process.env.BETTER_AUTH_SECRET,
-    pages: {
-        signIn: '/auth/signin',
-        verifyRequest: '/auth/verify',
+export const auth = betterAuth({
+  appName: "SaaS",
+  baseURL: env.BETTER_AUTH_URL,
+  basePath: "/api/auth",
+  secret: env.BETTER_AUTH_SECRET,
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema,
+  }),
+  emailAndPassword: {
+    enabled: true,
+    minPasswordLength: 8,
+    maxPasswordLength: 128,
+    requireEmailVerification: true,
+    sendResetPassword: async (data) => {
+      await sendAuthEmail({
+        action: "reset-password",
+        email: data.user.email,
+        url: data.url,
+      })
     },
-    session: {
-        jwt: true,
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async (data) => {
+      await sendAuthEmail({
+        action: "verify-email",
+        email: data.user.email,
+        url: data.url,
+      })
     },
-});
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5,
+    },
+  },
+  trustedOrigins: [env.BETTER_AUTH_URL, env.NEXT_PUBLIC_APP_URL].filter(
+    (value): value is string => Boolean(value)
+  ),
+  advanced: {
+    useSecureCookies: env.NODE_ENV === "production",
+  },
+  experimental: {
+    joins: true,
+  },
+  plugins: [nextCookies()],
+})
 
-// Ensure migrations are applied (useful for development environments)
-(async () => {
-    console.log('Running migrations...');
-    try {
-        await migrate(db, { path: './migrations' });
-        console.log('Migrations complete.');
-    } catch (error) {
-        console.error('Migration failed:', error);
-        process.exit(1);
-    }
-})();
-
-export default auth;
+export type Session = typeof auth.$Infer.Session
+export type AuthUser = Session["user"]

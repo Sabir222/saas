@@ -1,10 +1,10 @@
-import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"
+import { Pool } from "pg"
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error("Missing POSTGRES_URL in environment")
-}
+import { env } from "@/lib/Env"
 
-const pool = new Pool({ connectionString: process.env.POSTGRES_URL })
+export const pool = new Pool({
+  connectionString: env.POSTGRES_URL,
+})
+
 export const db = drizzle(pool)
-export const poolClient = pool

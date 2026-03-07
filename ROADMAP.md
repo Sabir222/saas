@@ -13,6 +13,7 @@
 - Completed:
 
 - In progress:
+- Better Auth base stack is wired with Drizzle/Postgres, API route, client helper, DB health check, and server-side auth DAL helpers.
 
 - Next steps:
   1. Scaffold the base app and repo tooling.

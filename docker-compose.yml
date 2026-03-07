@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:18
     container_name: saas-postgres
     restart: always
     env_file: .env
@@ -12,8 +12,10 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-saas_db}
     ports:
       - "5432:5432"
+    # For PostgreSQL 18+, bind the volume to /var/lib/postgresql so the image
+    # can create major-version-specific subdirectories (required by the image)
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
 
 volumes:
   postgres_data:
