@@ -41,6 +41,8 @@ WHAT I WILL NOT DO:
 
 - Keep `lib/auth.ts` lightweight for CLI import; provide `options` export and `initAuth()` runtime function.
 - All changes committed to `feat/phase-1-better-auth-drizzle-setup` branch locally.
+- Follow-up alignment work updated the setup to use the documented runtime pattern: `export const auth = betterAuth(...)`, `toNextJsHandler(auth)`, `createAuthClient(...)`, centralized env access, and server DAL helpers.
+- Temporary CLI shim files were removed after the runtime config became compatible with `bunx @better-auth/cli generate --config ./lib/auth.ts`.
 
 ## Verification
 
