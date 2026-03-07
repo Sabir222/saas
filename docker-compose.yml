@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: saas-postgres
+    restart: always
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-saas_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-saas_password}
+      POSTGRES_DB: ${POSTGRES_DB:-saas_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    name: postgres_data
