@@ -19,7 +19,7 @@ WHAT I WILL DO:
 - Create a new branch `chore/phase-1-drizzle-setup`.
 - Add `drizzle.config.ts` (drizzle-kit configuration) referencing `POSTGRES_URL` from `.env`.
 - Add `lib/drizzle.ts` (DB singleton using `pg` Pool + `drizzle`).
-- Add a placeholder `src/db/schema.ts` and a `docs/drizzle-runbook.md` containing explicit commands and verification steps.
+- Add a placeholder `db/schema.ts` and a `docs/drizzle-runbook.md` containing explicit commands and verification steps.
 - Commit and push the branch and open a PR.
 
 WHAT I WILL NOT DO:
@@ -33,7 +33,7 @@ WHAT I WILL NOT DO:
 
 1. Create task file and tasks/README.md entry.
 2. Create branch `chore/phase-1-drizzle-setup` from `master`.
-3. Add `drizzle.config.ts`, `lib/drizzle.ts`, `src/db/schema.ts` (placeholder) and `docs/drizzle-runbook.md`.
+3. Add `drizzle.config.ts`, `lib/drizzle.ts`, `db/schema.ts` (placeholder) and `docs/drizzle-runbook.md`.
 4. Commit changes with a single descriptive commit and push the branch.
 5. Open a PR for review.
 

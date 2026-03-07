@@ -23,10 +23,10 @@ bun add -d drizzle-kit
 npx @better-auth/cli generate --config ./lib/auth.ts --output ./auth-generated/better-auth-schema.ts
 ```
 
-5. Merge generated schema into `src/db/schema.ts` or import it:
+5. Merge generated schema into `db/schema.ts` or import it:
 
 ```ts
-// src/db/schema.ts
+// db/schema.ts
 export * from "../auth-generated/better-auth-schema"
 ```
 
