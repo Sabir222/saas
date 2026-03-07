@@ -145,6 +145,7 @@ Agent binding: the AI agent MUST follow this workflow for any code, infra, or co
 - Route handlers are public API surfaces; secure them like production endpoints.
 - Centralize privileged logic in server-only helpers, services, and DAL modules.
 - Keep config singletons in `src/libs`.
+- Keep config singletons in `lib/`.
 
 ## Auth rules
 
@@ -221,6 +222,11 @@ Agent binding: the AI agent MUST follow this workflow for any code, infra, or co
 - Commit only when asked.
 - Use Conventional Commits: `type: summary`
 
+## Push and PR policy
+
+- NEVER push, create pull requests, or merge branches unless the user explicitly authorizes the agent to do so for this session or task.
+- Switching to build mode does NOT implicitly authorize pushing or publishing. The agent may create local commits when instructed, but it must obtain explicit `push`/`publish` permission before running `git push`, opening PRs, or merging.
+
 ## Build mode reminder
 
 When switching to build mode the agent must also update the active roadmap item's progress before making code changes.
@@ -229,4 +235,5 @@ When switching to build mode the agent must also update the active roadmap item'
 Your operational mode has changed from plan to build.
 You are no longer in read-only mode.
 You are permitted to make file changes, run shell commands, and utilize your arsenal of tools as needed.
+IMPORTANT: This does NOT authorize pushing commits, creating pull requests, or merging branches. Do NOT push or open PRs unless the user explicitly instructs you to `push` or `publish` for this session.
 </system-reminder>
