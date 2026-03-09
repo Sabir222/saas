@@ -1,10 +1,18 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { nextCookies } from "better-auth/next-js"
+import { admin } from "better-auth/plugins/admin"
+import { twoFactor } from "better-auth/plugins/two-factor"
+import { passkey } from "@better-auth/passkey"
 
 import { db } from "@/lib/drizzle"
 import { env } from "@/lib/Env"
-import { schema } from "@/db/schema"
+import {
+  schema,
+  userRelations,
+  sessionRelations,
+  accountRelations,
+} from "@/db/schema"
 
 async function sendAuthEmail(props: {
   action: "reset-password" | "verify-email"
@@ -23,7 +31,28 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema,
+    schema: {
+      ...schema,
+      user: {
+        ...schema.user,
+        relations: {
+          sessions: userRelations,
+          accounts: accountRelations,
+        },
+      },
+      session: {
+        ...schema.session,
+        relations: {
+          user: sessionRelations,
+        },
+      },
+      account: {
+        ...schema.account,
+        relations: {
+          user: accountRelations,
+        },
+      },
+    },
   }),
   emailAndPassword: {
     enabled: true,
@@ -49,6 +78,24 @@ export const auth = betterAuth({
       })
     },
   },
+  socialProviders: {
+    ...(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
+      ? {
+          github: {
+            clientId: env.GITHUB_CLIENT_ID,
+            clientSecret: env.GITHUB_CLIENT_SECRET,
+          },
+        }
+      : {}),
+    ...(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
+  },
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
@@ -66,7 +113,7 @@ export const auth = betterAuth({
   experimental: {
     joins: true,
   },
-  plugins: [nextCookies()],
+  plugins: [admin(), twoFactor(), passkey(), nextCookies()],
 })
 
 export type Session = typeof auth.$Infer.Session
