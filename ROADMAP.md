@@ -8,6 +8,11 @@
 - Add ESLint, Vitest, Playwright, Storybook, Commitlint, Lefthook, Knip, and semantic-release.
 - Set up typed env validation and base project structure.
 
+### Research (MCPs/Skills)
+
+- Use `nextjs_docs` to fetch Next.js 16 setup docs
+- Use `context7` to resolve Drizzle, Tailwind v4, and other library docs
+
 ### Progress
 
 - Completed:
@@ -26,6 +31,11 @@
 - Configure PostgreSQL, Drizzle ORM, shared DB connection utilities, and migration workflow.
 - Keep local development simple with PGlite-compatible workflow.
 
+### Research (MCPs/Skills)
+
+- Use `postgres` MCP for database queries and schema work
+- Use `context7` to resolve Drizzle ORM docs
+
 ### Progress
 
 - Completed:
@@ -42,6 +52,12 @@
 
 - Install Better Auth, configure server and client, add auth route handler, and enable core email/password flows.
 - Add email verification, password reset, social login providers, and server-side session helpers.
+
+### Research (MCPs/Skills)
+
+- **MUST USE**: `better-auth` MCP to search docs and ask questions
+- **MUST USE**: `better-auth-best-practices` skill for implementation guidance
+- Use `context7` for related libraries
 
 ### Progress
 
@@ -61,6 +77,11 @@
 - Build sign-in, sign-up, forgot-password, reset-password, verify-email, account settings, and sign-out flows.
 - Add a server-side auth DAL and secure dashboard pages.
 
+### Research (MCPs/Skills)
+
+- Use `better-auth_best-practices` skill for UI patterns
+- Use `shadcn` MCP to search form components
+
 ### Progress
 
 - Completed:
@@ -77,6 +98,11 @@
 ### Scope
 
 - Add Better Auth admin plugin, custom access control, roles, permission helpers, and admin UX.
+
+### Research (MCPs/Skills)
+
+- Use `better-auth` MCP to search admin plugin docs
+- Use `organization-best-practices` skill for RBAC patterns
 
 ### Progress
 
@@ -95,6 +121,11 @@
 
 - Install the required Shadcn UI components and define the design tokens, shells, and shared component patterns.
 
+### Research (MCPs/Skills)
+
+- **MUST USE**: `shadcn` MCP to search and get component examples
+- Use `magicui` MCP for animations and special effects
+
 ### Progress
 
 - Completed:
@@ -111,6 +142,11 @@
 ### Scope
 
 - Add Stripe subscriptions, Checkout, customer portal, webhooks, and local billing state.
+
+### Research (MCPs/Skills)
+
+- Use `context7` to resolve Stripe docs
+- Use `shadcn` MCP for billing UI components
 
 ### Progress
 
@@ -130,6 +166,11 @@
 
 - Add oRPC router, transport route, server caller, and typed client.
 
+### Research (MCPs/Skills)
+
+- Use `context7` to resolve oRPC docs
+- Use `nextjs_docs` for API route patterns
+
 ### Progress
 
 - Completed:
@@ -147,6 +188,10 @@
 
 - Add locale-aware routes, `next-intl`, and translation workflows.
 
+### Research (MCPs/Skills)
+
+- Use `nextjs_docs` to fetch i18n routing docs
+
 ### Progress
 
 - Completed:
@@ -162,6 +207,11 @@
 ### Scope
 
 - Add Sentry, Spotlight, Better Stack, PostHog, Arcjet, and Checkly.
+
+### Research (MCPs/Skills)
+
+- Use `context7` to resolve Sentry, PostHog, Arcjet docs
+- Use `github` MCP to search for integration examples
 
 ### Progress
 
