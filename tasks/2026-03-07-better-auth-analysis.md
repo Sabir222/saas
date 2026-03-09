@@ -72,20 +72,7 @@ WHAT I WILL NOT DO:
 
 ## What Needs to Be Done
 
-1. **High Priority**
-   - Run `npx auth@latest generate` to sync schema with Better Auth CLI
-   - Update adapter config to pass relations when using joins
-   - Create `proxy.ts` for Next.js 16 auth protection
-
-2. **Medium Priority**
-   - Add social auth providers (GitHub, Google)
-   - Add admin plugin
-   - Add 2FA plugin
-   - Add passkey plugin
-
-3. **Lower Priority**
-   - Add social provider environment variables validation
-   - Configure email provider (currently logs to console)
+All enhancements consolidated into single task: `tasks/2026-03-07-better-auth-enhancements.md`
 
 ## Verification
 
@@ -93,12 +80,7 @@ This is an analysis task - no verification needed.
 
 ## Issues Created
 
-- Need task: Fix adapter relations for joins
-- Need task: Add proxy.ts for auth protection
-- Need task: Add social auth providers
-- Need task: Add admin plugin
-- Need task: Add 2FA plugin
-- Need task: Add passkey plugin
+- Consolidated into single task: `tasks/2026-03-07-better-auth-enhancements.md`
 
 ## Rapport (to fill at completion)
 
@@ -126,12 +108,7 @@ This is an analysis task - no verification needed.
   - Passkey plugin not added
 
 - Issues Created:
-  - Need task: Add proxy.ts for auth protection
-  - Need task: Add relations to adapter config for joins
-  - Need task: Add social auth providers
-  - Need task: Add admin plugin
-  - Need task: Add 2FA plugin
-  - Need task: Add passkey plugin
+  - Consolidated into single task: tasks/2026-03-07-better-auth-enhancements.md
 
 ## Completion
 
