@@ -4,6 +4,10 @@ type EnvKey =
   | "NEXT_PUBLIC_APP_URL"
   | "NODE_ENV"
   | "POSTGRES_URL"
+  | "GITHUB_CLIENT_ID"
+  | "GITHUB_CLIENT_SECRET"
+  | "GOOGLE_CLIENT_ID"
+  | "GOOGLE_CLIENT_SECRET"
 
 type NodeEnv = "development" | "test" | "production"
 
@@ -37,6 +41,10 @@ export const env = {
   NEXT_PUBLIC_APP_URL: readOptionalEnv("NEXT_PUBLIC_APP_URL"),
   NODE_ENV: readNodeEnv(),
   POSTGRES_URL: readRequiredEnv("POSTGRES_URL"),
+  GITHUB_CLIENT_ID: readOptionalEnv("GITHUB_CLIENT_ID"),
+  GITHUB_CLIENT_SECRET: readOptionalEnv("GITHUB_CLIENT_SECRET"),
+  GOOGLE_CLIENT_ID: readOptionalEnv("GOOGLE_CLIENT_ID"),
+  GOOGLE_CLIENT_SECRET: readOptionalEnv("GOOGLE_CLIENT_SECRET"),
 }
 
 export function getOptionalEnv(key: EnvKey) {
