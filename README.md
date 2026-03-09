@@ -2,6 +2,13 @@
 
 This is a Next.js template with shadcn/ui.
 
+## Database
+
+- **PostgreSQL 18** with Drizzle ORM
+- **Extensions:** pg_stat_statements, hypopg (for MCP query analysis)
+- **Quick start:** `docker compose up -d`
+- **Details:** [See DATABASE.md](./DATABASE.md)
+
 ## Adding components
 
 To add components to your app, run the following command:
@@ -17,5 +24,5 @@ This will place the ui components in the `components` directory.
 To use the components in your app, import them as follows:
 
 ```tsx
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 ```
