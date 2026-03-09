@@ -13,6 +13,10 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // Ignore certain rules for Magic UI components
+    ignores: ["components/ui/**/*.tsx"],
+  },
 ]);
 
 export default eslintConfig;
