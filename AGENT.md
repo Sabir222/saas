@@ -14,9 +14,38 @@
 - Options object for 3+ params, optional flags, or ambiguous args.
 - Hypothesis-driven debugging: 1-3 causes, validate most likely first.
 
+## Available MCPs (Research First)
+
+**MANDATORY**: Before any implementation, research using these MCPs:
+
+| MCP               | Use When                     | Key Tools                          |
+| ----------------- | ---------------------------- | ---------------------------------- |
+| nextjs_docs       | Any Next.js question         | fetch docs by path                 |
+| nextjs_index      | Discover running dev servers | list servers, get tools            |
+| shadcn            | UI components                | search, get examples, add          |
+| postgres          | Database work                | execute_sql, analyze, list_schemas |
+| github            | Issues, PRs                  | create_issue, search, list         |
+| better-auth       | Auth questions               | search docs, ask                   |
+| context7          | Any library docs             | resolve, query                     |
+| magicuidesign-mcp | UI animations/effects        | getComponents, getBackgrounds      |
+| filesystem        | File operations              | read, write, glob                  |
+| playwright        | Browser automation           | navigate, click, fill, screenshot  |
+
 ## Token efficiency
 
 - Skip recaps unless the result is ambiguous or you need more input.
+
+## Available Skills (Invoke When Needed)
+
+| Domain      | Skill                                    | Trigger                            |
+| ----------- | ---------------------------------------- | ---------------------------------- |
+| Auth        | better-auth-best-practices               | auth, better-auth                  |
+| Auth Setup  | create-auth-skill                        | new auth, add auth                 |
+| 2FA         | two-factor-authentication-best-practices | 2fa, mfa, totp                     |
+| Orgs        | organization-best-practices              | orgs, teams, rbac                  |
+| Find Skills | find-skills                              | "how do I", "find a skill", unsure |
+
+**IMPORTANT**: When unsure if a skill exists for a task, invoke the `find-skills` skill to search.
 
 ## Commands
 
@@ -73,7 +102,9 @@ Tailwind v4 utility classes. Reuse shared components. Responsive. No unnecessary
 
 ## Mission
 
-Build and evolve the scratch boilerplate defined in `boilerplate/PROJECT.md`. The target product is a single-tenant Next.js 16 SaaS boilerplate with Better Auth, RBAC, Stripe billing, oRPC, and Shadcn UI. Multi-tenancy and teams are intentionally out of scope.
+Build and evolve the scratch boilerplate defined in `./PROJECT.md`. The target product is a single-tenant Next.js 16 SaaS boilerplate with Better Auth, RBAC, Stripe billing, oRPC, and Shadcn UI. Multi-tenancy and teams are intentionally out of scope.
+
+**IMPORTANT**: Before implementing ANY feature, use the available MCPs and skills documented above. See "Available MCPs" and "Available Skills" sections.
 
 ## Product boundaries
 
@@ -83,9 +114,9 @@ Build and evolve the scratch boilerplate defined in `boilerplate/PROJECT.md`. Th
 
 ## Source of truth
 
-- `boilerplate/PROJECT.md`: target architecture and feature set
-- `boilerplate/ROADMAP.md`: implementation sequence
-- `boilerplate/ENV.md`: environment variable inventory
+- `./PROJECT.md`: target architecture and feature set
+- `./ROADMAP.md`: implementation sequence
+- Environment variables in project config
 
 ## Required workflow
 
@@ -104,11 +135,17 @@ STEP 2 — TASK FILE + BRANCH
 - Add a row to `tasks/README.md` linking the new task file.
 - `git checkout main` -> `git pull` -> `git checkout -b type/phase-N-description`.
 
-STEP 3 — SCOPE LOCK
+STEP 3 — SCOPE LOCK + RESEARCH
 
 - Before writing code: write exactly what you WILL and WILL NOT do in the task file.
 - Do not add new scope during implementation. Once scope is locked, it remains frozen for that task.
-- and check docs for the task we doing using mcp (nextjs mcp , shadcn mcp , better auth mcp , context7 ....)
+- **MANDATORY**: Research using MCPs before implementation:
+  - Next.js work → use `nextjs_docs` to fetch relevant docs
+  - UI components → use shadcn MCP to search and get examples
+  - Auth work → use better-auth MCP or skills
+  - Database → use postgres MCP for queries
+  - Any library → use context7 MCP to resolve and query docs
+- Document what you learned in the task file
   STEP 4 — IMPLEMENT
 
 - Write code in small, atomic commits; re-read the task objective at every logical unit of work.
