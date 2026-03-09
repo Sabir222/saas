@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:18
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
     container_name: saas-postgres
     restart: always
     env_file: .env
@@ -10,10 +12,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-saas_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-saas_password}
       POSTGRES_DB: ${POSTGRES_DB:-saas_db}
+    command: postgres -c shared_preload_libraries=pg_stat_statements
     ports:
       - "5432:5432"
-    # For PostgreSQL 18+, bind the volume to /var/lib/postgresql so the image
-    # can create major-version-specific subdirectories (required by the image)
     volumes:
       - postgres_data:/var/lib/postgresql
 
