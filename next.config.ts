@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 // Import env for build-time validation
-import "./lib/env-schema";
+import "@/lib/Env"
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {}
 
-export default nextConfig;
+export default nextConfig
