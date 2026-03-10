@@ -69,7 +69,7 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    requireEmailVerification: false,
+    requireEmailVerification: true,
     sendResetPassword: async (data) => {
       await sendAuthEmail({
         action: "reset-password",
@@ -79,7 +79,7 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    sendOnSignUp: false,
+    sendOnSignUp: true,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async (data) => {
       await sendAuthEmail({
