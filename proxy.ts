@@ -1,13 +1,19 @@
-import { NextRequest, NextResponse } from "next/server"
-import { headers } from "next/headers"
-import { auth } from "@/lib/auth"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { getSessionCookie } from "better-auth/cookies"
 
-export async function proxy(request: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+export function proxy(request: NextRequest) {
+  const sessionCookie = getSessionCookie(request)
+  const { pathname } = request.nextUrl
 
-  if (!session) {
+  const authRoutes = ["/sign-in", "/sign-up"]
+  const isAuthRoute = authRoutes.includes(pathname)
+
+  if (isAuthRoute && sessionCookie) {
+    return NextResponse.redirect(new URL("/dashboard", request.url))
+  }
+
+  if (!isAuthRoute && !sessionCookie) {
     return NextResponse.redirect(new URL("/sign-in", request.url))
   }
 
@@ -15,5 +21,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/sign-in", "/sign-up", "/dashboard/:path*"],
 }

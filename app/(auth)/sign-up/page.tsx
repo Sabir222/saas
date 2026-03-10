@@ -60,15 +60,15 @@ export default function SignUpPage() {
       { email, password, name },
       {
         onSuccess: () => {
+          setIsLoading(false)
           router.push("/dashboard")
+        },
+        onError: (ctx) => {
+          setErrors({ form: ctx.error.message || "Failed to sign up" })
+          setIsLoading(false)
         },
       }
     )
-
-    if (error) {
-      setErrors({ form: error.message || "Failed to sign up" })
-      setIsLoading(false)
-    }
   }
 
   const handleOAuthSignIn = async (provider: "github" | "google") => {
