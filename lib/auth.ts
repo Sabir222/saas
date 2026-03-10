@@ -7,23 +7,53 @@ import { passkey } from "@better-auth/passkey"
 
 import { db } from "@/lib/drizzle"
 import { env } from "@/lib/Env"
-import {
-  schema,
-  userRelations,
-  sessionRelations,
-  accountRelations,
-  passkeyRelations,
-  twoFactorRelations,
-} from "@/db/schema"
+import { schema } from "@/db/schema"
 
 async function sendAuthEmail(props: {
   action: "reset-password" | "verify-email"
   email: string
   url: string
 }) {
-  console.info(
-    `[better-auth:${props.action}] Email sending is not configured yet for ${props.email}. Open this URL manually during development: ${props.url}`
-  )
+  if (env.RESEND_API_KEY) {
+    const { Resend } = await import("resend")
+    const resend = new Resend(env.RESEND_API_KEY)
+
+    const emailContent =
+      props.action === "reset-password"
+        ? {
+            subject: "Reset your password",
+            html: `
+              <h1>Reset Your Password</h1>
+              <p>Click the link below to reset your password:</p>
+              <a href="${props.url}">${props.url}</a>
+              <p>This link will expire in 1 hour.</p>
+            `,
+          }
+        : {
+            subject: "Verify your email",
+            html: `
+              <h1>Verify Your Email</h1>
+              <p>Click the link below to verify your email:</p>
+              <a href="${props.url}">${props.url}</a>
+            `,
+          }
+
+    try {
+      await resend.emails.send({
+        from: "SaaS <noreply@resend.dev>",
+        to: props.email,
+        subject: emailContent.subject,
+        html: emailContent.html,
+      })
+      console.info(`[email] ${props.action} email sent to ${props.email}`)
+    } catch (error) {
+      console.error(`[email] Failed to send ${props.action} email:`, error)
+    }
+  } else {
+    console.info(
+      `[better-auth:${props.action}] Email sending is not configured yet for ${props.email}. Open this URL manually during development: ${props.url}`
+    )
+  }
 }
 
 export const auth = betterAuth({
@@ -33,42 +63,7 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema: {
-      ...schema,
-      user: {
-        ...schema.user,
-        relations: {
-          sessions: userRelations,
-          accounts: accountRelations,
-          passkeys: passkeyRelations,
-          twoFactors: twoFactorRelations,
-        },
-      },
-      session: {
-        ...schema.session,
-        relations: {
-          user: sessionRelations,
-        },
-      },
-      account: {
-        ...schema.account,
-        relations: {
-          user: accountRelations,
-        },
-      },
-      passkey: {
-        ...schema.passkey,
-        relations: {
-          user: passkeyRelations,
-        },
-      },
-      twoFactor: {
-        ...schema.twoFactor,
-        relations: {
-          user: twoFactorRelations,
-        },
-      },
-    },
+    schema: schema,
   }),
   emailAndPassword: {
     enabled: true,

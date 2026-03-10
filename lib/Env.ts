@@ -8,6 +8,7 @@ type EnvKey =
   | "GITHUB_CLIENT_SECRET"
   | "GOOGLE_CLIENT_ID"
   | "GOOGLE_CLIENT_SECRET"
+  | "RESEND_API_KEY"
 
 type NodeEnv = "development" | "test" | "production"
 
@@ -45,6 +46,7 @@ export const env = {
   GITHUB_CLIENT_SECRET: readOptionalEnv("GITHUB_CLIENT_SECRET"),
   GOOGLE_CLIENT_ID: readOptionalEnv("GOOGLE_CLIENT_ID"),
   GOOGLE_CLIENT_SECRET: readOptionalEnv("GOOGLE_CLIENT_SECRET"),
+  RESEND_API_KEY: readOptionalEnv("RESEND_API_KEY"),
 }
 
 export function getOptionalEnv(key: EnvKey) {
