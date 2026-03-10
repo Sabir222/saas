@@ -1,6 +1,6 @@
 "use client"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -19,18 +19,35 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
+import { signInSchema } from "@/lib/schemas"
 
 export default function SignInPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    setError("")
+    setErrors({})
+
+    const result = signInSchema.safeParse({ email, password })
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {}
+      result.error.issues.forEach(
+        (err: { path: (string | number | symbol)[]; message: string }) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as string] = err.message
+          }
+        }
+      )
+      setErrors(fieldErrors)
+      setIsLoading(false)
+      return
+    }
 
     const { error } = await authClient.signIn.email(
       { email, password },
@@ -42,7 +59,7 @@ export default function SignInPage() {
     )
 
     if (error) {
-      setError(error.message || "Failed to sign in")
+      setErrors({ form: error.message || "Failed to sign in" })
       setIsLoading(false)
     }
   }
@@ -64,9 +81,9 @@ export default function SignInPage() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            {error && (
+            {errors.form && (
               <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                {error}
+                {errors.form}
               </div>
             )}
             <div className="space-y-2">
@@ -77,9 +94,11 @@ export default function SignInPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
                 disabled={isLoading}
               />
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -89,9 +108,11 @@ export default function SignInPage() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 disabled={isLoading}
               />
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
             <div className="flex items-center justify-end">
               <Link
