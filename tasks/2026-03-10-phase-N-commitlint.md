@@ -34,75 +34,62 @@ IMPORTANT: Before starting this task:
 4. # Document which MCPs/Skills you'll use in Implementation Notes
    -->
 
-# Title: YYYY-MM-DD — Phase N — Add Commitlint for Conventional Commits
+# Title: 2026-03-10 — Phase N — Add Commitlint with Lefthook
 
-- Status: PENDING
+- Status: COMPLETED
 - Phase: N
-- Branch: feat/phase-N-commitlint
+- Branch: commitlint-imp
 - Owner: @
-- Created: YYYY-MM-DD
+- Created: 2026-03-10
 - Completion:
 
 ## Objective
 
-Add commitlint to enforce conventional commits format in the project.
+Add commitlint with lefthook git hooks to enforce conventional commit messages.
 
 ## Scope (SCOPE LOCK)
 
 WHAT I WILL DO:
 
-- Install @commitlint/cli and @commitlint/config-conventional
-- Create commitlint.config.ts with conventional commits config
-- Add husky for git hooks
-- Configure commit-msg hook to validate commit messages
-- Verify commits follow conventional format
+- Install @commitlint/cli, @commitlint/config-conventional, and lefthook
+- Create commitlint.config.js with conventional commits configuration
+- Create lefthook.yml with commit-msg hook for commitlint
+- Add lefthook install to package.json
+- Verify commitlint works with test commit
+- Add commitmsg script to package.json for manual testing
 
 WHAT I WILL NOT DO:
 
-- Modify any existing code
-- Change git history
-- Add commitizen or other interactive commit tools
+- Add any CI/CD configuration
+- Modify existing commit message format
+- Add other lefthook hooks (only commit-msg)
 
 > Scope is frozen after this section is completed. Any new work discovered must become a new task or a GitHub issue and be listed in "Issues Created" below.
 
 ## Plan (ordered steps)
 
-1. Install @commitlint/cli, @commitlint/config-conventional, and husky using bun
-2. Create commitlint.config.ts with conventional commits configuration
-3. Initialize husky and add commit-msg hook
-4. Test that invalid commit messages are rejected
-5. Test that valid commit messages are accepted
+1. Install @commitlint/cli, @commitlint/config-conventional, and lefthook using bun
+2. Create commitlint.config.js with conventional commits config
+3. Create lefthook.yml with commit-msg hook running commitlint
+4. Add lefthook postinstall script to package.json
+5. Add commitmsg script to package.json for manual testing
+6. Run bun run postinstall to install git hooks
+7. Test with a valid commit message
+8. Test with invalid commit message to verify it fails
 
 ## Implementation Notes
 
+> **⚠️ CRITICAL: Before writing any code, MUST use Context7 to fetch commitlint and lefthook documentation**
+
 **MCPs/Skills to use for this task:**
 
-- **github**: Search for commitlint best practices
-- **filesystem**: To create config files
-
-**Conventional commits format:**
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-**Types:**
-- feat: New feature
-- fix: Bug fix
-- docs: Documentation
-- style: Formatting
-- refactor: Code restructuring
-- test: Testing
-- chore: Maintenance
+- **context7**: Fetch commitlint and lefthook documentation for setup
 
 ## Verification
 
-- `bun run commitlint --edit` passes for valid commits
-- Invalid commit messages are rejected with clear error
-- husky commit-msg hook is active
+- `bun run commitmsg` passes on valid commit message
+- Invalid commit message is rejected by hook
+- `bunx commitlint --from HEAD~1 --to HEAD` works for manual testing
 
 ## Issues Created
 
@@ -122,8 +109,6 @@ WHAT I WILL NOT DO:
 
 ## Notes
 
-- Use conventional commits format
-- Consider adding commitlint CI action for PR validation
-- Allow types: feat, fix, docs, style, refactor, perf, test, chore, revert
-- Set subject case to sentence-case
-- Set subject max-length to 72
+- Use conventional commits format: feat:, fix:, chore:, docs:, style:, refactor:, perf:, test:
+- Example: "feat: add user authentication"
+- Skip hook during commit with --no-verify (use sparingly)

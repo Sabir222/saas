@@ -1,0 +1,7 @@
+# Lefthook configuration for git hooks
+
+# Validate commit messages with commitlint
+commit-msg:
+  commands:
+    "lint commit message":
+      run: bunx commitlint --edit {1}
