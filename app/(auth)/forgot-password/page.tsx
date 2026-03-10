@@ -1,6 +1,6 @@
 "use client"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -18,17 +18,34 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
+import { forgotPasswordSchema } from "@/lib/schemas"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
+  const [emailError, setEmailError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
+    setEmailError("")
+
+    const result = forgotPasswordSchema.safeParse({ email })
+
+    if (!result.success) {
+      result.error.issues.forEach(
+        (err: { path: (string | number | symbol)[]; message: string }) => {
+          if (err.path[0]) {
+            setEmailError(err.message)
+          }
+        }
+      )
+      setIsLoading(false)
+      return
+    }
 
     const { error } = await authClient.requestPasswordReset(
       { email },
@@ -94,9 +111,11 @@ export default function ForgotPasswordPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
                 disabled={isLoading}
               />
+              {emailError && (
+                <p className="text-sm text-destructive">{emailError}</p>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">

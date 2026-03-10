@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
+import { resetPasswordSchema } from "@/lib/schemas"
 
 export function ResetPasswordForm() {
   const router = useRouter()
@@ -26,21 +27,31 @@ export function ResetPasswordForm() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    setError("")
+    setErrors({})
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match")
+    const result = resetPasswordSchema.safeParse({ password, confirmPassword })
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {}
+      result.error.issues.forEach(
+        (err: { path: (string | number | symbol)[]; message: string }) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as string] = err.message
+          }
+        }
+      )
+      setErrors(fieldErrors)
       setIsLoading(false)
       return
     }
 
     if (!token) {
-      setError("Invalid reset token")
+      setErrors({ form: "Invalid reset token" })
       setIsLoading(false)
       return
     }
@@ -51,7 +62,7 @@ export function ResetPasswordForm() {
     })
 
     if (error) {
-      setError(error.message || "Failed to reset password")
+      setErrors({ form: error.message || "Failed to reset password" })
       setIsLoading(false)
     } else {
       router.push("/sign-in")
@@ -89,9 +100,9 @@ export function ResetPasswordForm() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            {error && (
+            {errors.form && (
               <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                {error}
+                {errors.form}
               </div>
             )}
             <div className="space-y-2">
@@ -102,9 +113,11 @@ export function ResetPasswordForm() {
                 placeholder="Create a new password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 disabled={isLoading}
               />
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
@@ -114,9 +127,13 @@ export function ResetPasswordForm() {
                 placeholder="Confirm your new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                required
                 disabled={isLoading}
               />
+              {errors.confirmPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">

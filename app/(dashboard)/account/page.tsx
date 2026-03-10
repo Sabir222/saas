@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Loader2, Shield, KeyRound, Lock } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
+import { changePasswordSchema } from "@/lib/schemas"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -72,8 +73,27 @@ export default function AccountPage() {
     setPasswordError("")
     setPasswordSuccess(false)
 
-    if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords do not match")
+    const result = changePasswordSchema.safeParse({
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    })
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {}
+      result.error.issues.forEach(
+        (err: { path: (string | number | symbol)[]; message: string }) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as string] = err.message
+          }
+        }
+      )
+      setPasswordError(
+        fieldErrors.confirmPassword ||
+          fieldErrors.newPassword ||
+          fieldErrors.currentPassword ||
+          "Validation failed"
+      )
       return
     }
 
