@@ -69,7 +69,7 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    requireEmailVerification: true,
+    requireEmailVerification: false,
     sendResetPassword: async (data) => {
       await sendAuthEmail({
         action: "reset-password",
@@ -79,7 +79,7 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    sendOnSignUp: true,
+    sendOnSignUp: false,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async (data) => {
       await sendAuthEmail({
@@ -122,7 +122,7 @@ export const auth = betterAuth({
     useSecureCookies: env.NODE_ENV === "production",
   },
   experimental: {
-    joins: true,
+    joins: false,
   },
   plugins: [admin(), twoFactor(), passkey(), nextCookies()],
 })
