@@ -10,10 +10,9 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - Language: TypeScript
 - Package manager: Bun only
 - Styling: Tailwind CSS v4
-- UI system: Shadcn UI on top of Tailwind
+- UI system: Shadcn UI on top of Tailwind and magic UI
 - Auth: Better Auth
 - Database: PostgreSQL with Drizzle ORM
-- Local database workflow: PGlite for local development, PostgreSQL-compatible production database
 - API layer: oRPC for end-to-end type-safe procedures
 - Billing: Stripe subscriptions + customer portal + webhook-driven provisioning
 - Roles and permissions: Better Auth admin plugin + custom access control
@@ -24,6 +23,14 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - Security: Arcjet
 - Testing: Vitest + Playwright
 - Component development: Storybook
+- T3 env
+- Zod:schema validation & type inference
+- Knip:finds unsed files and dependencies
+- Storybook:isolated UI component development
+- Commitlint: enforeces conventional commit messages
+- Lefthook: runs linters/test via git hooks
+- oPRC:end-to-end type-safe API procedures
+
 - CI/CD support: GitHub Actions, semantic-release, Dependabot, CodeRabbit
 
 ## Explicitly excluded from v1
