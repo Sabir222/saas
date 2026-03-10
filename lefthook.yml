@@ -1,5 +1,13 @@
 # Lefthook configuration for git hooks
 
+# Run tests and typecheck before pushing
+pre-push:
+  commands:
+    "run tests":
+      run: bun run test:vitest:run
+    "check types":
+      run: bun run typecheck
+
 # Validate commit messages with commitlint
 commit-msg:
   commands:
