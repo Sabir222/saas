@@ -4,15 +4,18 @@ import { nextCookies } from "better-auth/next-js"
 import { admin } from "better-auth/plugins/admin"
 import { twoFactor } from "better-auth/plugins/two-factor"
 import { passkey } from "@better-auth/passkey"
+import { render } from "@react-email/components"
 
 import { db } from "@/lib/drizzle"
 import { env } from "@/lib/Env"
 import { schema } from "@/db/schema"
+import { VerifyEmail, ResetPassword } from "@/emails"
 
 async function sendAuthEmail(props: {
   action: "reset-password" | "verify-email"
   email: string
   url: string
+  userName?: string
 }) {
   if (env.RESEND_API_KEY) {
     const { Resend } = await import("resend")
@@ -22,25 +25,20 @@ async function sendAuthEmail(props: {
       props.action === "reset-password"
         ? {
             subject: "Reset your password",
-            html: `
-              <h1>Reset Your Password</h1>
-              <p>Click the link below to reset your password:</p>
-              <a href="${props.url}">${props.url}</a>
-              <p>This link will expire in 1 hour.</p>
-            `,
+            html: await render(
+              ResetPassword({ resetUrl: props.url, userName: props.userName })
+            ),
           }
         : {
             subject: "Verify your email",
-            html: `
-              <h1>Verify Your Email</h1>
-              <p>Click the link below to verify your email:</p>
-              <a href="${props.url}">${props.url}</a>
-            `,
+            html: await render(
+              VerifyEmail({ verifyUrl: props.url, userName: props.userName })
+            ),
           }
 
     try {
       await resend.emails.send({
-        from: "SaaS <noreply@resend.dev>",
+        from: "onboarding@resend.dev",
         to: props.email,
         subject: emailContent.subject,
         html: emailContent.html,
@@ -75,6 +73,7 @@ export const auth = betterAuth({
         action: "reset-password",
         email: data.user.email,
         url: data.url,
+        userName: data.user.name,
       })
     },
   },
@@ -86,6 +85,7 @@ export const auth = betterAuth({
         action: "verify-email",
         email: data.user.email,
         url: data.url,
+        userName: data.user.name,
       })
     },
   },
