@@ -34,9 +34,9 @@ IMPORTANT: Before starting this task:
 4. # Document which MCPs/Skills you'll use in Implementation Notes
    -->
 
-# Title: 2026-03-10 — Phase N — Add Commitlint for Conventional Commits
+# Title: 2026-03-10 — Phase N — Add Commitlint with Lefthook
 
-- Status: PENDING
+- Status: COMPLETED
 - Phase: N
 - Branch: commitlint-imp
 - Owner: @
@@ -45,49 +45,51 @@ IMPORTANT: Before starting this task:
 
 ## Objective
 
-Add commitlint with husky git hooks to enforce conventional commit messages.
+Add commitlint with lefthook git hooks to enforce conventional commit messages.
 
 ## Scope (SCOPE LOCK)
 
 WHAT I WILL DO:
 
-- Install @commitlint/cli, @commitlint/config-conventional, and husky
+- Install @commitlint/cli, @commitlint/config-conventional, and lefthook
 - Create commitlint.config.js with conventional commits configuration
-- Initialize husky and set up commit-msg hook
+- Create lefthook.yml with commit-msg hook for commitlint
+- Add lefthook install to package.json
 - Verify commitlint works with test commit
-- Add commitmsg script to package.json
+- Add commitmsg script to package.json for manual testing
 
 WHAT I WILL NOT DO:
 
 - Add any CI/CD configuration
 - Modify existing commit message format
-- Add other husky hooks (only commit-msg)
+- Add other lefthook hooks (only commit-msg)
 
 > Scope is frozen after this section is completed. Any new work discovered must become a new task or a GitHub issue and be listed in "Issues Created" below.
 
 ## Plan (ordered steps)
 
-1. Install @commitlint/cli, @commitlint/config-conventional, and husky using bun
+1. Install @commitlint/cli, @commitlint/config-conventional, and lefthook using bun
 2. Create commitlint.config.js with conventional commits config
-3. Initialize husky with bunx husky init
-4. Set up commit-msg hook to run commitlint
+3. Create lefthook.yml with commit-msg hook running commitlint
+4. Add lefthook postinstall script to package.json
 5. Add commitmsg script to package.json for manual testing
-6. Test with a valid commit message
-7. Test with invalid commit message to verify it fails
+6. Run bun run postinstall to install git hooks
+7. Test with a valid commit message
+8. Test with invalid commit message to verify it fails
 
 ## Implementation Notes
 
-> **⚠️ CRITICAL: Before writing any code, MUST use Context7 to fetch commitlint documentation**
+> **⚠️ CRITICAL: Before writing any code, MUST use Context7 to fetch commitlint and lefthook documentation**
 
 **MCPs/Skills to use for this task:**
 
-- **context7**: Fetch commitlint / husky documentation for setup
+- **context7**: Fetch commitlint and lefthook documentation for setup
 
 ## Verification
 
-- `bunx commitlint --from HEAD~1 --to HEAD` passes on last commit
+- `bun run commitmsg` passes on valid commit message
 - Invalid commit message is rejected by hook
-- `bun run commitmsg` works for manual testing
+- `bunx commitlint --from HEAD~1 --to HEAD` works for manual testing
 
 ## Issues Created
 
