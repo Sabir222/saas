@@ -19,6 +19,13 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "test": "bun run check-db",
+    "test:vitest": "vitest",
+    "test:vitest:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "check-db": "bun run tsx scripts/check-db.ts"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
+    "vitest": "^4.0.18"
   }
 }
