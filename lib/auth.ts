@@ -12,6 +12,8 @@ import {
   userRelations,
   sessionRelations,
   accountRelations,
+  passkeyRelations,
+  twoFactorRelations,
 } from "@/db/schema"
 
 async function sendAuthEmail(props: {
@@ -38,6 +40,8 @@ export const auth = betterAuth({
         relations: {
           sessions: userRelations,
           accounts: accountRelations,
+          passkeys: passkeyRelations,
+          twoFactors: twoFactorRelations,
         },
       },
       session: {
@@ -50,6 +54,18 @@ export const auth = betterAuth({
         ...schema.account,
         relations: {
           user: accountRelations,
+        },
+      },
+      passkey: {
+        ...schema.passkey,
+        relations: {
+          user: passkeyRelations,
+        },
+      },
+      twoFactor: {
+        ...schema.twoFactor,
+        relations: {
+          user: twoFactorRelations,
         },
       },
     },

@@ -8,6 +8,13 @@
       "when": 1772852011884,
       "tag": "0000_init_better_auth",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773102131389,
+      "tag": "0001_glossy_quasar",
+      "breakpoints": true
     }
   ]
 }

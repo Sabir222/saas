@@ -1,7 +1,5 @@
 <!-- Task template for feature/bug slices. Copy to tasks/YYYY-MM-DD-phase-N-desc.md -->
 
-# <!--
-
 # BEFORE TACKLING THIS TASK: Analyze available MCPs and Skills
 
 Available MCPs (use for research):
