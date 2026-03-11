@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "code-review": {
+      "source": "popup-studio-ai/bkit-claude-code",
+      "sourceType": "github",
+      "computedHash": "2d2d22a5cf6b544f70841d2b63ee518c5e93ff254dd2bd3ab1fd3026fd17b39e"
+    }
+  }
+}

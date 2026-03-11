@@ -1,12 +1,14 @@
 # Lefthook configuration for git hooks
 
-# Run tests and typecheck before pushing
+# Run tests, typecheck, and knip before pushing
 pre-push:
   commands:
     "run tests":
       run: bun run test:vitest:run
     "check types":
       run: bun run typecheck
+    "knip":
+      run: bun run knip
 
 # Validate commit messages with commitlint
 commit-msg:
