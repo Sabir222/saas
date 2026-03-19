@@ -52,7 +52,10 @@ export default function SignInPage() {
     const { error } = await authClient.signIn.email(
       { email, password },
       {
-        onSuccess: () => {
+        onSuccess: (ctx) => {
+          if (ctx.data?.twoFactorRedirect) {
+            return
+          }
           router.push("/dashboard")
         },
       }
