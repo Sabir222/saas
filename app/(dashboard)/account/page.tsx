@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Loader2, Shield, KeyRound, Lock } from "lucide-react"
+import { Loader2, Shield, KeyRound, Lock, Copy, Check } from "lucide-react"
+import { QRCodeSVG } from "qrcode.react"
 
 import { authClient } from "@/lib/auth-client"
 import { changePasswordSchema } from "@/lib/schemas"
@@ -19,6 +20,14 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function AccountPage() {
   const { data: session, isPending } = authClient.useSession()
@@ -34,6 +43,21 @@ export default function AccountPage() {
   const [isLoading2FA, setIsLoading2FA] = useState(false)
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
   const [passwordPromptValue, setPasswordPromptValue] = useState("")
+  const [twoFactorError, setTwoFactorError] = useState("")
+
+  const [showTwoFactorSetup, setShowTwoFactorSetup] = useState(false)
+  const [totpURI, setTotpURI] = useState("")
+  const [backupCodes, setBackupCodes] = useState<string[]>([])
+  const [savedRecoveryCodes, setSavedRecoveryCodes] = useState(false)
+  const [copiedBackupCodes, setCopiedBackupCodes] = useState(false)
+
+  const [isAddingPasskey, setIsAddingPasskey] = useState(false)
+  const [passkeyError, setPasskeyError] = useState("")
+  const [passkeySuccess, setPasskeySuccess] = useState(false)
+
+  useEffect(() => {
+    setTwoFactorEnabled(Boolean(session?.user?.twoFactorEnabled))
+  }, [session?.user?.twoFactorEnabled])
 
   if (isPending) {
     return (
@@ -125,10 +149,12 @@ export default function AccountPage() {
   }
 
   const handleToggle2FA = async () => {
+    setTwoFactorError("")
     setShowPasswordPrompt(true)
   }
 
   const handle2FAWithPassword = async () => {
+    setTwoFactorError("")
     setIsLoading2FA(true)
 
     if (twoFactorEnabled) {
@@ -137,19 +163,73 @@ export default function AccountPage() {
       })
       if (!error) {
         setTwoFactorEnabled(false)
+      } else {
+        setTwoFactorError(error.message || "Failed to disable two-factor")
       }
     } else {
-      const { error } = await authClient.twoFactor.enable({
+      const { data, error } = await authClient.twoFactor.enable({
         password: passwordPromptValue,
       })
       if (!error) {
-        setTwoFactorEnabled(true)
+        setTotpURI(data?.totpURI ?? "")
+        setBackupCodes(data?.backupCodes ?? [])
+        setSavedRecoveryCodes(false)
+        setCopiedBackupCodes(false)
+        setShowTwoFactorSetup(true)
+      } else {
+        setTwoFactorError(error.message || "Failed to enable two-factor")
       }
     }
 
     setShowPasswordPrompt(false)
     setPasswordPromptValue("")
     setIsLoading2FA(false)
+  }
+
+  const handleCopyBackupCodes = async () => {
+    if (backupCodes.length === 0) {
+      return
+    }
+
+    try {
+      await navigator.clipboard.writeText(backupCodes.join("\n"))
+      setCopiedBackupCodes(true)
+    } catch {
+      setTwoFactorError(
+        "Could not copy backup codes. Please copy them manually."
+      )
+    }
+  }
+
+  const handleCloseTwoFactorSetup = () => {
+    if (!savedRecoveryCodes) {
+      return
+    }
+
+    setShowTwoFactorSetup(false)
+    setTwoFactorEnabled(true)
+  }
+
+  const handleAddPasskey = async () => {
+    setPasskeyError("")
+    setPasskeySuccess(false)
+    setIsAddingPasskey(true)
+
+    try {
+      const { error } = await authClient.passkey.addPasskey({
+        name: `${user.email}-passkey`,
+      })
+
+      if (error) {
+        setPasskeyError(error.message || "Failed to add passkey")
+      } else {
+        setPasskeySuccess(true)
+      }
+    } catch {
+      setPasskeyError("Failed to add passkey")
+    } finally {
+      setIsAddingPasskey(false)
+    }
   }
 
   return (
@@ -280,6 +360,11 @@ export default function AccountPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {twoFactorError && (
+                  <div className="mb-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+                    {twoFactorError}
+                  </div>
+                )}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-muted p-3">
@@ -349,6 +434,16 @@ export default function AccountPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {passkeyError && (
+                  <div className="mb-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+                    {passkeyError}
+                  </div>
+                )}
+                {passkeySuccess && (
+                  <div className="mb-4 rounded-md bg-green-500/10 p-3 text-sm text-green-600">
+                    Passkey added successfully.
+                  </div>
+                )}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-muted p-3">
@@ -361,8 +456,17 @@ export default function AccountPage() {
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
-                    <Lock className="mr-2 h-4 w-4" />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddPasskey}
+                    disabled={isAddingPasskey}
+                  >
+                    {isAddingPasskey ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Lock className="mr-2 h-4 w-4" />
+                    )}
                     Add Passkey
                   </Button>
                 </div>
@@ -371,6 +475,105 @@ export default function AccountPage() {
           </TabsContent>
         </Tabs>
       </main>
+
+      <AlertDialog
+        open={showTwoFactorSetup}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleCloseTwoFactorSetup()
+            return
+          }
+
+          setShowTwoFactorSetup(true)
+        }}
+      >
+        <AlertDialogContent className="max-w-lg">
+          <AlertDialogHeader className="items-start text-left">
+            <AlertDialogTitle>Finish two-factor setup</AlertDialogTitle>
+            <AlertDialogDescription>
+              Scan this QR code in your authenticator app, then save your backup
+              codes before continuing.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <div className="space-y-4">
+            <div className="flex flex-col items-center gap-3 rounded-md border p-4">
+              {totpURI ? (
+                <QRCodeSVG value={totpURI} size={180} includeMargin />
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  TOTP URI was not returned. Try enabling 2FA again.
+                </p>
+              )}
+              <p className="text-center text-xs text-muted-foreground">
+                If scanning fails, copy this secret URI manually into your app.
+              </p>
+              <p className="w-full overflow-auto rounded bg-muted px-3 py-2 font-mono text-xs">
+                {totpURI || "No TOTP URI available"}
+              </p>
+            </div>
+
+            <div className="rounded-md border p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="font-medium">Backup codes</p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCopyBackupCodes}
+                  disabled={backupCodes.length === 0}
+                >
+                  {copiedBackupCodes ? (
+                    <Check className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Copy className="mr-2 h-4 w-4" />
+                  )}
+                  {copiedBackupCodes ? "Copied" : "Copy all"}
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {backupCodes.length > 0 ? (
+                  backupCodes.map((backupCode) => (
+                    <p
+                      key={backupCode}
+                      className="rounded bg-muted px-2 py-1 text-center font-mono text-xs"
+                    >
+                      {backupCode}
+                    </p>
+                  ))
+                ) : (
+                  <p className="col-span-2 text-sm text-muted-foreground">
+                    No backup codes returned.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={savedRecoveryCodes}
+                onChange={(event) =>
+                  setSavedRecoveryCodes(event.target.checked)
+                }
+              />
+              I saved my backup codes in a safe place.
+            </label>
+          </div>
+
+          <AlertDialogFooter className="sm:justify-between">
+            <p className="text-xs text-muted-foreground">
+              You can regenerate backup codes later from account settings.
+            </p>
+            <Button
+              onClick={handleCloseTwoFactorSetup}
+              disabled={!savedRecoveryCodes}
+            >
+              Continue to account
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
