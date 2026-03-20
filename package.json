@@ -25,7 +25,9 @@
     "test:coverage": "vitest run --coverage",
     "check-db": "bun run tsx scripts/check-db.ts",
     "knip": "knip",
-    "knip:fix": "knip --fix"
+    "knip:fix": "knip --fix",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@better-auth/cli": "^1.4.21",
@@ -72,6 +74,15 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "storybook": "^10.3.1",
+    "@storybook/nextjs-vite": "^10.3.1",
+    "@chromatic-com/storybook": "^5.0.2",
+    "@storybook/addon-vitest": "^10.3.1",
+    "@storybook/addon-a11y": "^10.3.1",
+    "@storybook/addon-docs": "^10.3.1",
+    "vite": "^8.0.1",
+    "eslint-plugin-storybook": "^10.3.1",
+    "@vitest/browser-playwright": "4.0.18"
   }
 }
