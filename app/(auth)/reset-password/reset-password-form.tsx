@@ -119,7 +119,7 @@ export function ResetPasswordForm() {
                 <p className="text-sm text-destructive">{errors.password}</p>
               )}
             </div>
-            <div className="space-y-2">
+            <div className="mb-4 space-y-2">
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
               <Input
                 id="confirmPassword"
