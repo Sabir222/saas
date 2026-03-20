@@ -54,7 +54,7 @@ export function VerifyEmail({ verifyUrl, userName }: VerifyEmailProps) {
           <Hr style={hr} />
 
           <Text style={footer}>
-            This link will expire in 24 hours. If you didn't sign up for this
+            This link will expire in 24 hours. If you did not sign up for this
             account, you can safely ignore this email.
           </Text>
 

@@ -54,7 +54,7 @@ export function ResetPassword({ resetUrl, userName }: ResetPasswordProps) {
           <Hr style={hr} />
 
           <Text style={footer}>
-            This link will expire in 1 hour. If you didn't request a password
+            This link will expire in 1 hour. If you did not request a password
             reset, you can safely ignore this email.
           </Text>
 
