@@ -18,7 +18,9 @@ export function SignUpForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Create an account
+          </CardTitle>
           <CardDescription>
             Enter your details to create a new account
           </CardDescription>
@@ -34,7 +36,11 @@ export function SignUpForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Create a password" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Create a password"
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
