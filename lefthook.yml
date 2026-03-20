@@ -1,5 +1,13 @@
 # Lefthook configuration for git hooks
 
+# Run ESLint and tests before committing
+pre-commit:
+  commands:
+    "format":
+      run: bun run format
+    "lint":
+      run: bun run lint
+
 # Run tests, typecheck, and knip before pushing
 pre-push:
   commands:
