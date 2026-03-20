@@ -14,10 +14,11 @@ export default function AdminLayout({
   const router = useRouter()
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const { data: session } = authClient.useSession()
+  const { data: session, isPending } = authClient.useSession()
 
   useEffect(() => {
     async function checkAdmin() {
+      if (isPending) return
       if (!session) {
         router.push("/sign-in")
         return
@@ -29,7 +30,7 @@ export default function AdminLayout({
         },
       })
 
-      if (!hasPermission) {
+      if (!hasPermission?.success) {
         router.push("/dashboard")
         return
       }
@@ -39,7 +40,7 @@ export default function AdminLayout({
     }
 
     checkAdmin()
-  }, [session, router])
+  }, [isPending, session, router])
 
   if (isLoading || !session || !isAdmin) {
     return (
