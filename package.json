@@ -12,7 +12,7 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "check:types": "tsc --noEmit",
-    "postinstall": "lefthook install",
+    "postinstall": "bunx lefthook install",
     "lefthook": "lefthook",
     "commitmsg": "commitlint --edit",
     "db:clear": "bun run scripts/clear-db.ts",
