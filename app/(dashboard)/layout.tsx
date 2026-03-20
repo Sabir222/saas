@@ -1,49 +1,27 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
 
-export default function AdminLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const { data: session, isPending } = authClient.useSession()
 
   useEffect(() => {
-    async function checkAdmin() {
-      if (isPending) return
-      if (!session) {
-        router.push("/sign-in")
-        return
-      }
-
-      const { data: hasPermission } = await authClient.admin.hasPermission({
-        permissions: {
-          user: ["list"],
-        },
-      })
-
-      if (!hasPermission?.success) {
-        router.push("/dashboard")
-        return
-      }
-
-      setIsAdmin(true)
-      setIsLoading(false)
+    if (!isPending && !session) {
+      router.push("/sign-in")
     }
-
-    checkAdmin()
   }, [isPending, session, router])
 
-  if (isLoading || !session || !isAdmin) {
+  if (isPending || !session) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
@@ -56,7 +34,7 @@ export default function AdminLayout({
 
   const user = session.user
   const sidebarUser = {
-    name: user.name || "Admin",
+    name: user.name || "User",
     email: user.email || "",
     avatar: user.image || "",
   }

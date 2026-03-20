@@ -6,12 +6,11 @@ import {
   ShieldAlert,
   UserCog,
   Mail,
-  LogOut,
   ArrowRight,
 } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
-import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -22,7 +21,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <ThemeToggle />
+      <Navbar />
 
       <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-16 md:px-6">
         <header className="space-y-2">
@@ -126,31 +125,8 @@ export default function Page() {
 
             <div className="flex flex-wrap gap-3">
               <Link href="/dashboard">
-                <Button>Dashboard</Button>
+                <Button>Go to Dashboard</Button>
               </Link>
-              <Link href="/account">
-                <Button variant="outline">Account</Button>
-              </Link>
-              {user.role === "admin" && (
-                <Link href="/admin">
-                  <Button variant="outline">Admin</Button>
-                </Link>
-              )}
-              <Button
-                variant="destructive"
-                onClick={() =>
-                  authClient.signOut({
-                    fetchOptions: {
-                      onSuccess: () => {
-                        window.location.href = "/"
-                      },
-                    },
-                  })
-                }
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign out
-              </Button>
             </div>
           </>
         )}
