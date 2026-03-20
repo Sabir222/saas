@@ -23,6 +23,7 @@ import { WordRotate } from "@/components/ui/word-rotate"
 import { authClient } from "@/lib/auth-client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 const features = [
   {
@@ -144,6 +145,7 @@ function HeroSection() {
 
   return (
     <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-4 py-20 md:px-8">
+      <ThemeToggle />
       <div className="absolute inset-0 z-0">
         <RetroGrid
           className="opacity-30 dark:opacity-20"
@@ -214,7 +216,15 @@ function HeroSection() {
               </Link>
               <Button
                 variant="outline"
-                onClick={() => authClient.signOut()}
+                onClick={() =>
+                  authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        window.location.href = "/"
+                      },
+                    },
+                  })
+                }
                 className="border border-border bg-background text-foreground hover:bg-secondary/50"
               >
                 <LogOut className="mr-2 h-4 w-4" />

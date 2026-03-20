@@ -71,7 +71,13 @@ export default function DashboardPage() {
               variant="outline"
               size="sm"
               onClick={() => {
-                authClient.signOut()
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      window.location.href = "/"
+                    },
+                  },
+                })
               }}
             >
               Sign Out

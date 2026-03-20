@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
     }
 
     const { error } = await authClient.requestPasswordReset(
-      { email },
+      { email, redirectTo: "/reset-password" },
       {
         onSuccess: () => {
           setSuccess(true)
@@ -103,7 +103,7 @@ export default function ForgotPasswordPage() {
                 {error}
               </div>
             )}
-            <div className="space-y-2">
+            <div className="mb-4 space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"

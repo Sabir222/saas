@@ -15,6 +15,7 @@
     "postinstall": "lefthook install",
     "lefthook": "lefthook",
     "commitmsg": "commitlint --edit",
+    "db:clear": "bun run scripts/clear-db.ts",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
