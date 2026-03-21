@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "drizzle-kit migrate && next build",
-    "build-local": "next build",
+    "build": "next build",
+    "deploy": "bun run db:migrate && bun run build",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",

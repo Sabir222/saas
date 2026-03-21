@@ -56,5 +56,5 @@ jobs:
         with:
           bun-version: "1.2"
       - run: bun install --frozen-lockfile
-      - run: bun run build-local
+      - run: bun run build
       - run: bun run test:vitest:run
