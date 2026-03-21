@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
+import { ImpersonationBanner } from "@/components/impersonation-banner"
 
 export default function DashboardLayout({
   children,
@@ -50,6 +51,7 @@ export default function DashboardLayout({
     >
       <AppSidebar variant="inset" user={sidebarUser} />
       <SidebarInset>
+        <ImpersonationBanner />
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
