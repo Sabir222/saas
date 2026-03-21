@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  BETTER_AUTH_SECRET: ci-placeholder-secret-32chars-minimum
+  BETTER_AUTH_URL: http://localhost:3000
+  POSTGRES_URL: postgresql://ci:ci@localhost:5432/ci
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2"
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2"
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+
+  knip:
+    name: Knip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2"
+      - run: bun install --frozen-lockfile
+      - run: bun run knip
+
+  build-and-test:
+    name: Build & Test
+    needs: [lint, typecheck, knip]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2"
+      - run: bun install --frozen-lockfile
+      - run: bun run build-local
+      - run: bun run test:vitest:run
