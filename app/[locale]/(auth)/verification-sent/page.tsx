@@ -33,7 +33,10 @@ export default async function VerificationSentPage() {
         <CardContent className="flex flex-col items-center space-y-4">
           <p className="text-center text-sm text-muted-foreground">
             {t("auth.verificationSent.didntReceive")}{" "}
-            <Link href={`/${locale}/sign-up`} className="text-primary hover:underline">
+            <Link
+              href={`/${locale}/sign-up`}
+              className="text-primary hover:underline"
+            >
               {t("auth.verificationSent.tryAgain")}
             </Link>
           </p>

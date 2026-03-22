@@ -118,7 +118,9 @@ export function AppSidebar({
             >
               <a href={`/${locale}/admin`}>
                 <Shield className="size-5!" />
-                <span className="text-base font-semibold">{t("admin.adminPanel")}</span>
+                <span className="text-base font-semibold">
+                  {t("admin.adminPanel")}
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

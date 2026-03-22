@@ -76,7 +76,9 @@ export function AppSidebar({
             >
               <a href={`/${locale}/dashboard`}>
                 <Shield className="size-5!" />
-                <span className="text-base font-semibold">{t("sidebar.myAccount")}</span>
+                <span className="text-base font-semibold">
+                  {t("sidebar.myAccount")}
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

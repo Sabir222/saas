@@ -94,7 +94,9 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">{t("auth.forgotPassword.title")}</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            {t("auth.forgotPassword.title")}
+          </CardTitle>
           <CardDescription>
             {t("auth.forgotPassword.description")}
           </CardDescription>
@@ -128,7 +130,10 @@ export default function ForgotPasswordPage() {
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.forgotPassword.rememberPassword")}{" "}
-              <Link href={`/${locale}/sign-in`} className="text-primary hover:underline">
+              <Link
+                href={`/${locale}/sign-in`}
+                className="text-primary hover:underline"
+              >
                 {t("auth.forgotPassword.signInLink")}
               </Link>
             </p>
