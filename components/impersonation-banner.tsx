@@ -1,13 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
+import { useParams, useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { AlertTriangle, LogOut, Loader2 } from "lucide-react"
 
 export function ImpersonationBanner() {
+  const t = useTranslations()
   const router = useRouter()
+  const { locale } = useParams<{ locale: string }>()
   const [isStopping, setIsStopping] = useState(false)
   const { data: session } = authClient.useSession()
 
@@ -20,7 +23,7 @@ export function ImpersonationBanner() {
     setIsStopping(true)
     try {
       await authClient.admin.stopImpersonating()
-      router.push("/admin")
+      router.push(`/${locale}/admin`)
     } catch (error) {
       console.error("Failed to stop impersonating:", error)
       setIsStopping(false)
@@ -31,7 +34,7 @@ export function ImpersonationBanner() {
     <div className="sticky top-0 z-[60] flex items-center justify-center gap-4 bg-amber-500 px-4 py-2 text-sm font-medium text-amber-950 dark:bg-amber-600 dark:text-amber-50">
       <AlertTriangle className="h-4 w-4 shrink-0" />
       <span>
-        You are impersonating{" "}
+        {t("impersonation.impersonating")}{" "}
         <strong>{session?.user?.name || session?.user?.email}</strong>
       </span>
       <Button
@@ -46,7 +49,7 @@ export function ImpersonationBanner() {
         ) : (
           <LogOut className="mr-1 h-3 w-3" />
         )}
-        Stop Impersonating
+        {t("impersonation.stopImpersonating")}
       </Button>
     </div>
   )

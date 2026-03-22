@@ -1,5 +1,32 @@
 # AGENT.md
 
+## Git Conventions
+
+### Git rules
+
+- Never do git operations without direct orders from the user
+- And always ask first before doing any git operations if users didnt ask you to.
+
+### Commit Message Format
+
+type(scope): short description
+
+Types: feat, fix, perf, docs, chore, ci, refactor
+
+### Merging
+
+When merging a PR, update the merge commit message to:
+type(scope): description (#PR_NUMBER)
+
+The PR number is found in the GitHub URL:
+github.com/user/repo/pull/42 ← 42 is the number
+
+#### Examples
+
+feat(auth): add OAuth login (#42)
+fix(api): handle null response (#31)
+chore(deps): update dependencies (#18)
+
 ## Always Use Bun
 
 - Use `bun` for all commands: `bun install`, `bun dev`, `bun run <script>`, `bun run build`, etc.

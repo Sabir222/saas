@@ -1,5 +1,7 @@
 import { z } from "zod"
+import { useTranslations } from "next-intl"
 
+// Static schemas (for backward compatibility - uses default English messages)
 export const signInSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
@@ -71,3 +73,27 @@ export const changePasswordSchema = z
   })
 
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
+
+// Translatable schema hooks (use these for i18n support)
+export function useChangePasswordSchema() {
+  const t = useTranslations("validation")
+
+  return z
+    .object({
+      currentPassword: z.string().min(1, t("currentPasswordRequired")),
+      newPassword: z
+        .string()
+        .min(1, t("newPasswordRequired"))
+        .min(8, t("passwordMinLength"))
+        .max(128, t("passwordMaxLength")),
+      confirmPassword: z.string().min(1, t("confirmPasswordRequired")),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: t("passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    })
+    .refine((data) => data.currentPassword !== data.newPassword, {
+      message: t("newPasswordDifferent"),
+      path: ["newPassword"],
+    })
+}
