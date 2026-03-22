@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import { logger } from "@/lib/logger"
 
 type User = {
   id: string
@@ -20,6 +21,7 @@ export class UserDAL {
    * Get a user by ID
    */
   async getById(userId: string) {
+    logger.debug("Fetching user by ID", { userId })
     return await auth.api.getUser({
       query: { id: userId },
       headers: await headers(),
@@ -30,6 +32,7 @@ export class UserDAL {
    * Get list of users (admin only)
    */
   async list(limit = 10, offset = 0) {
+    logger.debug("Listing users", { limit, offset })
     return await auth.api.listUsers({
       query: {
         limit,
@@ -43,6 +46,7 @@ export class UserDAL {
    * Update a user (admin)
    */
   async updateUser(userId: string, data: Partial<User>) {
+    logger.info("Updating user", { userId, fields: Object.keys(data) })
     return await auth.api.adminUpdateUser({
       body: {
         userId,
@@ -56,6 +60,7 @@ export class UserDAL {
    * Ban a user (admin)
    */
   async banUser(userId: string, banReason?: string, banExpiresIn?: number) {
+    logger.warning("Banning user", { userId, banReason, banExpiresIn })
     return await auth.api.banUser({
       body: {
         userId,
@@ -70,6 +75,7 @@ export class UserDAL {
    * Unban a user (admin)
    */
   async unbanUser(userId: string) {
+    logger.info("Unbanning user", { userId })
     return await auth.api.unbanUser({
       body: { userId },
       headers: await headers(),
@@ -80,6 +86,7 @@ export class UserDAL {
    * Set user role (admin)
    */
   async setRole(userId: string, role: "user" | "admin" | ("user" | "admin")[]) {
+    logger.warning("Setting user role", { userId, role })
     return await auth.api.setRole({
       body: { userId, role },
       headers: await headers(),
@@ -90,6 +97,7 @@ export class UserDAL {
    * Impersonate a user (admin)
    */
   async impersonate(userId: string) {
+    logger.warning("Admin impersonating user", { userId })
     return await auth.api.impersonateUser({
       body: { userId },
       headers: await headers(),
@@ -100,6 +108,7 @@ export class UserDAL {
    * End impersonation session (admin)
    */
   async endImpersonation() {
+    logger.info("Ending impersonation session")
     return await auth.api.stopImpersonating({
       headers: await headers(),
     })

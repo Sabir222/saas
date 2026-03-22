@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import type { Session } from "@/lib/auth"
+import { logger } from "@/lib/logger"
 
 /**
  * Get the current session from the server
@@ -19,6 +20,7 @@ export async function getSession(): Promise<Session | null> {
 export async function requireSession(): Promise<Session> {
   const session = await getSession()
   if (!session) {
+    logger.warning("Unauthenticated access attempt, redirecting to sign-in")
     redirect("/sign-in")
   }
   return session
@@ -32,6 +34,7 @@ export async function getSessionOrRedirect(
 ): Promise<Session> {
   const session = await getSession()
   if (!session) {
+    logger.warning("Unauthenticated access attempt", { redirectTo })
     redirect(redirectTo)
   }
   return session
@@ -52,6 +55,10 @@ export async function requireAdmin(): Promise<Session> {
   const session = await requireSession()
 
   if (session.user.role !== "admin") {
+    logger.warning("Non-admin user attempted admin access", {
+      userId: session.user.id,
+      role: session.user.role,
+    })
     redirect("/dashboard")
   }
 
@@ -64,8 +71,9 @@ export async function requireAdmin(): Promise<Session> {
 export async function isUserBanned(session: Session | null): Promise<boolean> {
   if (!session) return false
 
-  // Check if user has banned field and it's true
-  // The banned field should be on the user object
   const user = session.user as Session["user"] & { banned?: boolean }
+  if (user.banned === true) {
+    logger.warning("Banned user detected", { userId: session.user.id })
+  }
   return user.banned === true
 }

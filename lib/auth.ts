@@ -10,6 +10,7 @@ import { db } from "@/lib/drizzle"
 import { env } from "@/lib/Env"
 import { schema } from "@/db/schema"
 import { VerifyEmail, ResetPassword } from "@/emails"
+import { logger } from "@/lib/logger"
 
 async function sendAuthEmail(props: {
   action: "reset-password" | "verify-email"
@@ -43,14 +44,23 @@ async function sendAuthEmail(props: {
         subject: emailContent.subject,
         html: emailContent.html,
       })
-      console.info(`[email] ${props.action} email sent to ${props.email}`)
+      logger.info("Auth email sent", {
+        action: props.action,
+        email: props.email,
+      })
     } catch (error) {
-      console.error(`[email] Failed to send ${props.action} email:`, error)
+      logger.error("Failed to send auth email", {
+        action: props.action,
+        email: props.email,
+        error: error instanceof Error ? error.message : String(error),
+      })
     }
   } else {
-    console.info(
-      `[better-auth:${props.action}] Email sending is not configured yet for ${props.email}. Open this URL manually during development: ${props.url}`
-    )
+    logger.warning("Email not configured - dev mode fallback", {
+      action: props.action,
+      email: props.email,
+      url: props.url,
+    })
   }
 }
 

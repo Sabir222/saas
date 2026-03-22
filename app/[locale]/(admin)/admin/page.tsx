@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { authClient } from "@/lib/auth-client"
+import { clientLogger } from "@/lib/client-logger"
 import { SectionCards } from "./_components/section-cards"
 import { ChartAreaInteractive } from "./_components/chart-area-interactive"
 import { DataTable, type UserRow } from "./_components/data-table"
@@ -33,7 +34,9 @@ export default function AdminDashboardPage() {
 
         setUsers(mappedUsers)
       } catch (error) {
-        console.error("Failed to load users:", error)
+        clientLogger.error("Failed to load admin users", {
+          error: error instanceof Error ? error.message : String(error),
+        })
       } finally {
         setIsLoading(false)
       }

@@ -1,6 +1,7 @@
 import { Client } from "pg"
 
 import { env } from "@/lib/Env"
+import { logger } from "@/lib/logger"
 
 export type DbHealthResult = {
   ok: boolean
@@ -40,10 +41,16 @@ export async function checkDbHealth(
     const reason = getErrorMessage(error)
     const code = getErrorCode(error)
 
+    logger.error("Database health check failed", {
+      code,
+      message: reason,
+      suggestion: getDbRecoverySuggestion(reason, code),
+    })
+
     try {
       await client.end()
     } catch {
-      // noop
+      logger.debug("Failed to close database client after health check error")
     }
 
     return {

@@ -1,4 +1,4 @@
-import { configureSync, getConsoleSink } from "@logtape/logtape"
+import { configureSync, getConsoleSink, getLogger } from "@logtape/logtape"
 
 configureSync({
   sinks: {
@@ -6,9 +6,15 @@ configureSync({
   },
   loggers: [
     {
+      category: ["logtape", "meta"],
+      lowestLevel: "warning",
+    },
+    {
       category: ["saas"],
       lowestLevel: "debug",
       sinks: ["console"],
     },
   ],
 })
+
+export const logger = getLogger(["saas"])
