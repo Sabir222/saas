@@ -1,0 +1,271 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "yes": "Yes",
+    "no": "No",
+    "copied": "Copied",
+    "copyAll": "Copy all",
+    "home": "Home",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "orContinueWith": "Or continue with"
+  },
+  "navbar": {
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "admin": "Admin"
+  },
+  "impersonation": {
+    "impersonating": "You are impersonating",
+    "stopImpersonating": "Stop Impersonating"
+  },
+  "landing": {
+    "title": "Auth Test Console",
+    "description": "Clean testing page for authentication status, role, and verification state.",
+    "notSignedIn": "Not signed in",
+    "verifyEmail": "Please verify your email address.",
+    "verifyEmailDescription": "Sign-in is allowed, but verification is still recommended for account security.",
+    "currentSession": "Current Session",
+    "emailVerified": "Email Verified",
+    "role": "Role",
+    "banned": "Banned",
+    "twoFactorEnabled": "Two Factor Enabled",
+    "userId": "User ID",
+    "goToDashboard": "Go to Dashboard",
+    "createAccount": "Create account"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "description": "Enter your credentials to access your account",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "failedToSignIn": "Failed to sign in"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "description": "Enter your details to create a new account",
+      "nameLabel": "Name",
+      "namePlaceholder": "John Doe",
+      "emailPlaceholder": "name@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "signUpButton": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "failedToSignUp": "Failed to sign up"
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email address and we will send you a link to reset your password.",
+      "emailPlaceholder": "name@example.com",
+      "sendResetLink": "Send Reset Link",
+      "rememberPassword": "Remember your password?",
+      "signInLink": "Sign in",
+      "failedToSend": "Failed to send reset email",
+      "checkEmail": "Check your email",
+      "checkEmailDescription": "We have sent a password reset link to your email address.",
+      "backToSignIn": "Back to Sign In"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter your new password below.",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Create a new password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your new password",
+      "resetButton": "Reset Password",
+      "failedToReset": "Failed to reset password",
+      "success": "Password reset successfully!",
+      "invalidToken": "Invalid reset token",
+      "invalidTokenTitle": "Invalid Token",
+      "invalidTokenDescription": "This password reset link is invalid or has expired.",
+      "requestNewLink": "Request New Reset Link"
+    },
+    "twoFactor": {
+      "title": "Two-factor verification",
+      "description": "Enter a code from your authenticator app or use a backup code.",
+      "authenticator": "Authenticator",
+      "backupCode": "Backup code",
+      "authenticatorCode": "Authenticator code",
+      "backupCodeLabel": "Backup code",
+      "authenticatorPlaceholder": "123456",
+      "backupPlaceholder": "XXXX-XXXX",
+      "trustDevice": "Trust this device for 30 days",
+      "verifyAndContinue": "Verify and continue",
+      "differentAccount": "Need to use a different account?",
+      "backToSignIn": "Back to sign in",
+      "enterCode": "Please enter your verification code",
+      "invalidAuthenticator": "Invalid authenticator code",
+      "invalidBackup": "Invalid backup code"
+    },
+    "verificationSent": {
+      "title": "Check your email",
+      "description": "We've sent a verification link to your email address. Please check your inbox and click the link to verify your account.",
+      "didntReceive": "Didn't receive the email? Check your spam folder or",
+      "tryAgain": "try again",
+      "backToSignIn": "Back to Sign In"
+    },
+    "verifyEmail": {
+      "verifying": "Verifying your email...",
+      "verifyingDescription": "Please wait while we verify your email address...",
+      "success": "Email verified successfully!",
+      "failed": "Failed to verify email",
+      "expired": "Verification link expired",
+      "resend": "Resend verification email",
+      "invalidToken": "Invalid verification token",
+      "verified": "Email Verified!",
+      "goToSignIn": "Go to Sign In",
+      "goHome": "Go Home"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "profile": {
+      "title": "Profile",
+      "description": "Your account information",
+      "verified": "Verified",
+      "unverified": "Unverified"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Your account security status",
+      "twoFactor": "2FA",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "userId": "User ID",
+      "manageSecurity": "Manage Security"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "description": "Manage your account",
+      "accountSettings": "Account Settings",
+      "securitySettings": "Security Settings"
+    },
+    "account": {
+      "notSignedIn": "Not Signed In",
+      "notSignedInDescription": "Please sign in to view your account settings.",
+      "signIn": "Sign In",
+      "validationFailed": "Validation failed",
+      "failedToChangePassword": "Failed to change password",
+      "failedToDisable2FA": "Failed to disable two-factor",
+      "failedToEnable2FA": "Failed to enable two-factor",
+      "couldNotCopy": "Could not copy backup codes. Please copy them manually.",
+      "failedToAddPasskey": "Failed to add passkey",
+      "tabs": {
+        "profile": "Profile",
+        "password": "Password",
+        "twoFactor": "Two-Factor",
+        "passkeys": "Passkeys"
+      },
+      "profileInfo": {
+        "title": "Profile Information",
+        "description": "View and manage your account details",
+        "emailVerified": "Email Verified",
+        "notSet": "Not set"
+      },
+      "changePassword": {
+        "title": "Change Password",
+        "description": "Update your password to keep your account secure",
+        "success": "Password changed successfully!",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password",
+        "changeButton": "Change Password"
+      },
+      "twoFactorSection": {
+        "title": "Two-Factor Authentication",
+        "description": "Add an extra layer of security to your account",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "enterPasswordToDisable": "Enter your password to disable 2FA",
+        "enterPasswordToEnable": "Enter your password to enable 2FA",
+        "passwordPlaceholder": "Your password",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "enableDescription": "When enabled, you'll be required to enter a verification code from your authenticator app in addition to your password."
+      },
+      "passkeysSection": {
+        "title": "Passkeys",
+        "description": "Manage your passkeys for passwordless authentication",
+        "success": "Passkey added successfully.",
+        "subtitle": "Passkey Authentication",
+        "usePasskeys": "Use passkeys to sign in without a password",
+        "addPasskey": "Add Passkey"
+      },
+      "twoFactorSetup": {
+        "dialogTitle": "Finish two-factor setup",
+        "dialogDescription": "Scan this QR code in your authenticator app, then save your backup codes before continuing.",
+        "totpError": "TOTP URI was not returned. Try enabling 2FA again.",
+        "scanHint": "If scanning fails, copy this secret URI manually into your app.",
+        "noTotpUri": "No TOTP URI available",
+        "backupCodes": "Backup codes",
+        "noBackupCodes": "No backup codes returned.",
+        "savedCodes": "I saved my backup codes in a safe place.",
+        "regenerateHint": "You can regenerate backup codes later from account settings.",
+        "continueToAccount": "Continue to account"
+      }
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "billing": "Billing",
+    "analytics": "Analytics",
+    "systemHealth": "System Health",
+    "support": "Support",
+    "auditLog": "Audit Log",
+    "featureFlags": "Feature Flags",
+    "settings": "Settings",
+    "getHelp": "Get Help",
+    "adminPanel": "Admin Panel",
+    "operations": "Operations",
+    "management": "Management"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "home": "Home",
+    "settings": "Settings",
+    "getHelp": "Get Help",
+    "myAccount": "My Account"
+  },
+  "navUser": {
+    "upgradeToPro": "Upgrade to Pro",
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "logOut": "Log out"
+  },
+  "validation": {
+    "invalidEmail": "Invalid email address",
+    "passwordRequired": "Password is required",
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "nameMaxLength": "Name must be less than 100 characters",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordMaxLength": "Password must be less than 128 characters",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "newPasswordDifferent": "New password must be different from current password"
+  }
+}

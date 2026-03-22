@@ -1,0 +1,271 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "yes": "Oui",
+    "no": "Non",
+    "copied": "Copié",
+    "copyAll": "Tout copier",
+    "home": "Accueil",
+    "signOut": "Déconnexion",
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "orContinueWith": "Ou continuer avec"
+  },
+  "navbar": {
+    "dashboard": "Tableau de bord",
+    "account": "Compte",
+    "admin": "Admin"
+  },
+  "impersonation": {
+    "impersonating": "Vous êtes en train d'usurper l'identité de",
+    "stopImpersonating": "Arrêter l'usurpation"
+  },
+  "landing": {
+    "title": "Console de test d'authentification",
+    "description": "Page de test pour le statut d'authentification, le rôle et l'état de vérification.",
+    "notSignedIn": "Non connecté",
+    "verifyEmail": "Veuillez vérifier votre adresse e-mail.",
+    "verifyEmailDescription": "La connexion est autorisée, mais la vérification est recommandée pour la sécurité du compte.",
+    "currentSession": "Session actuelle",
+    "emailVerified": "E-mail vérifié",
+    "role": "Rôle",
+    "banned": "Banni",
+    "twoFactorEnabled": "Double authentification activée",
+    "userId": "ID utilisateur",
+    "goToDashboard": "Aller au tableau de bord",
+    "createAccount": "Créer un compte"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Connexion",
+      "description": "Entrez vos identifiants pour accéder à votre compte",
+      "forgotPassword": "Mot de passe oublié ?",
+      "signInButton": "Se connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUpLink": "S'inscrire",
+      "failedToSignIn": "Échec de la connexion"
+    },
+    "signUp": {
+      "title": "Créer un compte",
+      "description": "Entrez vos informations pour créer un nouveau compte",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Jean Dupont",
+      "emailPlaceholder": "nom@exemple.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Créer un mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+      "signUpButton": "S'inscrire",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signInLink": "Se connecter",
+      "failedToSignUp": "Échec de l'inscription"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+      "emailPlaceholder": "nom@exemple.com",
+      "sendResetLink": "Envoyer le lien de réinitialisation",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "signInLink": "Se connecter",
+      "failedToSend": "Échec de l'envoi de l'e-mail de réinitialisation",
+      "checkEmail": "Vérifiez votre e-mail",
+      "checkEmailDescription": "Nous avons envoyé un lien de réinitialisation du mot de passe à votre adresse e-mail.",
+      "backToSignIn": "Retour à la connexion"
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "description": "Entrez votre nouveau mot de passe ci-dessous.",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "Créer un nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+      "resetButton": "Réinitialiser le mot de passe",
+      "failedToReset": "Échec de la réinitialisation du mot de passe",
+      "success": "Mot de passe réinitialisé avec succès !",
+      "invalidToken": "Jeton de réinitialisation invalide",
+      "invalidTokenTitle": "Jeton invalide",
+      "invalidTokenDescription": "Ce lien de réinitialisation du mot de passe est invalide ou a expiré.",
+      "requestNewLink": "Demander un nouveau lien"
+    },
+    "twoFactor": {
+      "title": "Vérification à deux facteurs",
+      "description": "Entrez un code de votre application d'authentification ou utilisez un code de secours.",
+      "authenticator": "Authentificateur",
+      "backupCode": "Code de secours",
+      "authenticatorCode": "Code d'authentification",
+      "backupCodeLabel": "Code de secours",
+      "authenticatorPlaceholder": "123456",
+      "backupPlaceholder": "XXXX-XXXX",
+      "trustDevice": "Faire confiance à cet appareil pendant 30 jours",
+      "verifyAndContinue": "Vérifier et continuer",
+      "differentAccount": "Besoin d'utiliser un autre compte ?",
+      "backToSignIn": "Retour à la connexion",
+      "enterCode": "Veuillez entrer votre code de vérification",
+      "invalidAuthenticator": "Code d'authentification invalide",
+      "invalidBackup": "Code de secours invalide"
+    },
+    "verificationSent": {
+      "title": "Vérifiez votre e-mail",
+      "description": "Nous avons envoyé un lien de vérification à votre adresse e-mail. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vérifier votre compte.",
+      "didntReceive": "Vous n'avez pas reçu l'e-mail ? Vérifiez votre dossier spam ou",
+      "tryAgain": "réessayez",
+      "backToSignIn": "Retour à la connexion"
+    },
+    "verifyEmail": {
+      "verifying": "Vérification de votre e-mail...",
+      "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse e-mail...",
+      "success": "E-mail vérifié avec succès !",
+      "failed": "Échec de la vérification de l'e-mail",
+      "expired": "Le lien de vérification a expiré",
+      "resend": "Renvoyer l'e-mail de vérification",
+      "invalidToken": "Jeton de vérification invalide",
+      "verified": "E-mail vérifié !",
+      "goToSignIn": "Aller à la connexion",
+      "goHome": "Retour à l'accueil"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "profile": {
+      "title": "Profil",
+      "description": "Informations de votre compte",
+      "verified": "Vérifié",
+      "unverified": "Non vérifié"
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "État de la sécurité de votre compte",
+      "twoFactor": "2FA",
+      "enabled": "Activé",
+      "disabled": "Désactivé",
+      "userId": "ID utilisateur",
+      "manageSecurity": "Gérer la sécurité"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "description": "Gérer votre compte",
+      "accountSettings": "Paramètres du compte",
+      "securitySettings": "Paramètres de sécurité"
+    },
+    "account": {
+      "notSignedIn": "Non connecté",
+      "notSignedInDescription": "Veuillez vous connecter pour voir les paramètres de votre compte.",
+      "signIn": "Se connecter",
+      "validationFailed": "Échec de la validation",
+      "failedToChangePassword": "Échec du changement de mot de passe",
+      "failedToDisable2FA": "Échec de la désactivation de la double authentification",
+      "failedToEnable2FA": "Échec de l'activation de la double authentification",
+      "couldNotCopy": "Impossible de copier les codes de secours. Veuillez les copier manuellement.",
+      "failedToAddPasskey": "Échec de l'ajout de la clé d'accès",
+      "tabs": {
+        "profile": "Profil",
+        "password": "Mot de passe",
+        "twoFactor": "Double authentification",
+        "passkeys": "Clés d'accès"
+      },
+      "profileInfo": {
+        "title": "Informations du profil",
+        "description": "Voir et gérer les détails de votre compte",
+        "emailVerified": "E-mail vérifié",
+        "notSet": "Non défini"
+      },
+      "changePassword": {
+        "title": "Changer le mot de passe",
+        "description": "Mettez à jour votre mot de passe pour sécuriser votre compte",
+        "success": "Mot de passe changé avec succès !",
+        "currentPassword": "Mot de passe actuel",
+        "newPassword": "Nouveau mot de passe",
+        "confirmNewPassword": "Confirmer le nouveau mot de passe",
+        "changeButton": "Changer le mot de passe"
+      },
+      "twoFactorSection": {
+        "title": "Authentification à deux facteurs",
+        "description": "Ajoutez une couche de sécurité supplémentaire à votre compte",
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "enterPasswordToDisable": "Entrez votre mot de passe pour désactiver la 2FA",
+        "enterPasswordToEnable": "Entrez votre mot de passe pour activer la 2FA",
+        "passwordPlaceholder": "Votre mot de passe",
+        "confirm": "Confirmer",
+        "cancel": "Annuler",
+        "enableDescription": "Lorsqu'elle est activée, vous devrez entrer un code de vérification de votre application d'authentification en plus de votre mot de passe."
+      },
+      "passkeysSection": {
+        "title": "Clés d'accès",
+        "description": "Gérez vos clés d'accès pour l'authentification sans mot de passe",
+        "success": "Clé d'accès ajoutée avec succès.",
+        "subtitle": "Authentification par clé d'accès",
+        "usePasskeys": "Utilisez les clés d'accès pour vous connecter sans mot de passe",
+        "addPasskey": "Ajouter une clé d'accès"
+      },
+      "twoFactorSetup": {
+        "dialogTitle": "Terminer la configuration de la double authentification",
+        "dialogDescription": "Scannez ce code QR dans votre application d'authentification, puis sauvegardez vos codes de secours avant de continuer.",
+        "totpError": "L'URI TOTP n'a pas été retournée. Réessayez d'activer la 2FA.",
+        "scanHint": "Si le scan échoue, copiez manuellement cette URI secrète dans votre application.",
+        "noTotpUri": "Aucune URI TOTP disponible",
+        "backupCodes": "Codes de secours",
+        "noBackupCodes": "Aucun code de secours retourné.",
+        "savedCodes": "J'ai sauvegardé mes codes de secours en lieu sûr.",
+        "regenerateHint": "Vous pourrez régénérer les codes de secours plus tard dans les paramètres du compte.",
+        "continueToAccount": "Continuer vers le compte"
+      }
+    }
+  },
+  "admin": {
+    "dashboard": "Tableau de bord",
+    "users": "Utilisateurs",
+    "billing": "Facturation",
+    "analytics": "Analytique",
+    "systemHealth": "État du système",
+    "support": "Support",
+    "auditLog": "Journal d'audit",
+    "featureFlags": "Fonctionnalités",
+    "settings": "Paramètres",
+    "getHelp": "Obtenir de l'aide",
+    "adminPanel": "Panneau d'administration",
+    "operations": "Opérations",
+    "management": "Gestion"
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "account": "Compte",
+    "home": "Accueil",
+    "settings": "Paramètres",
+    "getHelp": "Obtenir de l'aide",
+    "myAccount": "Mon compte"
+  },
+  "navUser": {
+    "upgradeToPro": "Passer à Pro",
+    "account": "Compte",
+    "billing": "Facturation",
+    "notifications": "Notifications",
+    "logOut": "Déconnexion"
+  },
+  "validation": {
+    "invalidEmail": "Adresse e-mail invalide",
+    "passwordRequired": "Le mot de passe est requis",
+    "nameRequired": "Le nom est requis",
+    "nameMinLength": "Le nom doit contenir au moins 2 caractères",
+    "nameMaxLength": "Le nom doit contenir moins de 100 caractères",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+    "passwordMaxLength": "Le mot de passe doit contenir moins de 128 caractères",
+    "confirmPasswordRequired": "Veuillez confirmer votre mot de passe",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "currentPasswordRequired": "Le mot de passe actuel est requis",
+    "newPasswordRequired": "Le nouveau mot de passe est requis",
+    "newPasswordDifferent": "Le nouveau mot de passe doit être différent de l'actuel"
+  }
+}

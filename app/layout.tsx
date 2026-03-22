@@ -1,8 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import "@/lib/logger"
 
@@ -23,7 +21,6 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
       suppressHydrationWarning
       className={cn(
         "antialiased",
@@ -32,11 +29,7 @@ export default function RootLayout({
         fontSans.variable
       )}
     >
-      <body>
-        <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

@@ -4,6 +4,7 @@ export {
   forgotPasswordSchema,
   resetPasswordSchema,
   changePasswordSchema,
+  useChangePasswordSchema,
 } from "./auth"
 
 export type {

@@ -1,8 +1,17 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Home, LayoutDashboard, LogOut, User, Shield } from "lucide-react"
+import {
+  Home,
+  LayoutDashboard,
+  LogOut,
+  User,
+  Shield,
+  Globe,
+  Check,
+} from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -20,6 +29,9 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 
 export function Navbar() {
+  const t = useTranslations()
+  const { locale } = useParams<{ locale: string }>()
+  const pathname = usePathname()
   const { data: session, isPending } = authClient.useSession()
   const user = session?.user
   const router = useRouter()
@@ -28,7 +40,7 @@ export function Navbar() {
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          window.location.href = "/"
+          window.location.href = `/${locale}`
         },
       },
     })
@@ -47,13 +59,43 @@ export function Navbar() {
       <ImpersonationBanner />
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
+          <Link
+            href={`/${locale}`}
+            className="flex items-center gap-2 font-semibold"
+          >
             <Home className="h-4 w-4" />
-            <span>Home</span>
+            <span>{t("common.home")}</span>
           </Link>
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Globe className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={pathname.replace(/^\/[a-z]{2}/, "/en")}
+                    className="flex items-center justify-between"
+                  >
+                    English
+                    {locale === "en" && <Check className="h-4 w-4" />}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={pathname.replace(/^\/[a-z]{2}/, "/fr")}
+                    className="flex items-center justify-between"
+                  >
+                    Français
+                    {locale === "fr" && <Check className="h-4 w-4" />}
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             {isPending ? (
               <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
             ) : user ? (
@@ -85,37 +127,43 @@ export function Navbar() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                    <DropdownMenuItem
+                      onClick={() => router.push(`/${locale}/dashboard`)}
+                    >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
-                      Dashboard
+                      {t("navbar.dashboard")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push("/account")}>
+                    <DropdownMenuItem
+                      onClick={() => router.push(`/${locale}/account`)}
+                    >
                       <User className="mr-2 h-4 w-4" />
-                      Account
+                      {t("navbar.account")}
                     </DropdownMenuItem>
                     {user.role === "admin" && (
-                      <DropdownMenuItem onClick={() => router.push("/admin")}>
+                      <DropdownMenuItem
+                        onClick={() => router.push(`/${locale}/admin`)}
+                      >
                         <Shield className="mr-2 h-4 w-4" />
-                        Admin
+                        {t("navbar.admin")}
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
+                    {t("common.signOut")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/sign-in">
+                <Link href={`/${locale}/sign-in`}>
                   <Button variant="ghost" size="sm">
-                    Sign in
+                    {t("common.signIn")}
                   </Button>
                 </Link>
-                <Link href="/sign-up">
-                  <Button size="sm">Sign up</Button>
+                <Link href={`/${locale}/sign-up`}>
+                  <Button size="sm">{t("common.signUp")}</Button>
                 </Link>
               </div>
             )}
