@@ -68,7 +68,9 @@ export default function SignUpPage() {
           router.push(`/${locale}/dashboard`)
         },
         onError: (ctx) => {
-          setErrors({ form: ctx.error.message || t("auth.signUp.failedToSignUp") })
+          setErrors({
+            form: ctx.error.message || t("auth.signUp.failedToSignUp"),
+          })
           setIsLoading(false)
         },
       }
@@ -88,9 +90,7 @@ export default function SignUpPage() {
           <CardTitle className="text-2xl font-bold">
             {t("auth.signUp.title")}
           </CardTitle>
-          <CardDescription>
-            {t("auth.signUp.description")}
-          </CardDescription>
+          <CardDescription>{t("auth.signUp.description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -142,7 +142,9 @@ export default function SignUpPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">{t("auth.signUp.confirmPasswordLabel")}</Label>
+              <Label htmlFor="confirmPassword">
+                {t("auth.signUp.confirmPasswordLabel")}
+              </Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -214,7 +216,10 @@ export default function SignUpPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.signUp.hasAccount")}{" "}
-              <Link href={`/${locale}/sign-in`} className="text-primary hover:underline">
+              <Link
+                href={`/${locale}/sign-in`}
+                className="text-primary hover:underline"
+              >
                 {t("auth.signUp.signInLink")}
               </Link>
             </p>

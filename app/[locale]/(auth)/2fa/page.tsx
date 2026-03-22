@@ -53,7 +53,9 @@ export default function TwoFactorPage() {
       })
 
       if (verifyError) {
-        setError(verifyError.message || t("auth.twoFactor.invalidAuthenticator"))
+        setError(
+          verifyError.message || t("auth.twoFactor.invalidAuthenticator")
+        )
         setIsLoading(false)
         return
       }
@@ -81,9 +83,7 @@ export default function TwoFactorPage() {
           <CardTitle className="text-2xl font-bold">
             {t("auth.twoFactor.title")}
           </CardTitle>
-          <CardDescription>
-            {t("auth.twoFactor.description")}
-          </CardDescription>
+          <CardDescription>{t("auth.twoFactor.description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleVerify}>
           <CardContent className="space-y-4">
@@ -122,13 +122,19 @@ export default function TwoFactorPage() {
 
             <div className="space-y-2">
               <Label htmlFor="code">
-                {method === "totp" ? t("auth.twoFactor.authenticatorCode") : t("auth.twoFactor.backupCodeLabel")}
+                {method === "totp"
+                  ? t("auth.twoFactor.authenticatorCode")
+                  : t("auth.twoFactor.backupCodeLabel")}
               </Label>
               <Input
                 id="code"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
-                placeholder={method === "totp" ? t("auth.twoFactor.authenticatorPlaceholder") : t("auth.twoFactor.backupPlaceholder")}
+                placeholder={
+                  method === "totp"
+                    ? t("auth.twoFactor.authenticatorPlaceholder")
+                    : t("auth.twoFactor.backupPlaceholder")
+                }
                 autoComplete="one-time-code"
                 disabled={isLoading}
               />
@@ -153,7 +159,10 @@ export default function TwoFactorPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.twoFactor.differentAccount")}{" "}
-              <Link href={`/${locale}/sign-in`} className="text-primary hover:underline">
+              <Link
+                href={`/${locale}/sign-in`}
+                className="text-primary hover:underline"
+              >
                 {t("auth.twoFactor.backToSignIn")}
               </Link>
             </p>

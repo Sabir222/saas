@@ -115,7 +115,9 @@ export default function Page() {
                 <StatusRow
                   icon={<ShieldCheck className="h-4 w-4" />}
                   label={t("landing.twoFactorEnabled")}
-                  value={user.twoFactorEnabled ? t("common.yes") : t("common.no")}
+                  value={
+                    user.twoFactorEnabled ? t("common.yes") : t("common.no")
+                  }
                 />
                 <StatusRow
                   icon={<ShieldCheck className="h-4 w-4" />}

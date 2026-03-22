@@ -81,10 +81,10 @@ export default function SignInPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">{t("auth.signIn.title")}</CardTitle>
-          <CardDescription>
-            {t("auth.signIn.description")}
-          </CardDescription>
+          <CardTitle className="text-2xl font-bold">
+            {t("auth.signIn.title")}
+          </CardTitle>
+          <CardDescription>{t("auth.signIn.description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -186,7 +186,10 @@ export default function SignInPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.signIn.noAccount")}{" "}
-              <Link href={`/${locale}/sign-up`} className="text-primary hover:underline">
+              <Link
+                href={`/${locale}/sign-up`}
+                className="text-primary hover:underline"
+              >
                 {t("auth.signIn.signUpLink")}
               </Link>
             </p>

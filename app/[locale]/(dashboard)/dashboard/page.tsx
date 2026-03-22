@@ -38,9 +38,13 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <User className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-lg">{t("dashboard.profile.title")}</CardTitle>
+              <CardTitle className="text-lg">
+                {t("dashboard.profile.title")}
+              </CardTitle>
             </div>
-            <CardDescription>{t("dashboard.profile.description")}</CardDescription>
+            <CardDescription>
+              {t("dashboard.profile.description")}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
@@ -53,9 +57,13 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground">{user.email}</p>
                 <div className="flex gap-2">
                   {user.emailVerified ? (
-                    <Badge variant="secondary">{t("dashboard.profile.verified")}</Badge>
+                    <Badge variant="secondary">
+                      {t("dashboard.profile.verified")}
+                    </Badge>
                   ) : (
-                    <Badge variant="outline">{t("dashboard.profile.unverified")}</Badge>
+                    <Badge variant="outline">
+                      {t("dashboard.profile.unverified")}
+                    </Badge>
                   )}
                 </div>
               </div>
@@ -67,19 +75,29 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-lg">{t("dashboard.security.title")}</CardTitle>
+              <CardTitle className="text-lg">
+                {t("dashboard.security.title")}
+              </CardTitle>
             </div>
-            <CardDescription>{t("dashboard.security.description")}</CardDescription>
+            <CardDescription>
+              {t("dashboard.security.description")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">{t("dashboard.security.twoFactor")}</span>
+              <span className="text-muted-foreground">
+                {t("dashboard.security.twoFactor")}
+              </span>
               <Badge variant={user.twoFactorEnabled ? "secondary" : "outline"}>
-                {user.twoFactorEnabled ? t("dashboard.security.enabled") : t("dashboard.security.disabled")}
+                {user.twoFactorEnabled
+                  ? t("dashboard.security.enabled")
+                  : t("dashboard.security.disabled")}
               </Badge>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">{t("dashboard.security.userId")}</span>
+              <span className="text-muted-foreground">
+                {t("dashboard.security.userId")}
+              </span>
               <span className="font-mono text-xs">
                 {user.id.slice(0, 8)}...
               </span>
@@ -96,9 +114,13 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Settings className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-lg">{t("dashboard.quickActions.title")}</CardTitle>
+              <CardTitle className="text-lg">
+                {t("dashboard.quickActions.title")}
+              </CardTitle>
             </div>
-            <CardDescription>{t("dashboard.quickActions.description")}</CardDescription>
+            <CardDescription>
+              {t("dashboard.quickActions.description")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <Link href={`/${locale}/account`}>
