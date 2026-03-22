@@ -1,9 +1,6 @@
-"use client"
-
-import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
+import { getTranslations, getLocale } from "next-intl/server"
 import Link from "next/link"
-import { authClient } from "@/lib/auth-client"
+import { getSession } from "@/lib/auth-session"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -16,10 +13,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { User, Shield, Settings } from "lucide-react"
 
-export default function DashboardPage() {
-  const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
-  const { data: session } = authClient.useSession()
+export default async function DashboardPage() {
+  const t = await getTranslations()
+  const locale = await getLocale()
+  const session = await getSession()
 
   const user = session?.user
   if (!user) return null

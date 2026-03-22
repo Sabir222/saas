@@ -1,61 +1,19 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useTranslations } from "next-intl"
-import { useParams, useRouter } from "next/navigation"
-import { authClient } from "@/lib/auth-client"
+import { requireSession } from "@/lib/auth-session"
+import { redirect } from "next/navigation"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const t = useTranslations()
-  const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const { data: session, isPending } = authClient.useSession()
+  const session = await requireSession()
 
-  useEffect(() => {
-    async function checkAdmin() {
-      if (isPending) return
-      if (!session) {
-        router.push(`/${locale}/sign-in`)
-        return
-      }
-
-      const { data: hasPermission } = await authClient.admin.hasPermission({
-        permissions: {
-          user: ["list"],
-        },
-      })
-
-      if (!hasPermission?.success) {
-        router.push(`/${locale}/dashboard`)
-        return
-      }
-
-      setIsAdmin(true)
-      setIsLoading(false)
-    }
-
-    checkAdmin()
-  }, [isPending, session, router, locale])
-
-  if (isLoading || !session || !isAdmin) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="mt-4 text-muted-foreground">{t("common.loading")}</p>
-        </div>
-      </div>
-    )
+  if (session.user.role !== "admin") {
+    redirect("/dashboard")
   }
 
   const user = session.user
@@ -76,7 +34,7 @@ export default function AdminLayout({
     >
       <AppSidebar variant="inset" user={sidebarUser} />
       <SidebarInset>
-        <ImpersonationBanner />
+        <ImpersonationBanner session={session} />
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">

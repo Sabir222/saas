@@ -1,40 +1,15 @@
-"use client"
-
-import { useEffect } from "react"
-import { useTranslations } from "next-intl"
-import { useParams, useRouter } from "next/navigation"
-import { authClient } from "@/lib/auth-client"
+import { requireSession } from "@/lib/auth-session"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const t = useTranslations()
-  const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
-  const { data: session, isPending } = authClient.useSession()
-
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.push(`/${locale}/sign-in`)
-    }
-  }, [isPending, session, router, locale])
-
-  if (isPending || !session) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="mt-4 text-muted-foreground">{t("common.loading")}</p>
-        </div>
-      </div>
-    )
-  }
+  const session = await requireSession()
 
   const user = session.user
   const sidebarUser = {
@@ -54,7 +29,7 @@ export default function DashboardLayout({
     >
       <AppSidebar variant="inset" user={sidebarUser} />
       <SidebarInset>
-        <ImpersonationBanner />
+        <ImpersonationBanner session={session} />
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">

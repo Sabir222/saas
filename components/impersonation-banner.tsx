@@ -5,15 +5,15 @@ import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { clientLogger } from "@/lib/client-logger"
+import type { Session } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
 import { AlertTriangle, LogOut, Loader2 } from "lucide-react"
 
-export function ImpersonationBanner() {
+export function ImpersonationBanner({ session }: { session: Session | null }) {
   const t = useTranslations()
   const router = useRouter()
   const { locale } = useParams<{ locale: string }>()
   const [isStopping, setIsStopping] = useState(false)
-  const { data: session } = authClient.useSession()
 
   const impersonatedBy = (session?.session as Record<string, unknown>)
     ?.impersonatedBy as string | undefined
