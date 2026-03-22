@@ -1,10 +1,10 @@
 # Lefthook configuration for git hooks
 
-# Run ESLint and tests before committing
+# Run lint-staged and ESLint before committing
 pre-commit:
   commands:
     "format":
-      run: bun run format
+      run: bunx lint-staged
     "lint":
       run: bun run lint
 
