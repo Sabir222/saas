@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
+import { clientLogger } from "@/lib/client-logger"
 import { Button } from "@/components/ui/button"
 import { AlertTriangle, LogOut, Loader2 } from "lucide-react"
 
@@ -25,7 +26,9 @@ export function ImpersonationBanner() {
       await authClient.admin.stopImpersonating()
       router.push(`/${locale}/admin`)
     } catch (error) {
-      console.error("Failed to stop impersonating:", error)
+      clientLogger.error("Failed to stop impersonating", {
+        error: error instanceof Error ? error.message : String(error),
+      })
       setIsStopping(false)
     }
   }

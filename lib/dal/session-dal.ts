@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import { logger } from "@/lib/logger"
 
 /**
  * Session Data Access Layer
@@ -10,6 +11,7 @@ export class SessionDAL {
    * List sessions for a user (admin)
    */
   async listByUserId(userId: string) {
+    logger.debug("Listing sessions for user", { userId })
     return await auth.api.listUserSessions({
       body: { userId },
       headers: await headers(),
@@ -20,6 +22,9 @@ export class SessionDAL {
    * Revoke a session (admin)
    */
   async revoke(sessionToken: string) {
+    logger.info("Revoking session", {
+      sessionToken: sessionToken.slice(0, 8) + "...",
+    })
     return await auth.api.revokeUserSession({
       body: { sessionToken },
       headers: await headers(),
@@ -30,6 +35,7 @@ export class SessionDAL {
    * Revoke all sessions for a user (admin)
    */
   async revokeAll(userId: string) {
+    logger.warning("Revoking all sessions for user", { userId })
     return await auth.api.revokeUserSessions({
       body: { userId },
       headers: await headers(),

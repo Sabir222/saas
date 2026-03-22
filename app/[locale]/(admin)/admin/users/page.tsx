@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { authClient } from "@/lib/auth-client"
+import { clientLogger } from "@/lib/client-logger"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -118,7 +119,9 @@ export default function AdminUsersPage() {
       })
       setUsers((data?.users as UserWithRole[]) || [])
     } catch (error) {
-      console.error("Failed to load users:", error)
+      clientLogger.error("Failed to load users", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setIsLoading(false)
     }
@@ -132,7 +135,9 @@ export default function AdminUsersPage() {
       })
       await loadUsers()
     } catch (error) {
-      console.error("Failed to ban user:", error)
+      clientLogger.error("Failed to ban user", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setActionLoading(null)
     }
@@ -146,7 +151,9 @@ export default function AdminUsersPage() {
       })
       await loadUsers()
     } catch (error) {
-      console.error("Failed to unban user:", error)
+      clientLogger.error("Failed to unban user", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setActionLoading(null)
     }
@@ -159,14 +166,17 @@ export default function AdminUsersPage() {
         userId,
       })
       if (error) {
-        console.error("Failed to impersonate:", error)
-        return
+        clientLogger.error("Failed to impersonate user", {
+          error: error instanceof Error ? error.message : String(error),
+        })
       }
       if (data) {
         window.location.href = "/dashboard"
       }
     } catch (error) {
-      console.error("Failed to impersonate:", error)
+      clientLogger.error("Failed to impersonate user", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setActionLoading(null)
     }
@@ -183,7 +193,9 @@ export default function AdminUsersPage() {
       await loadUsers()
       setRoleDialogUser(null)
     } catch (error) {
-      console.error("Failed to set role:", error)
+      clientLogger.error("Failed to set user role", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setIsSettingRole(false)
     }
@@ -197,7 +209,9 @@ export default function AdminUsersPage() {
       })
       setSessions((data?.sessions as SessionInfo[]) || [])
     } catch (error) {
-      console.error("Failed to load sessions:", error)
+      clientLogger.error("Failed to load sessions", {
+        error: error instanceof Error ? error.message : String(error),
+      })
       setSessions([])
     } finally {
       setIsLoadingSessions(false)
@@ -219,7 +233,9 @@ export default function AdminUsersPage() {
         await loadSessions(sessionsDialogUser.id)
       }
     } catch (error) {
-      console.error("Failed to revoke session:", error)
+      clientLogger.error("Failed to revoke session", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setRevokingToken(null)
     }
@@ -234,7 +250,9 @@ export default function AdminUsersPage() {
       })
       setSessions([])
     } catch (error) {
-      console.error("Failed to revoke all sessions:", error)
+      clientLogger.error("Failed to revoke all sessions", {
+        error: error instanceof Error ? error.message : String(error),
+      })
     } finally {
       setIsRevokingAll(false)
     }

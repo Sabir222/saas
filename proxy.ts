@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { getSessionCookie } from "better-auth/cookies"
+import { logger } from "@/lib/logger"
 
 const locales = ["en", "fr"] as const
 const defaultLocale = "en"
@@ -52,6 +53,11 @@ export function proxy(request: NextRequest) {
   if (!hasLocaleInPath(pathname)) {
     const locale = getLocale(request)
     request.nextUrl.pathname = `/${locale}${pathname}`
+    logger.debug("Redirecting to locale-prefixed path", {
+      from: pathname,
+      to: request.nextUrl.pathname,
+      locale,
+    })
     return NextResponse.redirect(request.nextUrl)
   }
 
@@ -64,6 +70,13 @@ export function proxy(request: NextRequest) {
 
   if (isAuthRoute && sessionCookie) {
     const locale = pathname.split("/")[1]
+    logger.debug(
+      "Authenticated user accessing auth route, redirecting to dashboard",
+      {
+        path: pathname,
+        locale,
+      }
+    )
     return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url))
   }
 
@@ -80,6 +93,10 @@ export function proxy(request: NextRequest) {
 
   if (!isPublicRoute && !isAuthRoute && !sessionCookie) {
     const locale = pathname.split("/")[1]
+    logger.warning("Unauthenticated user accessing protected route", {
+      path: pathname,
+      locale,
+    })
     return NextResponse.redirect(new URL(`/${locale}/sign-in`, request.url))
   }
 
