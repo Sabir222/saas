@@ -40,6 +40,7 @@ type(scope): short description
 ### Rules
 
 - **type** and **scope** are lowercase
+- try to make the commit message not long if possible
 - **scope** is optional but recommended — use the affected module/area (e.g., `auth`, `api`, `ui`)
 - **short description** is imperative mood, no period at the end (e.g., "add login endpoint" not "added login endpoint")
 - Keep the whole line under ~72 characters

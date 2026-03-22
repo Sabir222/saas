@@ -1,8 +1,5 @@
-"use client"
-
-import { useTranslations } from "next-intl"
+import { getTranslations, getLocale } from "next-intl/server"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import {
   ShieldCheck,
   ShieldAlert,
@@ -11,21 +8,21 @@ import {
   ArrowRight,
 } from "lucide-react"
 
-import { authClient } from "@/lib/auth-client"
+import { getSession } from "@/lib/auth-session"
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function Page() {
-  const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
-  const { data: session, isPending } = authClient.useSession()
+export default async function Page() {
+  const t = await getTranslations()
+  const locale = await getLocale()
+  const session = await getSession()
   const user = session?.user
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar session={session} />
 
       <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-16 md:px-6">
         <header className="space-y-2">
@@ -37,15 +34,7 @@ export default function Page() {
           </p>
         </header>
 
-        {isPending ? (
-          <Card>
-            <CardContent className="py-8">
-              <p className="text-sm text-muted-foreground">
-                {t("common.loading")}
-              </p>
-            </CardContent>
-          </Card>
-        ) : !user ? (
+        {!user ? (
           <Card>
             <CardHeader>
               <CardTitle>{t("landing.notSignedIn")}</CardTitle>

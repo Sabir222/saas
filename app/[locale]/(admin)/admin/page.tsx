@@ -1,56 +1,36 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { authClient } from "@/lib/auth-client"
-import { clientLogger } from "@/lib/client-logger"
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+import { logger } from "@/lib/logger"
 import { SectionCards } from "./_components/section-cards"
 import { ChartAreaInteractive } from "./_components/chart-area-interactive"
 import { DataTable, type UserRow } from "./_components/data-table"
 
-export default function AdminDashboardPage() {
-  const [users, setUsers] = useState<UserRow[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+export default async function AdminDashboardPage() {
+  let users: UserRow[] = []
 
-  useEffect(() => {
-    async function loadUsers() {
-      try {
-        const { data: usersResponse } = await authClient.admin.listUsers({
-          query: {},
-        })
+  try {
+    const usersResponse = await auth.api.listUsers({
+      query: {},
+      headers: await headers(),
+    })
 
-        const rawUsers = usersResponse?.users || []
-        const mappedUsers: UserRow[] = rawUsers.map((u) => ({
-          id: u.id,
-          name: u.name || "",
-          email: u.email,
-          emailVerified: u.emailVerified,
-          banned: Boolean(u.banned),
-          role: u.role || "user",
-          createdAt:
-            u.createdAt instanceof Date
-              ? u.createdAt.toISOString()
-              : String(u.createdAt),
-        }))
-
-        setUsers(mappedUsers)
-      } catch (error) {
-        clientLogger.error("Failed to load admin users", {
-          error: error instanceof Error ? error.message : String(error),
-        })
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadUsers()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-      </div>
-    )
+    const rawUsers = usersResponse?.users || []
+    users = rawUsers.map((u) => ({
+      id: u.id,
+      name: u.name || "",
+      email: u.email,
+      emailVerified: u.emailVerified,
+      banned: Boolean(u.banned),
+      role: u.role || "user",
+      createdAt:
+        u.createdAt instanceof Date
+          ? u.createdAt.toISOString()
+          : String(u.createdAt),
+    }))
+  } catch (error) {
+    logger.error("Failed to load admin users", {
+      error: error instanceof Error ? error.message : String(error),
+    })
   }
 
   return (

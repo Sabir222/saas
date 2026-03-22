@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
+import type { Session } from "@/lib/auth"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -28,11 +29,10 @@ import {
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 
-export function Navbar() {
+export function Navbar({ session }: { session: Session | null }) {
   const t = useTranslations()
   const { locale } = useParams<{ locale: string }>()
   const pathname = usePathname()
-  const { data: session, isPending } = authClient.useSession()
   const user = session?.user
   const router = useRouter()
 
@@ -56,7 +56,7 @@ export function Navbar() {
 
   return (
     <>
-      <ImpersonationBanner />
+      <ImpersonationBanner session={session} />
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
           <Link
@@ -96,9 +96,7 @@ export function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {isPending ? (
-              <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
-            ) : user ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
