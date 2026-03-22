@@ -1,20 +1,31 @@
 "use client"
 
-/**
- * Client-side logger for use in "use client" components.
- * Wraps console methods with consistent formatting.
- */
+const isDev = process.env.NODE_ENV === "development"
+
+type LogData = Record<string, unknown> | undefined
+
+function format(message: string) {
+  return `[saas] ${message}`
+}
+
 export const clientLogger = {
-  debug: (message: string, data?: Record<string, unknown>) => {
-    console.debug(`[saas] ${message}`, data ?? "")
+  debug: (message: string, data?: LogData) => {
+    if (isDev) {
+      console.debug(format(message), data)
+    }
   },
-  info: (message: string, data?: Record<string, unknown>) => {
-    console.info(`[saas] ${message}`, data ?? "")
+
+  info: (message: string, data?: LogData) => {
+    if (isDev) {
+      console.info(format(message), data)
+    }
   },
-  warning: (message: string, data?: Record<string, unknown>) => {
-    console.warn(`[saas] ${message}`, data ?? "")
+
+  warn: (message: string, data?: LogData) => {
+    console.warn(format(message), data)
   },
-  error: (message: string, data?: Record<string, unknown>) => {
-    console.error(`[saas] ${message}`, data ?? "")
+
+  error: (message: string, data?: LogData) => {
+    console.error(format(message), data)
   },
 }
