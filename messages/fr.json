@@ -25,7 +25,9 @@
     "pageNotFound": "Page non trouvée",
     "changeLanguage": "Changer la langue",
     "locale": "fr",
-    "defaultRole": "Utilisateur"
+    "defaultRole": "Utilisateur",
+    "error": "Une erreur est survenue",
+    "tryAgain": "Réessayer"
   },
   "navbar": {
     "dashboard": "Tableau de bord",
@@ -245,6 +247,20 @@
     "adminPanel": "Panneau d'administration",
     "operations": "Opérations",
     "management": "Gestion"
+  },
+  "routeLabels": {
+    "dashboard": "Tableau de bord",
+    "account": "Compte",
+    "admin": "Admin",
+    "users": "Utilisateurs",
+    "billing": "Facturation",
+    "analytics": "Analytique",
+    "system": "État du système",
+    "support": "Support",
+    "audit": "Journal d'audit",
+    "features": "Fonctionnalités",
+    "settings": "Paramètres",
+    "help": "Aide"
   },
   "sidebar": {
     "dashboard": "Tableau de bord",

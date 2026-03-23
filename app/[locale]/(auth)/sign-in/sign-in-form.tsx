@@ -20,7 +20,8 @@ import { authClient } from "@/lib/auth-client"
 import { useSignInSchema } from "@/lib/schemas"
 
 export function SignInForm() {
-  const t = useTranslations()
+  const t = useTranslations("auth.signIn")
+  const tc = useTranslations("common")
   const router = useRouter()
   const signInSchema = useSignInSchema()
   const [email, setEmail] = useState("")
@@ -62,7 +63,7 @@ export function SignInForm() {
     )
 
     if (error) {
-      setErrors({ form: t("auth.signIn.failedToSignIn") })
+      setErrors({ form: t("failedToSignIn") })
       setIsLoading(false)
     }
   }
@@ -77,10 +78,8 @@ export function SignInForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            {t("auth.signIn.title")}
-          </CardTitle>
-          <CardDescription>{t("auth.signIn.description")}</CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -90,7 +89,7 @@ export function SignInForm() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">{t("common.email")}</Label>
+              <Label htmlFor="email">{tc("email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -104,7 +103,7 @@ export function SignInForm() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t("common.password")}</Label>
+              <Label htmlFor="password">{tc("password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -122,14 +121,14 @@ export function SignInForm() {
                 href="/forgot-password"
                 className="text-sm text-muted-foreground hover:text-primary"
               >
-                {t("auth.signIn.forgotPassword")}
+                {t("forgotPassword")}
               </Link>
             </div>
           </CardContent>
           <CardFooter className="mt-6 flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("auth.signIn.signInButton")}
+              {t("signInButton")}
             </Button>
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
@@ -137,7 +136,7 @@ export function SignInForm() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
-                  {t("common.orContinueWith")}
+                  {tc("orContinueWith")}
                 </span>
               </div>
             </div>
@@ -181,9 +180,9 @@ export function SignInForm() {
               </Button>
             </div>
             <p className="text-center text-sm text-muted-foreground">
-              {t("auth.signIn.noAccount")}{" "}
+              {t("noAccount")}{" "}
               <Link href="/sign-up" className="text-primary hover:underline">
-                {t("auth.signIn.signUpLink")}
+                {t("signUpLink")}
               </Link>
             </p>
           </CardFooter>

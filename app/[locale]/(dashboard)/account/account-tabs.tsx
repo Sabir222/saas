@@ -19,7 +19,8 @@ import { TwoFactorManager } from "./two-factor-manager"
 import { PasskeyManager } from "./passkey-manager"
 
 export function AccountTabs() {
-  const t = useTranslations()
+  const tAccount = useTranslations("dashboard.account")
+  const tCommon = useTranslations("common")
   const { data: session, isPending } = authClient.useSession()
 
   if (isPending) {
@@ -27,7 +28,7 @@ export function AccountTabs() {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="mt-4 text-muted-foreground">{t("common.loading")}</p>
+          <p className="mt-4 text-muted-foreground">{tCommon("loading")}</p>
         </div>
       </div>
     )
@@ -38,16 +39,14 @@ export function AccountTabs() {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>{t("dashboard.account.notSignedIn")}</CardTitle>
+            <CardTitle>{tAccount("notSignedIn")}</CardTitle>
             <CardDescription>
-              {t("dashboard.account.notSignedInDescription")}
+              {tAccount("notSignedInDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/sign-in">
-              <Button className="w-full">
-                {t("dashboard.account.signIn")}
-              </Button>
+              <Button className="w-full">{tAccount("signIn")}</Button>
             </Link>
           </CardContent>
         </Card>
@@ -61,47 +60,43 @@ export function AccountTabs() {
     <div className="px-4 lg:px-6">
       <Tabs defaultValue="profile" className="mx-auto max-w-4xl">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="profile">
-            {t("dashboard.account.tabs.profile")}
-          </TabsTrigger>
+          <TabsTrigger value="profile">{tAccount("tabs.profile")}</TabsTrigger>
           <TabsTrigger value="password">
-            {t("dashboard.account.tabs.password")}
+            {tAccount("tabs.password")}
           </TabsTrigger>
           <TabsTrigger value="two-factor">
-            {t("dashboard.account.tabs.twoFactor")}
+            {tAccount("tabs.twoFactor")}
           </TabsTrigger>
           <TabsTrigger value="passkeys">
-            {t("dashboard.account.tabs.passkeys")}
+            {tAccount("tabs.passkeys")}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>{t("dashboard.account.profileInfo.title")}</CardTitle>
+              <CardTitle>{tAccount("profileInfo.title")}</CardTitle>
               <CardDescription>
-                {t("dashboard.account.profileInfo.description")}
+                {tAccount("profileInfo.description")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">
-                <Label>{t("common.name")}</Label>
+                <Label>{tCommon("name")}</Label>
                 <p className="rounded-md border bg-muted/50 px-3 py-2">
-                  {user.name || t("dashboard.account.profileInfo.notSet")}
+                  {user.name || tAccount("profileInfo.notSet")}
                 </p>
               </div>
               <div className="grid gap-2">
-                <Label>{t("common.email")}</Label>
+                <Label>{tCommon("email")}</Label>
                 <p className="rounded-md border bg-muted/50 px-3 py-2">
                   {user.email}
                 </p>
               </div>
               <div className="grid gap-2">
-                <Label>
-                  {t("dashboard.account.profileInfo.emailVerified")}
-                </Label>
+                <Label>{tAccount("profileInfo.emailVerified")}</Label>
                 <p className="rounded-md border bg-muted/50 px-3 py-2">
-                  {user.emailVerified ? t("common.yes") : t("common.no")}
+                  {user.emailVerified ? tCommon("yes") : tCommon("no")}
                 </p>
               </div>
             </CardContent>

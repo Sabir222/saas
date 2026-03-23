@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label"
 type VerificationMethod = "totp" | "backup"
 
 export function TwoFactorForm() {
-  const t = useTranslations()
+  const t = useTranslations("auth.twoFactor")
   const router = useRouter()
 
   const [method, setMethod] = useState<VerificationMethod>("totp")
@@ -37,7 +37,7 @@ export function TwoFactorForm() {
     const normalized = code.trim()
 
     if (!normalized) {
-      setError(t("auth.twoFactor.enterCode"))
+      setError(t("enterCode"))
       return
     }
 
@@ -50,7 +50,7 @@ export function TwoFactorForm() {
       })
 
       if (verifyError) {
-        setError(t("auth.twoFactor.invalidAuthenticator"))
+        setError(t("invalidAuthenticator"))
         setIsLoading(false)
         return
       }
@@ -62,7 +62,7 @@ export function TwoFactorForm() {
         })
 
       if (verifyError) {
-        setError(t("auth.twoFactor.invalidBackup"))
+        setError(t("invalidBackup"))
         setIsLoading(false)
         return
       }
@@ -75,10 +75,8 @@ export function TwoFactorForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            {t("auth.twoFactor.title")}
-          </CardTitle>
-          <CardDescription>{t("auth.twoFactor.description")}</CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleVerify}>
           <CardContent className="space-y-4">
@@ -99,7 +97,7 @@ export function TwoFactorForm() {
                 }}
                 disabled={isLoading}
               >
-                {t("auth.twoFactor.authenticator")}
+                {t("authenticator")}
               </Button>
               <Button
                 type="button"
@@ -111,15 +109,15 @@ export function TwoFactorForm() {
                 }}
                 disabled={isLoading}
               >
-                {t("auth.twoFactor.backupCode")}
+                {t("backupCode")}
               </Button>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="code">
                 {method === "totp"
-                  ? t("auth.twoFactor.authenticatorCode")
-                  : t("auth.twoFactor.backupCodeLabel")}
+                  ? t("authenticatorCode")
+                  : t("backupCodeLabel")}
               </Label>
               <Input
                 id="code"
@@ -127,8 +125,8 @@ export function TwoFactorForm() {
                 onChange={(event) => setCode(event.target.value)}
                 placeholder={
                   method === "totp"
-                    ? t("auth.twoFactor.authenticatorPlaceholder")
-                    : t("auth.twoFactor.backupPlaceholder")
+                    ? t("authenticatorPlaceholder")
+                    : t("backupPlaceholder")
                 }
                 autoComplete="one-time-code"
                 disabled={isLoading}
@@ -142,20 +140,20 @@ export function TwoFactorForm() {
                 onChange={(event) => setTrustDevice(event.target.checked)}
                 disabled={isLoading}
               />
-              {t("auth.twoFactor.trustDevice")}
+              {t("trustDevice")}
             </label>
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("auth.twoFactor.verifyAndContinue")}
+              {t("verifyAndContinue")}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              {t("auth.twoFactor.differentAccount")}{" "}
+              {t("differentAccount")}{" "}
               <Link href="/sign-in" className="text-primary hover:underline">
-                {t("auth.twoFactor.backToSignIn")}
+                {t("backToSignIn")}
               </Link>
             </p>
           </CardFooter>

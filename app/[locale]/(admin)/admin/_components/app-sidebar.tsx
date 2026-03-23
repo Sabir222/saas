@@ -36,68 +36,69 @@ export function AppSidebar({
 }: React.ComponentProps<typeof Sidebar> & {
   user: { name: string; email: string; avatar: string }
 }) {
-  const t = useTranslations()
+  const tAdmin = useTranslations("admin")
+  const tSidebar = useTranslations("sidebar")
 
   const data = {
     navMain: [
       {
-        title: t("admin.dashboard"),
+        title: tAdmin("dashboard"),
         url: `/admin`,
         icon: LayoutDashboard,
       },
       {
-        title: t("admin.users"),
+        title: tAdmin("users"),
         url: `/admin/users`,
         icon: Users,
       },
       {
-        title: t("admin.billing"),
+        title: tAdmin("billing"),
         url: `/admin/billing`,
         icon: CreditCard,
       },
       {
-        title: t("admin.analytics"),
+        title: tAdmin("analytics"),
         url: `/admin/analytics`,
         icon: BarChart3,
       },
     ],
     navOperations: [
       {
-        title: t("admin.systemHealth"),
+        title: tAdmin("systemHealth"),
         url: `/admin/system`,
         icon: Activity,
       },
       {
-        title: t("admin.support"),
+        title: tAdmin("support"),
         url: `/admin/support`,
         icon: LifeBuoy,
       },
     ],
     navManagement: [
       {
-        title: t("admin.auditLog"),
+        title: tAdmin("auditLog"),
         url: `/admin/audit`,
         icon: ScrollText,
       },
       {
-        title: t("admin.featureFlags"),
+        title: tAdmin("featureFlags"),
         url: `/admin/features`,
         icon: Flag,
       },
     ],
     navSecondary: [
       {
-        title: t("sidebar.home"),
+        title: tSidebar("home"),
         url: `/`,
         icon: Home,
       },
       {
-        title: t("admin.settings"),
+        title: tAdmin("settings"),
         url: `/admin/settings`,
         icon: Settings,
       },
       {
-        title: t("admin.getHelp"),
+        title: tAdmin("getHelp"),
         url: `/admin/help`,
         icon: HelpCircle,
       },
@@ -116,7 +117,7 @@ export function AppSidebar({
               <Link href="/admin">
                 <Shield className="size-5!" />
                 <span className="text-base font-semibold">
-                  {t("admin.adminPanel")}
+                  {tAdmin("adminPanel")}
                 </span>
               </Link>
             </SidebarMenuButton>
@@ -126,11 +127,11 @@ export function AppSidebar({
       <SidebarContent>
         <NavMain items={data.navMain} />
         <SidebarGroup>
-          <SidebarGroupLabel>{t("admin.operations")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{tAdmin("operations")}</SidebarGroupLabel>
           <NavMain items={data.navOperations} />
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("admin.management")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{tAdmin("management")}</SidebarGroupLabel>
           <NavMain items={data.navManagement} />
         </SidebarGroup>
         <NavSecondary items={data.navSecondary} className="mt-auto" />

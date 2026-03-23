@@ -28,34 +28,34 @@ export function AppSidebar({
 }: React.ComponentProps<typeof Sidebar> & {
   user: { name: string; email: string; avatar: string }
 }) {
-  const t = useTranslations()
+  const t = useTranslations("sidebar")
 
   const data = {
     navMain: [
       {
-        title: t("sidebar.dashboard"),
+        title: t("dashboard"),
         url: `/dashboard`,
         icon: LayoutDashboard,
       },
       {
-        title: t("sidebar.account"),
+        title: t("account"),
         url: `/account`,
         icon: User,
       },
     ],
     navSecondary: [
       {
-        title: t("sidebar.home"),
+        title: t("home"),
         url: `/`,
         icon: Home,
       },
       {
-        title: t("sidebar.settings"),
+        title: t("settings"),
         url: `/dashboard`,
         icon: Settings,
       },
       {
-        title: t("sidebar.getHelp"),
+        title: t("getHelp"),
         url: `/dashboard`,
         icon: HelpCircle,
       },
@@ -74,7 +74,7 @@ export function AppSidebar({
               <Link href="/dashboard">
                 <Shield className="size-5!" />
                 <span className="text-base font-semibold">
-                  {t("sidebar.myAccount")}
+                  {t("myAccount")}
                 </span>
               </Link>
             </SidebarMenuButton>

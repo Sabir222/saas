@@ -97,7 +97,8 @@ export default function AdminUsersPage() {
       }
       if (data) {
         // Full reload required to reset all client-side auth state after impersonation
-        window.location.href = "/dashboard"
+        const currentLocale = window.location.pathname.split("/")[1] || "en"
+        window.location.href = `/${currentLocale}/dashboard`
       }
     } catch (error) {
       clientLogger.error("Failed to impersonate user", {

@@ -25,7 +25,9 @@
     "pageNotFound": "Page not found",
     "changeLanguage": "Change language",
     "locale": "en",
-    "defaultRole": "User"
+    "defaultRole": "User",
+    "error": "Something went wrong",
+    "tryAgain": "Try again"
   },
   "navbar": {
     "dashboard": "Dashboard",
@@ -245,6 +247,20 @@
     "adminPanel": "Admin Panel",
     "operations": "Operations",
     "management": "Management"
+  },
+  "routeLabels": {
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "admin": "Admin",
+    "users": "Users",
+    "billing": "Billing",
+    "analytics": "Analytics",
+    "system": "System Health",
+    "support": "Support",
+    "audit": "Audit Log",
+    "features": "Feature Flags",
+    "settings": "Settings",
+    "help": "Help"
   },
   "sidebar": {
     "dashboard": "Dashboard",

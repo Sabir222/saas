@@ -41,7 +41,8 @@ export default async function Page({
   const { locale } = await params
   setRequestLocale(locale as Locale)
 
-  const t = await getTranslations()
+  const tLanding = await getTranslations("landing")
+  const tCommon = await getTranslations("common")
   const session = await getSession()
   const user = session?.user
 
@@ -52,26 +53,26 @@ export default async function Page({
       <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-16 md:px-6">
         <header className="space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight">
-            {t("landing.title")}
+            {tLanding("title")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {t("landing.description")}
+            {tLanding("description")}
           </p>
         </header>
 
         {!user ? (
           <Card>
             <CardHeader>
-              <CardTitle>{t("landing.notSignedIn")}</CardTitle>
+              <CardTitle>{tLanding("notSignedIn")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4 sm:flex-row">
               <Link href="/sign-in">
                 <Button>
-                  {t("common.signIn")} <ArrowRight className="ml-2 h-4 w-4" />
+                  {tCommon("signIn")} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/sign-up">
-                <Button variant="outline">{t("landing.createAccount")}</Button>
+                <Button variant="outline">{tLanding("createAccount")}</Button>
               </Link>
             </CardContent>
           </Card>
@@ -83,10 +84,10 @@ export default async function Page({
                   <ShieldAlert className="mt-0.5 h-5 w-5 text-amber-700 dark:text-amber-400" />
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
-                      {t("landing.verifyEmail")}
+                      {tLanding("verifyEmail")}
                     </p>
                     <p className="text-sm text-amber-800/90 dark:text-amber-300">
-                      {t("landing.verifyEmailDescription")}
+                      {tLanding("verifyEmailDescription")}
                     </p>
                   </div>
                 </CardContent>
@@ -95,12 +96,12 @@ export default async function Page({
 
             <Card>
               <CardHeader>
-                <CardTitle>{t("landing.currentSession")}</CardTitle>
+                <CardTitle>{tLanding("currentSession")}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <StatusRow
                   icon={<Mail className="h-4 w-4" />}
-                  label={t("common.email")}
+                  label={tCommon("email")}
                   value={user.email}
                 />
                 <StatusRow
@@ -111,31 +112,29 @@ export default async function Page({
                       <ShieldAlert className="h-4 w-4" />
                     )
                   }
-                  label={t("landing.emailVerified")}
-                  value={user.emailVerified ? t("common.yes") : t("common.no")}
+                  label={tLanding("emailVerified")}
+                  value={user.emailVerified ? tCommon("yes") : tCommon("no")}
                   tone={user.emailVerified ? "ok" : "warn"}
                 />
                 <StatusRow
                   icon={<UserCog className="h-4 w-4" />}
-                  label={t("landing.role")}
-                  value={user.role || t("common.defaultRole")}
+                  label={tLanding("role")}
+                  value={user.role || tCommon("defaultRole")}
                 />
                 <StatusRow
                   icon={<ShieldAlert className="h-4 w-4" />}
-                  label={t("landing.banned")}
-                  value={user.banned ? t("common.yes") : t("common.no")}
+                  label={tLanding("banned")}
+                  value={user.banned ? tCommon("yes") : tCommon("no")}
                   tone={user.banned ? "warn" : "ok"}
                 />
                 <StatusRow
                   icon={<ShieldCheck className="h-4 w-4" />}
-                  label={t("landing.twoFactorEnabled")}
-                  value={
-                    user.twoFactorEnabled ? t("common.yes") : t("common.no")
-                  }
+                  label={tLanding("twoFactorEnabled")}
+                  value={user.twoFactorEnabled ? tCommon("yes") : tCommon("no")}
                 />
                 <StatusRow
                   icon={<ShieldCheck className="h-4 w-4" />}
-                  label={t("landing.userId")}
+                  label={tLanding("userId")}
                   value={user.id}
                 />
               </CardContent>
@@ -143,7 +142,7 @@ export default async function Page({
 
             <div className="flex flex-wrap gap-3">
               <Link href="/dashboard">
-                <Button>{t("landing.goToDashboard")}</Button>
+                <Button>{tLanding("goToDashboard")}</Button>
               </Link>
             </div>
           </>

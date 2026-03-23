@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export function PasswordChangeForm() {
-  const t = useTranslations()
+  const t = useTranslations("dashboard.account")
   const changePasswordSchema = useChangePasswordSchema()
 
   const [currentPassword, setCurrentPassword] = useState("")
@@ -52,7 +52,7 @@ export function PasswordChangeForm() {
         fieldErrors.confirmPassword ||
           fieldErrors.newPassword ||
           fieldErrors.currentPassword ||
-          t("dashboard.account.validationFailed")
+          t("validationFailed")
       )
       return
     }
@@ -65,7 +65,7 @@ export function PasswordChangeForm() {
     })
 
     if (error) {
-      setPasswordError(t("dashboard.account.failedToChangePassword"))
+      setPasswordError(t("failedToChangePassword"))
     } else {
       setPasswordSuccess(true)
       setCurrentPassword("")
@@ -79,10 +79,8 @@ export function PasswordChangeForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("dashboard.account.changePassword.title")}</CardTitle>
-        <CardDescription>
-          {t("dashboard.account.changePassword.description")}
-        </CardDescription>
+        <CardTitle>{t("changePassword.title")}</CardTitle>
+        <CardDescription>{t("changePassword.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleChangePassword} className="space-y-4">
@@ -93,12 +91,12 @@ export function PasswordChangeForm() {
           )}
           {passwordSuccess && (
             <div className="rounded-md bg-green-500/10 p-3 text-sm text-green-600">
-              {t("dashboard.account.changePassword.success")}
+              {t("changePassword.success")}
             </div>
           )}
           <div className="grid gap-2">
             <Label htmlFor="currentPassword">
-              {t("dashboard.account.changePassword.currentPassword")}
+              {t("changePassword.currentPassword")}
             </Label>
             <Input
               id="currentPassword"
@@ -111,7 +109,7 @@ export function PasswordChangeForm() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="newPassword">
-              {t("dashboard.account.changePassword.newPassword")}
+              {t("changePassword.newPassword")}
             </Label>
             <Input
               id="newPassword"
@@ -124,7 +122,7 @@ export function PasswordChangeForm() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="confirmPassword">
-              {t("dashboard.account.changePassword.confirmNewPassword")}
+              {t("changePassword.confirmNewPassword")}
             </Label>
             <Input
               id="confirmPassword"
@@ -139,7 +137,7 @@ export function PasswordChangeForm() {
             {isChangingPassword && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
-            {t("dashboard.account.changePassword.changeButton")}
+            {t("changePassword.changeButton")}
           </Button>
         </form>
       </CardContent>

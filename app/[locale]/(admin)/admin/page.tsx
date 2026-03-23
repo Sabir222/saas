@@ -1,3 +1,5 @@
+import { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { logger } from "@/lib/logger"
@@ -7,10 +9,17 @@ import { SectionCards } from "./_components/section-cards"
 import { ChartAreaInteractive } from "./_components/chart-area-interactive"
 import { DataTable, type UserRow } from "./_components/data-table"
 
-export default async function AdminDashboardPage() {
+export default async function AdminDashboardPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale as Locale)
+
   const session = await requireSession()
   if (session.user.role !== "admin") {
-    redirect({ href: "/dashboard", locale: "en" })
+    redirect({ href: "/dashboard", locale: locale as Locale })
   }
 
   let users: UserRow[] = []

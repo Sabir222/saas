@@ -1,24 +1,11 @@
 import { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { setRequestLocale, getTranslations } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
 import { redirect } from "@/lib/navigation"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "@/components/sidebar"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
-
-const routeLabels: Record<string, string> = {
-  admin: "Admin",
-  users: "Users",
-  billing: "Billing",
-  analytics: "Analytics",
-  system: "System Health",
-  support: "Support",
-  audit: "Audit Log",
-  features: "Feature Flags",
-  settings: "Settings",
-  help: "Help",
-}
 
 export default async function AdminLayout({
   children,
@@ -29,6 +16,20 @@ export default async function AdminLayout({
 }) {
   const { locale } = await params
   setRequestLocale(locale as Locale)
+
+  const t = await getTranslations("routeLabels")
+  const routeLabels: Record<string, string> = {
+    admin: t("admin"),
+    users: t("users"),
+    billing: t("billing"),
+    analytics: t("analytics"),
+    system: t("system"),
+    support: t("support"),
+    audit: t("audit"),
+    features: t("features"),
+    settings: t("settings"),
+    help: t("help"),
+  }
 
   const session = await requireSession()
 

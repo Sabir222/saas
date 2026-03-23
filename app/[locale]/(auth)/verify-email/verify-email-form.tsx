@@ -18,7 +18,9 @@ import {
 import { authClient } from "@/lib/auth-client"
 
 export function VerifyEmailForm() {
-  const t = useTranslations()
+  const tVerify = useTranslations("auth.verifyEmail")
+  const tLanding = useTranslations("landing")
+  const tCommon = useTranslations("common")
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
@@ -31,7 +33,7 @@ export function VerifyEmailForm() {
     const verifyEmail = async () => {
       if (!token) {
         setStatus("error")
-        setMessage(t("auth.verifyEmail.invalidToken"))
+        setMessage(tVerify("invalidToken"))
         return
       }
 
@@ -40,23 +42,23 @@ export function VerifyEmailForm() {
         {
           onSuccess: () => {
             setStatus("success")
-            setMessage(t("auth.verifyEmail.success"))
+            setMessage(tVerify("success"))
           },
           onError: () => {
             setStatus("error")
-            setMessage(t("auth.verifyEmail.failed"))
+            setMessage(tVerify("failed"))
           },
         }
       )
 
       if (error) {
         setStatus("error")
-        setMessage(t("auth.verifyEmail.failed"))
+        setMessage(tVerify("failed"))
       }
     }
 
     verifyEmail()
-  }, [token, t])
+  }, [token, tVerify])
 
   if (status === "loading") {
     return (
@@ -64,11 +66,9 @@ export function VerifyEmailForm() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">
-              {t("auth.verifyEmail.verifying")}
+              {tVerify("verifying")}
             </CardTitle>
-            <CardDescription>
-              {t("auth.verifyEmail.verifyingDescription")}
-            </CardDescription>
+            <CardDescription>{tVerify("verifyingDescription")}</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center py-6">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -84,19 +84,19 @@ export function VerifyEmailForm() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">
-              {t("auth.verifyEmail.failed")}
+              {tVerify("failed")}
             </CardTitle>
             <CardDescription>{message}</CardDescription>
           </CardHeader>
           <CardFooter className="flex flex-col space-y-2">
             <Link href="/sign-in" className="w-full">
               <Button variant="outline" className="w-full">
-                {t("auth.verifyEmail.goToSignIn")}
+                {tVerify("goToSignIn")}
               </Button>
             </Link>
             <Link href="/" className="w-full">
               <Button variant="ghost" className="w-full">
-                {t("auth.verifyEmail.goHome")}
+                {tVerify("goHome")}
               </Button>
             </Link>
           </CardFooter>
@@ -110,17 +110,17 @@ export function VerifyEmailForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-green-600">
-            {t("auth.verifyEmail.verified")}
+            {tVerify("verified")}
           </CardTitle>
           <CardDescription>{message}</CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-col space-y-2">
           <Link href="/dashboard" className="w-full">
-            <Button className="w-full">{t("landing.goToDashboard")}</Button>
+            <Button className="w-full">{tLanding("goToDashboard")}</Button>
           </Link>
           <Link href="/sign-in" className="w-full">
             <Button variant="outline" className="w-full">
-              {t("common.signIn")}
+              {tCommon("signIn")}
             </Button>
           </Link>
         </CardFooter>
