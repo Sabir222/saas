@@ -1,11 +1,7 @@
-import { NextIntlClientProvider, hasLocale } from "next-intl"
-import {
-  getMessages,
-  setRequestLocale,
-  getTranslations,
-} from "next-intl/server"
+import { Locale, NextIntlClientProvider, hasLocale } from "next-intl"
+import { setRequestLocale, getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 import { routing } from "@/lib/routing"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -21,7 +17,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: "landing" })
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "landing",
+  })
 
   return {
     title: {
@@ -47,10 +46,9 @@ export default async function LocaleLayout({
   }
 
   setRequestLocale(locale)
-  const messages = await getMessages()
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider>
       <ThemeProvider>
         <TooltipProvider>{children}</TooltipProvider>
       </ThemeProvider>

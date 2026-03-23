@@ -1,3 +1,4 @@
+import { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
 import { redirect } from "@/lib/navigation"
@@ -27,12 +28,12 @@ export default async function AdminLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  setRequestLocale(locale)
+  setRequestLocale(locale as Locale)
 
   const session = await requireSession()
 
   if (session.user.role !== "admin") {
-    redirect({ href: "/dashboard", locale })
+    redirect({ href: "/dashboard", locale: locale as Locale })
   }
 
   const user = session.user

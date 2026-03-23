@@ -24,7 +24,8 @@
     "orContinueWith": "Ou continuer avec",
     "pageNotFound": "Page non trouvée",
     "changeLanguage": "Changer la langue",
-    "locale": "fr"
+    "locale": "fr",
+    "defaultRole": "Utilisateur"
   },
   "navbar": {
     "dashboard": "Tableau de bord",

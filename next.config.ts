@@ -4,7 +4,12 @@ import createNextIntlPlugin from "next-intl/plugin"
 // Import env for build-time validation
 import "@/lib/Env"
 
-const withNextIntl = createNextIntlPlugin("./lib/i18n.ts")
+const withNextIntl = createNextIntlPlugin({
+  requestConfig: "./lib/i18n.ts",
+  experimental: {
+    createMessagesDeclaration: "./messages/en.json",
+  },
+})
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,

@@ -1,3 +1,4 @@
+import { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -18,7 +19,7 @@ export default async function DashboardLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  setRequestLocale(locale)
+  setRequestLocale(locale as Locale)
 
   const session = await requireSession()
 

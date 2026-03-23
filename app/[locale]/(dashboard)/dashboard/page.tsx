@@ -1,3 +1,4 @@
+import { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 import { getSession } from "@/lib/auth-session"
@@ -21,7 +22,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: "dashboard" })
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "dashboard",
+  })
 
   return {
     title: t("title"),
@@ -35,13 +39,13 @@ export default async function DashboardPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  setRequestLocale(locale)
+  setRequestLocale(locale as Locale)
 
   const t = await getTranslations()
   const session = await getSession()
 
   const user = session?.user
-  if (!user) redirect({ href: "/sign-in", locale })
+  if (!user) redirect({ href: "/sign-in", locale: locale as Locale })
 
   // user is guaranteed non-null after redirect guard
   const currentUser = user!

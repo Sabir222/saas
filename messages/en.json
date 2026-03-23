@@ -24,7 +24,8 @@
     "orContinueWith": "Or continue with",
     "pageNotFound": "Page not found",
     "changeLanguage": "Change language",
-    "locale": "en"
+    "locale": "en",
+    "defaultRole": "User"
   },
   "navbar": {
     "dashboard": "Dashboard",

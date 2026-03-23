@@ -1,6 +1,7 @@
 import { Suspense } from "react"
+import { Locale } from "next-intl"
 import { getTranslations } from "next-intl/server"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 import { VerifyEmailForm } from "./verify-email-form"
 
@@ -10,7 +11,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: "auth.verifyEmail" })
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "auth.verifyEmail",
+  })
 
   return {
     title: t("title"),
