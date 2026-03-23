@@ -105,7 +105,7 @@ export function TwoFactorManager() {
         <CardHeader>
           <CardTitle>{t("dashboard.account.twoFactorSection.title")}</CardTitle>
           <CardDescription>
-            {t("dashboard.account.两FactorSection.description")}
+            {t("dashboard.account.twoFactorSection.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>

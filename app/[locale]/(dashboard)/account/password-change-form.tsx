@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { Loader2 } from "lucide-react"
 
@@ -19,11 +19,7 @@ import { Label } from "@/components/ui/label"
 
 export function PasswordChangeForm() {
   const t = useTranslations()
-  const rawChangePasswordSchema = useChangePasswordSchema()
-  const changePasswordSchema = useMemo(
-    () => rawChangePasswordSchema,
-    [rawChangePasswordSchema]
-  )
+  const changePasswordSchema = useChangePasswordSchema()
 
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
@@ -63,26 +59,18 @@ export function PasswordChangeForm() {
 
     setIsChangingPassword(true)
 
-    const { error } = await authClient.changePassword(
-      {
-        currentPassword,
-        newPassword,
-      },
-      {
-        onSuccess: () => {
-          setPasswordSuccess(true)
-          setCurrentPassword("")
-          setNewPassword("")
-          setConfirmPassword("")
-        },
-        onError: () => {
-          setPasswordError(t("dashboard.account.failedToChangePassword"))
-        },
-      }
-    )
+    const { error } = await authClient.changePassword({
+      currentPassword,
+      newPassword,
+    })
 
     if (error) {
       setPasswordError(t("dashboard.account.failedToChangePassword"))
+    } else {
+      setPasswordSuccess(true)
+      setCurrentPassword("")
+      setNewPassword("")
+      setConfirmPassword("")
     }
 
     setIsChangingPassword(false)

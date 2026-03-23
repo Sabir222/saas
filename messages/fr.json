@@ -22,7 +22,8 @@
     "password": "Mot de passe",
     "name": "Nom",
     "orContinueWith": "Ou continuer avec",
-    "pageNotFound": "Page non trouvée"
+    "pageNotFound": "Page non trouvée",
+    "changeLanguage": "Changer la langue"
   },
   "navbar": {
     "dashboard": "Tableau de bord",

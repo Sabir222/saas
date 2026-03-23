@@ -34,6 +34,11 @@ export const env = createEnv({
 
     // Email provider
     RESEND_API_KEY: z.string().optional(),
+    EMAIL_FROM: z.string().optional(),
+
+    // Session configuration
+    SESSION_EXPIRES_IN: z.coerce.number().optional(),
+    SESSION_UPDATE_AGE: z.coerce.number().optional(),
   },
 
   /**
@@ -65,6 +70,9 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    SESSION_EXPIRES_IN: process.env.SESSION_EXPIRES_IN,
+    SESSION_UPDATE_AGE: process.env.SESSION_UPDATE_AGE,
 
     // Client (must have NEXT_PUBLIC_ prefix)
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -87,7 +95,4 @@ export const env = createEnv({
 export type Env = z.infer<typeof env>
 export type EnvKey = keyof typeof env
 
-// Helper function for optional env access
-export function getOptionalEnv(key: string): string | undefined {
-  return process.env[key]
-}
+// Removed getOptionalEnv - it bypassed t3-env validation. Use env.* directly.

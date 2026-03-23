@@ -39,7 +39,7 @@ async function sendAuthEmail(props: {
 
     try {
       await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: env.EMAIL_FROM || "onboarding@resend.dev",
         to: props.email,
         subject: emailContent.subject,
         html: emailContent.html,
@@ -77,7 +77,7 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    requireEmailVerification: false,
+    requireEmailVerification: env.NODE_ENV === "production",
     sendResetPassword: async (data) => {
       await sendAuthEmail({
         action: "reset-password",
@@ -118,8 +118,8 @@ export const auth = betterAuth({
       : {}),
   },
   session: {
-    expiresIn: 60 * 60 * 24 * 7,
-    updateAge: 60 * 60 * 24,
+    expiresIn: env.SESSION_EXPIRES_IN ?? 60 * 60 * 24 * 7,
+    updateAge: env.SESSION_UPDATE_AGE ?? 60 * 60 * 24,
     cookieCache: {
       enabled: env.NODE_ENV === "production",
       maxAge: 60 * 5,

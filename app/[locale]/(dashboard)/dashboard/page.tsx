@@ -1,8 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import { getSession } from "@/lib/auth-session"
-import { Link } from "@/lib/navigation"
-import { Button } from "@/components/ui/button"
+import { redirect } from "@/lib/navigation"
 import {
   Card,
   CardContent,
@@ -12,6 +11,8 @@ import {
 } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Link } from "@/lib/navigation"
 import { User, Shield, Settings } from "lucide-react"
 
 export async function generateMetadata({
@@ -40,10 +41,13 @@ export default async function DashboardPage({
   const session = await getSession()
 
   const user = session?.user
-  if (!user) return null
+  if (!user) redirect({ href: "/sign-in", locale })
+
+  // user is guaranteed non-null after redirect guard
+  const currentUser = user!
 
   const initials =
-    user.name
+    currentUser.name
       ?.split(" ")
       .map((n: string) => n[0])
       .join("")
@@ -67,14 +71,19 @@ export default async function DashboardPage({
           <CardContent>
             <div className="flex items-center gap-4">
               <Avatar className="h-14 w-14">
-                <AvatarImage src={user.image || ""} alt={user.name || ""} />
+                <AvatarImage
+                  src={currentUser.image || ""}
+                  alt={currentUser.name || ""}
+                />
                 <AvatarFallback className="text-lg">{initials}</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <p className="font-medium">{user.name}</p>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
+                <p className="font-medium">{currentUser.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {currentUser.email}
+                </p>
                 <div className="flex gap-2">
-                  {user.emailVerified ? (
+                  {currentUser.emailVerified ? (
                     <Badge variant="secondary">
                       {t("dashboard.profile.verified")}
                     </Badge>
@@ -106,8 +115,10 @@ export default async function DashboardPage({
               <span className="text-muted-foreground">
                 {t("dashboard.security.twoFactor")}
               </span>
-              <Badge variant={user.twoFactorEnabled ? "secondary" : "outline"}>
-                {user.twoFactorEnabled
+              <Badge
+                variant={currentUser.twoFactorEnabled ? "secondary" : "outline"}
+              >
+                {currentUser.twoFactorEnabled
                   ? t("dashboard.security.enabled")
                   : t("dashboard.security.disabled")}
               </Badge>
@@ -117,7 +128,7 @@ export default async function DashboardPage({
                 {t("dashboard.security.userId")}
               </span>
               <span className="font-mono text-xs">
-                {user.id.slice(0, 8)}...
+                {currentUser.id.slice(0, 8)}...
               </span>
             </div>
             <Link href="/account">

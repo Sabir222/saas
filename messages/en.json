@@ -22,7 +22,8 @@
     "password": "Password",
     "name": "Name",
     "orContinueWith": "Or continue with",
-    "pageNotFound": "Page not found"
+    "pageNotFound": "Page not found",
+    "changeLanguage": "Change language"
   },
   "navbar": {
     "dashboard": "Dashboard",

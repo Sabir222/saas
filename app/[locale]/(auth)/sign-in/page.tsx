@@ -1,5 +1,6 @@
+import { Suspense } from "react"
 import { getTranslations } from "next-intl/server"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 import { SignInForm } from "./sign-in-form"
 
@@ -18,5 +19,13 @@ export async function generateMetadata({
 }
 
 export default function SignInPage() {
-  return <SignInForm />
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center" />
+      }
+    >
+      <SignInForm />
+    </Suspense>
+  )
 }
