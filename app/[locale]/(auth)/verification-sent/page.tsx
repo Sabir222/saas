@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server"
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,6 +10,23 @@ import {
 } from "@/components/ui/card"
 import { Mail } from "lucide-react"
 import { Link } from "@/lib/navigation"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({
+    locale,
+    namespace: "auth.verificationSent",
+  })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
 
 export default async function VerificationSentPage({
   params,

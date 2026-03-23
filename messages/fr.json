@@ -124,6 +124,8 @@
       "backToSignIn": "Retour à la connexion"
     },
     "verifyEmail": {
+      "title": "Vérifier l'e-mail",
+      "description": "Vérifiez votre adresse e-mail pour finaliser la configuration de votre compte.",
       "verifying": "Vérification de votre e-mail...",
       "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse e-mail...",
       "success": "E-mail vérifié avec succès !",

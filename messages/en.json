@@ -124,6 +124,8 @@
       "backToSignIn": "Back to Sign In"
     },
     "verifyEmail": {
+      "title": "Verify Email",
+      "description": "Verify your email address to complete your account setup.",
       "verifying": "Verifying your email...",
       "verifyingDescription": "Please wait while we verify your email address...",
       "success": "Email verified successfully!",
