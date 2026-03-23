@@ -1,13 +1,10 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
 import { Loader2 } from "lucide-react"
 
+import { Link } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -20,11 +17,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { forgotPasswordSchema } from "@/lib/schemas"
+import { useForgotPasswordSchema } from "@/lib/schemas"
 
 export default function ForgotPasswordPage() {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
+  const forgotPasswordSchema = useForgotPasswordSchema()
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -52,7 +49,7 @@ export default function ForgotPasswordPage() {
     }
 
     const { error } = await authClient.requestPasswordReset(
-      { email, redirectTo: `/${locale}/reset-password` },
+      { email, redirectTo: "/reset-password" },
       {
         onSuccess: () => {
           setSuccess(true)
@@ -61,7 +58,7 @@ export default function ForgotPasswordPage() {
     )
 
     if (error) {
-      setError(error.message || t("auth.forgotPassword.failedToSend"))
+      setError(t("auth.forgotPassword.failedToSend"))
     }
     setIsLoading(false)
   }
@@ -79,7 +76,7 @@ export default function ForgotPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardFooter>
-            <Link href={`/${locale}/sign-in`} className="w-full">
+            <Link href="/sign-in" className="w-full">
               <Button variant="outline" className="w-full">
                 {t("auth.forgotPassword.backToSignIn")}
               </Button>
@@ -130,10 +127,7 @@ export default function ForgotPasswordPage() {
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.forgotPassword.rememberPassword")}{" "}
-              <Link
-                href={`/${locale}/sign-in`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-in" className="text-primary hover:underline">
                 {t("auth.forgotPassword.signInLink")}
               </Link>
             </p>

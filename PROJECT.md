@@ -11,7 +11,7 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - Package manager: Bun only
 - Styling: Tailwind CSS v4
 - UI system: Shadcn UI on top of Tailwind and magic UI
-- Auth: Better Auth
+- Auth: Better Auth (email/password, social OAuth, magic links, 2FA, passkeys)
 - Database: PostgreSQL with Drizzle ORM
 - API layer: oRPC for end-to-end type-safe procedures
 - Billing: Stripe subscriptions + customer portal + webhook-driven provisioning
@@ -32,8 +32,17 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - oPRC:end-to-end type-safe API procedures
 
 - CI/CD support: GitHub Actions, semantic-release, Dependabot, CodeRabbit
+- Code coverage: Codecov
+- Forms: React Hook Form
+- Visual regression testing
+- i18n validation: i18n-check for missing translation detection
+- Commitizen: standard compliant commit messages
+- Bundler Analyzer
+- AI coding agent instructions: Claude Code, Codex, Cursor, OpenCode, Copilot
+- Performance: Lighthouse score optimization
+- Local dev database: PGlite for offline development
 
-## Explicitly excluded from v1
+## very complexe for later
 
 - Multi-tenancy
 - Teams and organizations
@@ -70,7 +79,8 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - sign out
 - email verification
 - password reset and change password
-- social auth providers: start with GitHub and Google
+- social auth providers: GitHub, Google, Facebook, Apple, Twitter/X
+- magic link (passwordless email) authentication
 - 2FA via Better Auth `twoFactor()` plugin
 - passkeys via `@better-auth/passkey`
 - optional email OTP flow if desired later, but not required for the initial slice
@@ -107,9 +117,12 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - Shadcn UI as the base component system
 - shared design tokens and semantic Tailwind variables
 - marketing shell and dashboard shell
+- React Hook Form for type-safe form handling
 - accessible form primitives
 - empty states, loading states, error states, destructive confirmations
 - responsive layouts for mobile, tablet, and desktop
+- free minimalist theme included
+- maximize Lighthouse score across all pages
 
 ### Localization
 
@@ -117,12 +130,14 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - `next-intl` integration for server and client translations
 - English as source locale
 - translation namespaces by page and feature
+- i18n-check for missing translation detection and validation
 
 ### Data and persistence
 
 - Drizzle schema split by domain: auth, billing, app, audit
 - generated migrations committed to the repo
 - shared DB connection utilities only
+- PGlite for offline and local development database
 - no parallel DB clients unless strongly justified
 
 ### Developer experience
@@ -133,7 +148,10 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - Commitlint + conventional commits
 - Lefthook for hooks
 - Storybook for UI work
-- VS Code settings and tasks
+- Commitizen for standard compliant commit messages
+- Bundler Analyzer for bundle size inspection
+- AI coding agent instructions for Claude Code, Codex, Cursor, OpenCode, Copilot
+- VS Code settings, tasks, debug configs, and recommended extensions
 
 ### Observability and security
 
@@ -144,6 +162,8 @@ Recreate this product from scratch as a clean Next.js 16 SaaS boilerplate with B
 - PostHog analytics
 - Arcjet bot protection + WAF rules
 - Checkly smoke and monitoring checks
+- Codecov for code coverage reporting
+- Visual regression testing
 
 ## Recommended architecture
 
@@ -212,7 +232,8 @@ src/
   - `emailAndPassword.enabled = true`
   - `emailVerification` handlers
   - `sendResetPassword` handler
-  - social providers
+  - social providers: GitHub, Google, Facebook, Apple, Twitter/X
+  - magic link (passwordless email) support
   - `nextCookies()` as the last plugin for server action cookie handling in Next.js
   - plugins: `admin()`, `twoFactor()`, `passkey()`, and any later safe additions
 - `src/libs/AuthClient.ts`
@@ -296,6 +317,12 @@ src/
 - `GITHUB_CLIENT_SECRET`
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
+- `FACEBOOK_CLIENT_ID`
+- `FACEBOOK_CLIENT_SECRET`
+- `APPLE_CLIENT_ID`
+- `APPLE_CLIENT_SECRET`
+- `TWITTER_CLIENT_ID`
+- `TWITTER_CLIENT_SECRET`
 
 ### Email env
 
@@ -319,41 +346,8 @@ src/
 - `NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST`
 - `NEXT_PUBLIC_POSTHOG_KEY`
 - `NEXT_PUBLIC_POSTHOG_HOST`
+- `CODECOV_TOKEN`
 
 ### Security env
 
 - `ARCJET_KEY`
-
-## Recommended implementation order
-
-1. Scaffold a fresh Next.js 16 + Bun + TypeScript + Tailwind v4 app.
-2. Add linting, typing, testing, Storybook, commit tooling, and env validation.
-3. Set up PostgreSQL, Drizzle, shared DB utilities, and migrations.
-4. Install Better Auth and implement the base auth stack.
-5. Generate Better Auth schema and add app-owned auth pages.
-6. Add server-side auth DAL and dashboard protection.
-7. Add Better Auth admin plugin and custom RBAC.
-8. Add Shadcn UI foundation and replace generic UI shells.
-9. Add Stripe billing flows and webhook-driven subscription state.
-10. Add oRPC for app business logic.
-11. Add Sentry, Better Stack, PostHog, Arcjet, and Checkly.
-12. Add final polish: SEO, docs, CI, release automation, and deployment guides.
-
-## Non-negotiable implementation rules
-
-- Use Bun for installs and scripts.
-- Validate every env var in one typed env module.
-- Keep auth checks on the server.
-- Keep `proxy.ts` lightweight.
-- Do not add multi-tenancy concerns to v1 code shape.
-- Do not use vendor-hosted auth UI.
-- Keep Drizzle as the only ORM.
-- Prefer additive migrations and stable vertical slices.
-
-## Success criteria
-
-- A new repo can be created from scratch following this blueprint.
-- The product ships with Better Auth instead of Clerk.
-- The boilerplate includes RBAC, Stripe billing, oRPC, and Shadcn UI.
-- The initial app is single-tenant but structurally ready for later expansion.
-- The repo passes `bun run lint`, `bun run check:types`, `bun run test`, and `bun run build-local`.

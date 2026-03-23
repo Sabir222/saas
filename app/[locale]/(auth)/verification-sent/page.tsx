@@ -1,4 +1,4 @@
-import { getTranslations, getLocale } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -8,11 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Mail } from "lucide-react"
-import Link from "next/link"
+import { Link } from "@/lib/navigation"
 
-export default async function VerificationSentPage() {
+export default async function VerificationSentPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const t = await getTranslations()
-  const locale = await getLocale()
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -33,14 +39,11 @@ export default async function VerificationSentPage() {
         <CardContent className="flex flex-col items-center space-y-4">
           <p className="text-center text-sm text-muted-foreground">
             {t("auth.verificationSent.didntReceive")}{" "}
-            <Link
-              href={`/${locale}/sign-up`}
-              className="text-primary hover:underline"
-            >
+            <Link href="/sign-up" className="text-primary hover:underline">
               {t("auth.verificationSent.tryAgain")}
             </Link>
           </p>
-          <Link href={`/${locale}/sign-in`} className="w-full">
+          <Link href="/sign-in" className="w-full">
             <Button variant="outline" className="w-full">
               {t("auth.verificationSent.backToSignIn")}
             </Button>

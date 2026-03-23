@@ -1,14 +1,12 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
 import { useState } from "react"
+import { getTranslations } from "next-intl/server"
+import { Metadata } from "next"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Github, Loader2 } from "lucide-react"
 
+import { Link, useRouter } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -21,12 +19,26 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { signUpSchema } from "@/lib/schemas"
+import { useSignUpSchema } from "@/lib/schemas"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "auth.signUp" })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
 
 export default function SignUpPage() {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
+  const signUpSchema = useSignUpSchema()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -65,11 +77,11 @@ export default function SignUpPage() {
       {
         onSuccess: () => {
           setIsLoading(false)
-          router.push(`/${locale}/dashboard`)
+          router.push("/dashboard")
         },
         onError: (ctx) => {
           setErrors({
-            form: ctx.error.message || t("auth.signUp.failedToSignUp"),
+            form: t("auth.signUp.failedToSignUp"),
           })
           setIsLoading(false)
         },
@@ -216,10 +228,7 @@ export default function SignUpPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.signUp.hasAccount")}{" "}
-              <Link
-                href={`/${locale}/sign-in`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-in" className="text-primary hover:underline">
                 {t("auth.signUp.signInLink")}
               </Link>
             </p>

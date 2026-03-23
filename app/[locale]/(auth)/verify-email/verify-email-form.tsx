@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { Loader2 } from "lucide-react"
 
+import { Link } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -20,7 +19,6 @@ import { authClient } from "@/lib/auth-client"
 
 export function VerifyEmailForm() {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
@@ -44,16 +42,16 @@ export function VerifyEmailForm() {
             setStatus("success")
             setMessage(t("auth.verifyEmail.success"))
           },
-          onError: (ctx: { error: { message: string } }) => {
+          onError: () => {
             setStatus("error")
-            setMessage(ctx.error.message || t("auth.verifyEmail.failed"))
+            setMessage(t("auth.verifyEmail.failed"))
           },
         }
       )
 
       if (error) {
         setStatus("error")
-        setMessage(error.message || t("auth.verifyEmail.failed"))
+        setMessage(t("auth.verifyEmail.failed"))
       }
     }
 
@@ -91,12 +89,12 @@ export function VerifyEmailForm() {
             <CardDescription>{message}</CardDescription>
           </CardHeader>
           <CardFooter className="flex flex-col space-y-2">
-            <Link href={`/${locale}/sign-in`} className="w-full">
+            <Link href="/sign-in" className="w-full">
               <Button variant="outline" className="w-full">
                 {t("auth.verifyEmail.goToSignIn")}
               </Button>
             </Link>
-            <Link href={`/${locale}`} className="w-full">
+            <Link href="/" className="w-full">
               <Button variant="ghost" className="w-full">
                 {t("auth.verifyEmail.goHome")}
               </Button>
@@ -117,10 +115,10 @@ export function VerifyEmailForm() {
           <CardDescription>{message}</CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-col space-y-2">
-          <Link href={`/${locale}/dashboard`} className="w-full">
+          <Link href="/dashboard" className="w-full">
             <Button className="w-full">{t("landing.goToDashboard")}</Button>
           </Link>
-          <Link href={`/${locale}/sign-in`} className="w-full">
+          <Link href="/sign-in" className="w-full">
             <Button variant="outline" className="w-full">
               {t("common.signIn")}
             </Button>

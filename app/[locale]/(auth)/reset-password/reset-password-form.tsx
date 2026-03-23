@@ -2,11 +2,10 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Loader2 } from "lucide-react"
 
+import { Link, useRouter } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -19,12 +18,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { resetPasswordSchema } from "@/lib/schemas"
+import { useResetPasswordSchema } from "@/lib/schemas"
 
 export function ResetPasswordForm() {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
+  const resetPasswordSchema = useResetPasswordSchema()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
@@ -67,11 +66,11 @@ export function ResetPasswordForm() {
 
     if (error) {
       setErrors({
-        form: error.message || t("auth.resetPassword.failedToReset"),
+        form: t("auth.resetPassword.failedToReset"),
       })
       setIsLoading(false)
     } else {
-      router.push(`/${locale}/sign-in`)
+      router.push("/sign-in")
     }
   }
 
@@ -88,7 +87,7 @@ export function ResetPasswordForm() {
             </CardDescription>
           </CardHeader>
           <CardFooter>
-            <Link href={`/${locale}/forgot-password`} className="w-full">
+            <Link href="/forgot-password" className="w-full">
               <Button variant="outline" className="w-full">
                 {t("auth.resetPassword.requestNewLink")}
               </Button>
@@ -159,10 +158,7 @@ export function ResetPasswordForm() {
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.forgotPassword.rememberPassword")}{" "}
-              <Link
-                href={`/${locale}/sign-in`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-in" className="text-primary hover:underline">
                 {t("auth.forgotPassword.signInLink")}
               </Link>
             </p>

@@ -2,11 +2,9 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { Loader2 } from "lucide-react"
 
+import { Link, useRouter } from "@/lib/navigation"
 import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,7 +23,6 @@ type VerificationMethod = "totp" | "backup"
 export default function TwoFactorPage() {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
 
   const [method, setMethod] = useState<VerificationMethod>("totp")
   const [code, setCode] = useState("")
@@ -53,9 +50,7 @@ export default function TwoFactorPage() {
       })
 
       if (verifyError) {
-        setError(
-          verifyError.message || t("auth.twoFactor.invalidAuthenticator")
-        )
+        setError(t("auth.twoFactor.invalidAuthenticator"))
         setIsLoading(false)
         return
       }
@@ -67,13 +62,13 @@ export default function TwoFactorPage() {
         })
 
       if (verifyError) {
-        setError(verifyError.message || t("auth.twoFactor.invalidBackup"))
+        setError(t("auth.twoFactor.invalidBackup"))
         setIsLoading(false)
         return
       }
     }
 
-    router.push(`/${locale}/dashboard`)
+    router.push("/dashboard")
   }
 
   return (
@@ -159,10 +154,7 @@ export default function TwoFactorPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.twoFactor.differentAccount")}{" "}
-              <Link
-                href={`/${locale}/sign-in`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-in" className="text-primary hover:underline">
                 {t("auth.twoFactor.backToSignIn")}
               </Link>
             </p>
