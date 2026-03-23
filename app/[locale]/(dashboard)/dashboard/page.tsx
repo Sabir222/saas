@@ -1,6 +1,7 @@
-import { getTranslations, getLocale } from "next-intl/server"
-import Link from "next/link"
+import { getTranslations, setRequestLocale } from "next-intl/server"
+import { Metadata } from "next"
 import { getSession } from "@/lib/auth-session"
+import { Link } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -13,9 +14,29 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { User, Shield, Settings } from "lucide-react"
 
-export default async function DashboardPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "dashboard" })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
+
+export default async function DashboardPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const t = await getTranslations()
-  const locale = await getLocale()
   const session = await getSession()
 
   const user = session?.user
@@ -99,7 +120,7 @@ export default async function DashboardPage() {
                 {user.id.slice(0, 8)}...
               </span>
             </div>
-            <Link href={`/${locale}/account`}>
+            <Link href="/account">
               <Button variant="outline" size="sm" className="w-full">
                 {t("dashboard.security.manageSecurity")}
               </Button>
@@ -120,13 +141,13 @@ export default async function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
-            <Link href={`/${locale}/account`}>
+            <Link href="/account">
               <Button variant="outline" className="w-full justify-start">
                 <User className="mr-2 h-4 w-4" />
                 {t("dashboard.quickActions.accountSettings")}
               </Button>
             </Link>
-            <Link href={`/${locale}/account`}>
+            <Link href="/account">
               <Button variant="outline" className="w-full justify-start">
                 <Shield className="mr-2 h-4 w-4" />
                 {t("dashboard.quickActions.securitySettings")}

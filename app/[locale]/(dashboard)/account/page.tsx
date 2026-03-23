@@ -1,13 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
 import { Loader2, Shield, KeyRound, Lock, Copy, Check } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
 
 import { authClient } from "@/lib/auth-client"
+import { Link } from "@/lib/navigation"
 import { useChangePasswordSchema } from "@/lib/schemas"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,9 +32,14 @@ import {
 
 export default function AccountPage() {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
   const { data: session, isPending } = authClient.useSession()
-  const changePasswordSchema = useChangePasswordSchema()
+
+  // Memoize schema to prevent recreation on every render
+  const rawChangePasswordSchema = useChangePasswordSchema()
+  const changePasswordSchema = useMemo(
+    () => rawChangePasswordSchema,
+    [rawChangePasswordSchema]
+  )
 
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
@@ -86,7 +90,7 @@ export default function AccountPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href={`/${locale}/sign-in`}>
+            <Link href="/sign-in">
               <Button className="w-full">
                 {t("dashboard.account.signIn")}
               </Button>
@@ -142,18 +146,14 @@ export default function AccountPage() {
           setNewPassword("")
           setConfirmPassword("")
         },
-        onError: (ctx) => {
-          setPasswordError(
-            ctx.error.message || t("dashboard.account.failedToChangePassword")
-          )
+        onError: () => {
+          setPasswordError(t("dashboard.account.failedToChangePassword"))
         },
       }
     )
 
     if (error) {
-      setPasswordError(
-        error.message || t("dashboard.account.failedToChangePassword")
-      )
+      setPasswordError(t("dashboard.account.failedToChangePassword"))
     }
 
     setIsChangingPassword(false)
@@ -175,9 +175,7 @@ export default function AccountPage() {
       if (!error) {
         setTwoFactorEnabled(false)
       } else {
-        setTwoFactorError(
-          error.message || t("dashboard.account.failedToDisable2FA")
-        )
+        setTwoFactorError(t("dashboard.account.failedToDisable2FA"))
       }
     } else {
       const { data, error } = await authClient.twoFactor.enable({
@@ -190,9 +188,7 @@ export default function AccountPage() {
         setCopiedBackupCodes(false)
         setShowTwoFactorSetup(true)
       } else {
-        setTwoFactorError(
-          error.message || t("dashboard.account.failedToEnable2FA")
-        )
+        setTwoFactorError(t("dashboard.account.failedToEnable2FA"))
       }
     }
 
@@ -234,9 +230,7 @@ export default function AccountPage() {
       })
 
       if (error) {
-        setPasskeyError(
-          error.message || t("dashboard.account.failedToAddPasskey")
-        )
+        setPasskeyError(t("dashboard.account.failedToAddPasskey"))
       } else {
         setPasskeySuccess(true)
       }
@@ -377,7 +371,7 @@ export default function AccountPage() {
                 {t("dashboard.account.twoFactorSection.title")}
               </CardTitle>
               <CardDescription>
-                {t("dashboard.account.twoFactorSection.description")}
+                {t("dashboard.account.两FactorSection.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>

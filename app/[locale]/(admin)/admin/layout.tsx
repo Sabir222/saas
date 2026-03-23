@@ -1,5 +1,6 @@
+import { setRequestLocale } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
-import { redirect } from "next/navigation"
+import { redirect } from "@/lib/navigation"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
@@ -7,9 +8,14 @@ import { ImpersonationBanner } from "@/components/impersonation-banner"
 
 export default async function AdminLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const session = await requireSession()
 
   if (session.user.role !== "admin") {

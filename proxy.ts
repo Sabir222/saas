@@ -1,86 +1,52 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { getSessionCookie } from "better-auth/cookies"
+import createMiddleware from "next-intl/middleware"
+import { routing } from "./lib/routing"
 import { logger } from "@/lib/logger"
 
-const locales = ["en", "fr"] as const
-const defaultLocale = "en"
-
-function getLocale(request: NextRequest): string {
-  const acceptLanguage = request.headers.get("accept-language") ?? ""
-  const languages = acceptLanguage
-    .split(",")
-    .map((lang) => lang.split(";")[0].trim().toLowerCase())
-
-  for (const lang of languages) {
-    if (lang === "fr" || lang.startsWith("fr-")) return "fr"
-    if (lang === "en" || lang.startsWith("en-")) return "en"
-  }
-
-  return defaultLocale
-}
-
-function hasLocaleInPath(pathname: string): boolean {
-  return locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  )
-}
-
-function extractLocaleAndPath(pathname: string): {
-  locale: string
-  pathWithoutLocale: string
-} {
-  for (const locale of locales) {
-    if (pathname === `/${locale}`) {
-      return { locale, pathWithoutLocale: "/" }
-    }
-    if (pathname.startsWith(`/${locale}/`)) {
-      return { locale, pathWithoutLocale: pathname.slice(locale.length + 1) }
-    }
-  }
-  return { locale: defaultLocale, pathWithoutLocale: pathname }
-}
+const intlMiddleware = createMiddleware(routing)
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Skip API routes and static files
+  // Skip API routes
   if (pathname.startsWith("/api/")) {
     return NextResponse.next()
   }
 
-  // If no locale in path, redirect to add locale
-  if (!hasLocaleInPath(pathname)) {
-    const locale = getLocale(request)
-    request.nextUrl.pathname = `/${locale}${pathname}`
-    logger.debug("Redirecting to locale-prefixed path", {
-      from: pathname,
-      to: request.nextUrl.pathname,
-      locale,
-    })
-    return NextResponse.redirect(request.nextUrl)
-  }
+  // Extract locale from path (first segment after /)
+  const segments = pathname.split("/").filter(Boolean)
+  const locale = routing.locales.includes(
+    segments[0] as (typeof routing.locales)[number]
+  )
+    ? segments[0]
+    : null
+  const pathWithoutLocale = locale
+    ? "/" + segments.slice(1).join("/") || "/"
+    : pathname
 
-  // Extract locale and path for auth checks
-  const { pathWithoutLocale } = extractLocaleAndPath(pathname)
+  // Auth route checks (must happen before intl middleware)
   const sessionCookie = getSessionCookie(request)
 
   const authRoutes = ["/sign-in", "/sign-up"]
   const isAuthRoute = authRoutes.includes(pathWithoutLocale)
 
   if (isAuthRoute && sessionCookie) {
-    const locale = pathname.split("/")[1]
+    const effectiveLocale = locale || routing.defaultLocale
     logger.debug(
       "Authenticated user accessing auth route, redirecting to dashboard",
       {
         path: pathname,
-        locale,
+        locale: effectiveLocale,
       }
     )
-    return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url))
+    return NextResponse.redirect(
+      new URL(`/${effectiveLocale}/dashboard`, request.url)
+    )
   }
 
-  // Protected routes (everything except auth routes, landing page, and public pages)
+  // Protected routes
   const publicRoutes = [
     "/",
     "/forgot-password",
@@ -91,8 +57,7 @@ export function proxy(request: NextRequest) {
   ]
   const isPublicRoute = publicRoutes.includes(pathWithoutLocale)
 
-  if (!isPublicRoute && !isAuthRoute && !sessionCookie) {
-    const locale = pathname.split("/")[1]
+  if (!isPublicRoute && !isAuthRoute && !sessionCookie && locale) {
     logger.warning("Unauthenticated user accessing protected route", {
       path: pathname,
       locale,
@@ -100,11 +65,13 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(`/${locale}/sign-in`, request.url))
   }
 
-  return NextResponse.next()
+  // Delegate to next-intl middleware for locale negotiation,
+  // cookie persistence, alternateLinks, and request headers
+  return intlMiddleware(request)
 }
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\..*).*)",
   ],
 }

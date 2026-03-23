@@ -1,5 +1,5 @@
-import { getTranslations, getLocale } from "next-intl/server"
-import Link from "next/link"
+import { getTranslations, setRequestLocale } from "next-intl/server"
+import { Metadata } from "next"
 import {
   ShieldCheck,
   ShieldAlert,
@@ -8,15 +8,36 @@ import {
   ArrowRight,
 } from "lucide-react"
 
+import { Link } from "@/lib/navigation"
 import { getSession } from "@/lib/auth-session"
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default async function Page() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "landing" })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const t = await getTranslations()
-  const locale = await getLocale()
   const session = await getSession()
   const user = session?.user
 
@@ -40,12 +61,12 @@ export default async function Page() {
               <CardTitle>{t("landing.notSignedIn")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4 sm:flex-row">
-              <Link href={`/${locale}/sign-in`}>
+              <Link href="/sign-in">
                 <Button>
                   {t("common.signIn")} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href={`/${locale}/sign-up`}>
+              <Link href="/sign-up">
                 <Button variant="outline">{t("landing.createAccount")}</Button>
               </Link>
             </CardContent>
@@ -93,7 +114,7 @@ export default async function Page() {
                 <StatusRow
                   icon={<UserCog className="h-4 w-4" />}
                   label={t("landing.role")}
-                  value={user.role || "user"}
+                  value={user.role || t("common.defaultRole")}
                 />
                 <StatusRow
                   icon={<ShieldAlert className="h-4 w-4" />}
@@ -117,7 +138,7 @@ export default async function Page() {
             </Card>
 
             <div className="flex flex-wrap gap-3">
-              <Link href={`/${locale}/dashboard`}>
+              <Link href="/dashboard">
                 <Button>{t("landing.goToDashboard")}</Button>
               </Link>
             </div>

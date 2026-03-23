@@ -1,14 +1,12 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
 import { useState } from "react"
+import { getTranslations } from "next-intl/server"
+import { Metadata } from "next"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Github, Loader2 } from "lucide-react"
 
+import { Link, useRouter } from "@/lib/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -21,12 +19,26 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { signInSchema } from "@/lib/schemas"
+import { useSignInSchema } from "@/lib/schemas"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "auth.signIn" })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
 
 export default function SignInPage() {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
+  const signInSchema = useSignInSchema()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -60,13 +72,13 @@ export default function SignInPage() {
           if (ctx.data?.twoFactorRedirect) {
             return
           }
-          router.push(`/${locale}/dashboard`)
+          router.push("/dashboard")
         },
       }
     )
 
     if (error) {
-      setErrors({ form: error.message || t("auth.signIn.failedToSignIn") })
+      setErrors({ form: t("auth.signIn.failedToSignIn") })
       setIsLoading(false)
     }
   }
@@ -112,7 +124,7 @@ export default function SignInPage() {
               <Input
                 id="password"
                 type="password"
-                placeholder={t("auth.signIn.description")}
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
@@ -123,7 +135,7 @@ export default function SignInPage() {
             </div>
             <div className="flex items-center justify-end">
               <Link
-                href={`/${locale}/forgot-password`}
+                href="/forgot-password"
                 className="text-sm text-muted-foreground hover:text-primary"
               >
                 {t("auth.signIn.forgotPassword")}
@@ -186,10 +198,7 @@ export default function SignInPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.signIn.noAccount")}{" "}
-              <Link
-                href={`/${locale}/sign-up`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-up" className="text-primary hover:underline">
                 {t("auth.signIn.signUpLink")}
               </Link>
             </p>

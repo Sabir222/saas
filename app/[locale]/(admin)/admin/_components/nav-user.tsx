@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import {
   BadgeCheck,
   Bell,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
+import { useRouter } from "@/lib/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -36,13 +38,16 @@ export function NavUser({
     avatar: string
   }
 }) {
+  const t = useTranslations()
+  const router = useRouter()
   const { isMobile } = useSidebar()
 
   const handleSignOut = () => {
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          window.location.href = "/"
+          router.push("/")
+          router.refresh()
         },
       },
     })
@@ -104,28 +109,28 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                Upgrade to Pro
+                {t("navUser.upgradeToPro")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/account")}>
                 <BadgeCheck />
-                Account
+                {t("navUser.account")}
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/admin/billing")}>
                 <CreditCard />
-                Billing
+                {t("navUser.billing")}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
-                Notifications
+                {t("navUser.notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
-              Log out
+              {t("navUser.logOut")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

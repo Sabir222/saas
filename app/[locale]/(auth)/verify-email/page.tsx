@@ -1,7 +1,5 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
 import { Suspense } from "react"
 import { useTranslations } from "next-intl"
 import { VerifyEmailForm } from "./verify-email-form"

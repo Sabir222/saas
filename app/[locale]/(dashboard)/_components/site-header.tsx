@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { usePathname } from "next/navigation"
+import { usePathname } from "@/lib/navigation"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import {
@@ -22,6 +22,7 @@ export function SiteHeader() {
     account: t("dashboard.account.tabs.profile"),
   }
 
+  // Next-intl's usePathname automatically strips the locale (e.g. "/dashboard" instead of "/en/dashboard")
   const segments = pathname.split("/").filter(Boolean)
 
   const breadcrumbs = segments.map((segment, index) => ({

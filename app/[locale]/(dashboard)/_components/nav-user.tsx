@@ -1,7 +1,6 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
 import {
   BadgeCheck,
   Bell,
@@ -12,6 +11,7 @@ import {
 } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
+import { useRouter } from "@/lib/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -39,14 +39,15 @@ export function NavUser({
   }
 }) {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
+  const router = useRouter()
   const { isMobile } = useSidebar()
 
   const handleSignOut = () => {
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          window.location.href = `/${locale}`
+          router.push("/")
+          router.refresh()
         },
       },
     })
@@ -113,11 +114,11 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/account")}>
                 <BadgeCheck />
                 {t("navUser.account")}
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/dashboard")}>
                 <CreditCard />
                 {t("navUser.billing")}
               </DropdownMenuItem>
