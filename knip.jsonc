@@ -35,6 +35,7 @@
     "lib/Env.ts",
     "lib/auth.ts",
     "lib/schemas/**",
+    "lib/i18n.ts",
   ],
   "ignoreDependencies": [
     "@better-auth/cli",
@@ -44,6 +45,7 @@
     "vaul",
     "lefthook",
     "commitlint",
+    "lint-staged",
     "postcss-load-config",
   ],
   "ignoreExportsUsedInFile": {
