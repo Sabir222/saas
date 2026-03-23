@@ -16,16 +16,12 @@ const fontMono = Geist_Mono({
 
 export default async function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ locale: string }>
 }>) {
-  const { locale } = await params
-
   return (
     <html
-      lang={locale}
+      lang="en"
       suppressHydrationWarning
       className={cn(
         "antialiased",

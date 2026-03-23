@@ -19,7 +19,7 @@ export default async function AdminLayout({
   const session = await requireSession()
 
   if (session.user.role !== "admin") {
-    redirect("/dashboard")
+    redirect({ href: "/dashboard", locale })
   }
 
   const user = session.user
