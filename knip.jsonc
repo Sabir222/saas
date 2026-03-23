@@ -34,6 +34,7 @@
     "lib/drizzle.ts",
     "lib/Env.ts",
     "lib/auth.ts",
+    "lib/i18n.ts",
     "lib/schemas/**",
   ],
   "ignoreDependencies": [

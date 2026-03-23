@@ -4,9 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { Link, useRouter } from "@/lib/navigation"
 import { Github, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -26,7 +24,6 @@ import { signInSchema } from "@/lib/schemas"
 export default function SignInPage() {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +57,7 @@ export default function SignInPage() {
           if (ctx.data?.twoFactorRedirect) {
             return
           }
-          router.push(`/${locale}/dashboard`)
+          router.push("/dashboard")
         },
       }
     )
@@ -123,7 +120,7 @@ export default function SignInPage() {
             </div>
             <div className="flex items-center justify-end">
               <Link
-                href={`/${locale}/forgot-password`}
+                href="/forgot-password"
                 className="text-sm text-muted-foreground hover:text-primary"
               >
                 {t("auth.signIn.forgotPassword")}
@@ -186,10 +183,7 @@ export default function SignInPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               {t("auth.signIn.noAccount")}{" "}
-              <Link
-                href={`/${locale}/sign-up`}
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-up" className="text-primary hover:underline">
                 {t("auth.signIn.signUpLink")}
               </Link>
             </p>

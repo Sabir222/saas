@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "@/lib/navigation"
 import { authClient } from "@/lib/auth-client"
 import { clientLogger } from "@/lib/client-logger"
 import type { Session } from "@/lib/auth"
@@ -12,7 +12,6 @@ import { AlertTriangle, LogOut, Loader2 } from "lucide-react"
 export function ImpersonationBanner({ session }: { session: Session | null }) {
   const t = useTranslations()
   const router = useRouter()
-  const { locale } = useParams<{ locale: string }>()
   const [isStopping, setIsStopping] = useState(false)
 
   const impersonatedBy = (session?.session as Record<string, unknown>)
@@ -24,7 +23,7 @@ export function ImpersonationBanner({ session }: { session: Session | null }) {
     setIsStopping(true)
     try {
       await authClient.admin.stopImpersonating()
-      router.push(`/${locale}/admin`)
+      router.push("/admin")
     } catch (error) {
       clientLogger.error("Failed to stop impersonating", {
         error: error instanceof Error ? error.message : String(error),

@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
+import { Link } from "@/lib/navigation"
 import {
   LayoutDashboard,
   Settings,
@@ -31,35 +31,34 @@ export function AppSidebar({
   user: { name: string; email: string; avatar: string }
 }) {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
 
   const data = {
     navMain: [
       {
         title: t("sidebar.dashboard"),
-        url: `/${locale}/dashboard`,
+        url: "/dashboard",
         icon: LayoutDashboard,
       },
       {
         title: t("sidebar.account"),
-        url: `/${locale}/account`,
+        url: "/account",
         icon: User,
       },
     ],
     navSecondary: [
       {
         title: t("sidebar.home"),
-        url: `/${locale}`,
+        url: "/",
         icon: Home,
       },
       {
         title: t("sidebar.settings"),
-        url: `/${locale}/dashboard`,
+        url: "/dashboard",
         icon: Settings,
       },
       {
         title: t("sidebar.getHelp"),
-        url: `/${locale}/dashboard`,
+        url: "/dashboard",
         icon: HelpCircle,
       },
     ],
@@ -74,12 +73,12 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href={`/${locale}/dashboard`}>
+              <Link href="/dashboard">
                 <Shield className="size-5!" />
                 <span className="text-base font-semibold">
                   {t("sidebar.myAccount")}
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
