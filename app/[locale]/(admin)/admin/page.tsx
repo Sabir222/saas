@@ -1,11 +1,18 @@
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { logger } from "@/lib/logger"
+import { requireSession } from "@/lib/auth-session"
+import { redirect } from "@/lib/navigation"
 import { SectionCards } from "./_components/section-cards"
 import { ChartAreaInteractive } from "./_components/chart-area-interactive"
 import { DataTable, type UserRow } from "./_components/data-table"
 
 export default async function AdminDashboardPage() {
+  const session = await requireSession()
+  if (session.user.role !== "admin") {
+    redirect({ href: "/dashboard", locale: "en" })
+  }
+
   let users: UserRow[] = []
 
   try {

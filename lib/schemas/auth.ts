@@ -17,19 +17,15 @@ export type ChangePasswordInput = {
   confirmPassword: string
 }
 
-// Translatable schema hooks (use these for i18n support)
-export function useSignInSchema() {
-  const t = useTranslations("validation")
-
+// Factory functions usable in server actions, API routes, and non-React contexts
+export function createSignInSchema(t: (key: string) => string) {
   return z.object({
-    email: z.email(t("invalidEmail")),
+    email: z.string().email(t("invalidEmail")),
     password: z.string().min(1, t("passwordRequired")),
   })
 }
 
-export function useSignUpSchema() {
-  const t = useTranslations("validation")
-
+export function createSignUpSchema(t: (key: string) => string) {
   return z
     .object({
       name: z
@@ -37,7 +33,7 @@ export function useSignUpSchema() {
         .min(1, t("nameRequired"))
         .min(2, t("nameMinLength"))
         .max(100, t("nameMaxLength")),
-      email: z.email(t("invalidEmail")),
+      email: z.string().email(t("invalidEmail")),
       password: z
         .string()
         .min(1, t("passwordRequired"))
@@ -51,17 +47,13 @@ export function useSignUpSchema() {
     })
 }
 
-export function useForgotPasswordSchema() {
-  const t = useTranslations("validation")
-
+export function createForgotPasswordSchema(t: (key: string) => string) {
   return z.object({
-    email: z.email(t("invalidEmail")),
+    email: z.string().email(t("invalidEmail")),
   })
 }
 
-export function useResetPasswordSchema() {
-  const t = useTranslations("validation")
-
+export function createResetPasswordSchema(t: (key: string) => string) {
   return z
     .object({
       password: z
@@ -77,9 +69,7 @@ export function useResetPasswordSchema() {
     })
 }
 
-export function useChangePasswordSchema() {
-  const t = useTranslations("validation")
-
+export function createChangePasswordSchema(t: (key: string) => string) {
   return z
     .object({
       currentPassword: z.string().min(1, t("currentPasswordRequired")),
@@ -98,4 +88,30 @@ export function useChangePasswordSchema() {
       message: t("newPasswordDifferent"),
       path: ["newPassword"],
     })
+}
+
+// React hook wrappers for client components (use these for i18n support)
+export function useSignInSchema() {
+  const t = useTranslations("validation")
+  return createSignInSchema(t)
+}
+
+export function useSignUpSchema() {
+  const t = useTranslations("validation")
+  return createSignUpSchema(t)
+}
+
+export function useForgotPasswordSchema() {
+  const t = useTranslations("validation")
+  return createForgotPasswordSchema(t)
+}
+
+export function useResetPasswordSchema() {
+  const t = useTranslations("validation")
+  return createResetPasswordSchema(t)
+}
+
+export function useChangePasswordSchema() {
+  const t = useTranslations("validation")
+  return createChangePasswordSchema(t)
 }

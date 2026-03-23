@@ -47,7 +47,7 @@ export function SiteHeader({
                     <BreadcrumbLink href={crumb.href}>
                       {crumb.label}
                     </BreadcrumbLink>
-                    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+                    <BreadcrumbSeparator />
                   </>
                 )}
               </BreadcrumbItem>
