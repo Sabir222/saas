@@ -21,11 +21,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { signUpSchema } from "@/lib/schemas"
+import { useSignUpSchema } from "@/lib/schemas"
 
 export default function SignUpPage() {
   const t = useTranslations()
   const router = useRouter()
+  const signUpSchema = useSignUpSchema()
   const { locale } = useParams<{ locale: string }>()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")

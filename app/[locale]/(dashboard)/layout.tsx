@@ -1,4 +1,5 @@
 import { requireSession } from "@/lib/auth-session"
+import { setRequestLocale } from "next-intl/server"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "./_components/site-header"
@@ -6,9 +7,13 @@ import { ImpersonationBanner } from "@/components/impersonation-banner"
 
 export default async function DashboardLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const session = await requireSession()
 
   const user = session.user

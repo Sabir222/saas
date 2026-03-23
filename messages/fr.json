@@ -21,7 +21,8 @@
     "email": "E-mail",
     "password": "Mot de passe",
     "name": "Nom",
-    "orContinueWith": "Ou continuer avec"
+    "orContinueWith": "Ou continuer avec",
+    "notFound": "Page non trouvée"
   },
   "navbar": {
     "dashboard": "Tableau de bord",

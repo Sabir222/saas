@@ -20,11 +20,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { forgotPasswordSchema } from "@/lib/schemas"
+import { useForgotPasswordSchema } from "@/lib/schemas"
 
 export default function ForgotPasswordPage() {
   const t = useTranslations()
   const { locale } = useParams<{ locale: string }>()
+  const forgotPasswordSchema = useForgotPasswordSchema()
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")

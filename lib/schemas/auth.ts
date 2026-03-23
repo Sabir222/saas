@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { useTranslations } from "next-intl"
 
-// Static schemas (for backward compatibility - uses default English messages)
+// Static schemas (for server-side validation and type inference)
 export const signInSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
@@ -74,7 +74,66 @@ export const changePasswordSchema = z
 
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
 
-// Translatable schema hooks (use these for i18n support)
+// Translatable schema hooks — use these in client components for i18n support
+export function useSignInSchema() {
+  const t = useTranslations("validation")
+
+  return z.object({
+    email: z.email(t("invalidEmail")),
+    password: z.string().min(1, t("passwordRequired")),
+  })
+}
+
+export function useSignUpSchema() {
+  const t = useTranslations("validation")
+
+  return z
+    .object({
+      name: z
+        .string()
+        .min(1, t("nameRequired"))
+        .min(2, t("nameMinLength"))
+        .max(100, t("nameMaxLength")),
+      email: z.email(t("invalidEmail")),
+      password: z
+        .string()
+        .min(1, t("passwordRequired"))
+        .min(8, t("passwordMinLength"))
+        .max(128, t("passwordMaxLength")),
+      confirmPassword: z.string().min(1, t("confirmPasswordRequired")),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    })
+}
+
+export function useForgotPasswordSchema() {
+  const t = useTranslations("validation")
+
+  return z.object({
+    email: z.email(t("invalidEmail")),
+  })
+}
+
+export function useResetPasswordSchema() {
+  const t = useTranslations("validation")
+
+  return z
+    .object({
+      password: z
+        .string()
+        .min(1, t("passwordRequired"))
+        .min(8, t("passwordMinLength"))
+        .max(128, t("passwordMaxLength")),
+      confirmPassword: z.string().min(1, t("confirmPasswordRequired")),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    })
+}
+
 export function useChangePasswordSchema() {
   const t = useTranslations("validation")
 

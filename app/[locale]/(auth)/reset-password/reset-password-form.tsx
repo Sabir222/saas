@@ -19,11 +19,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { resetPasswordSchema } from "@/lib/schemas"
+import { useResetPasswordSchema } from "@/lib/schemas"
 
 export function ResetPasswordForm() {
   const t = useTranslations()
   const router = useRouter()
+  const resetPasswordSchema = useResetPasswordSchema()
   const { locale } = useParams<{ locale: string }>()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
