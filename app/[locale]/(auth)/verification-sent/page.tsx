@@ -37,7 +37,7 @@ export default async function VerificationSentPage({
   const { locale } = await params
   setRequestLocale(locale as Locale)
 
-  const t = await getTranslations()
+  const t = await getTranslations("auth.verificationSent")
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -49,22 +49,22 @@ export default async function VerificationSentPage({
             </div>
           </div>
           <CardTitle className="pt-4 text-center text-2xl font-bold">
-            {t("auth.verificationSent.title")}
+            {t("title")}
           </CardTitle>
           <CardDescription className="text-center">
-            {t("auth.verificationSent.description")}
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center space-y-4">
           <p className="text-center text-sm text-muted-foreground">
-            {t("auth.verificationSent.didntReceive")}{" "}
+            {t("didntReceive")}{" "}
             <Link href="/sign-up" className="text-primary hover:underline">
-              {t("auth.verificationSent.tryAgain")}
+              {t("tryAgain")}
             </Link>
           </p>
           <Link href="/sign-in" className="w-full">
             <Button variant="outline" className="w-full">
-              {t("auth.verificationSent.backToSignIn")}
+              {t("backToSignIn")}
             </Button>
           </Link>
         </CardContent>

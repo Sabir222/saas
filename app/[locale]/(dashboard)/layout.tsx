@@ -1,15 +1,10 @@
 import { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { setRequestLocale, getTranslations } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
 import { SiteHeader } from "@/components/sidebar"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
-
-const routeLabels: Record<string, string> = {
-  dashboard: "Dashboard",
-  account: "Account",
-}
 
 export default async function DashboardLayout({
   children,
@@ -20,6 +15,12 @@ export default async function DashboardLayout({
 }) {
   const { locale } = await params
   setRequestLocale(locale as Locale)
+
+  const t = await getTranslations("routeLabels")
+  const routeLabels: Record<string, string> = {
+    dashboard: t("dashboard"),
+    account: t("account"),
+  }
 
   const session = await requireSession()
 

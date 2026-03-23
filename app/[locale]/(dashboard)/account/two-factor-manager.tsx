@@ -28,7 +28,8 @@ import {
 } from "@/components/ui/alert-dialog"
 
 export function TwoFactorManager() {
-  const t = useTranslations()
+  const tAccount = useTranslations("dashboard.account")
+  const tCommon = useTranslations("common")
   const { data: session } = authClient.useSession()
 
   const sessionTwoFactor = Boolean(session?.user?.twoFactorEnabled)
@@ -60,7 +61,7 @@ export function TwoFactorManager() {
       if (!error) {
         setTwoFactorEnabled(false)
       } else {
-        setTwoFactorError(t("dashboard.account.failedToDisable2FA"))
+        setTwoFactorError(tAccount("failedToDisable2FA"))
       }
     } else {
       const { data, error } = await authClient.twoFactor.enable({
@@ -73,7 +74,7 @@ export function TwoFactorManager() {
         setCopiedBackupCodes(false)
         setShowTwoFactorSetup(true)
       } else {
-        setTwoFactorError(t("dashboard.account.failedToEnable2FA"))
+        setTwoFactorError(tAccount("failedToEnable2FA"))
       }
     }
 
@@ -89,7 +90,7 @@ export function TwoFactorManager() {
       await navigator.clipboard.writeText(backupCodes.join("\n"))
       setCopiedBackupCodes(true)
     } catch {
-      setTwoFactorError(t("dashboard.account.couldNotCopy"))
+      setTwoFactorError(tAccount("couldNotCopy"))
     }
   }
 
@@ -103,9 +104,9 @@ export function TwoFactorManager() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{t("dashboard.account.twoFactorSection.title")}</CardTitle>
+          <CardTitle>{tAccount("twoFactorSection.title")}</CardTitle>
           <CardDescription>
-            {t("dashboard.account.twoFactorSection.description")}
+            {tAccount("twoFactorSection.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -121,12 +122,12 @@ export function TwoFactorManager() {
               </div>
               <div>
                 <p className="font-medium">
-                  {t("dashboard.account.twoFactorSection.title")}
+                  {tAccount("twoFactorSection.title")}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {twoFactorEnabled
-                    ? t("dashboard.account.twoFactorSection.enabled")
-                    : t("dashboard.account.twoFactorSection.disabled")}
+                    ? tAccount("twoFactorSection.enabled")
+                    : tAccount("twoFactorSection.disabled")}
                 </p>
               </div>
             </div>
@@ -140,12 +141,8 @@ export function TwoFactorManager() {
             <div className="mt-4 space-y-2">
               <Label htmlFor="twoFactorPassword">
                 {twoFactorEnabled
-                  ? t(
-                      "dashboard.account.twoFactorSection.enterPasswordToDisable"
-                    )
-                  : t(
-                      "dashboard.account.twoFactorSection.enterPasswordToEnable"
-                    )}
+                  ? tAccount("twoFactorSection.enterPasswordToDisable")
+                  : tAccount("twoFactorSection.enterPasswordToEnable")}
               </Label>
               <div className="flex gap-2">
                 <Input
@@ -153,9 +150,7 @@ export function TwoFactorManager() {
                   type="password"
                   value={passwordPromptValue}
                   onChange={(e) => setPasswordPromptValue(e.target.value)}
-                  placeholder={t(
-                    "dashboard.account.twoFactorSection.passwordPlaceholder"
-                  )}
+                  placeholder={tAccount("twoFactorSection.passwordPlaceholder")}
                 />
                 <Button
                   onClick={handle2FAWithPassword}
@@ -164,21 +159,21 @@ export function TwoFactorManager() {
                   {isLoading2FA && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {t("dashboard.account.twoFactorSection.confirm")}
+                  {tAccount("twoFactorSection.confirm")}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowPasswordPrompt(false)}
                   disabled={isLoading2FA}
                 >
-                  {t("dashboard.account.twoFactorSection.cancel")}
+                  {tAccount("twoFactorSection.cancel")}
                 </Button>
               </div>
             </div>
           )}
           <Separator className="my-4" />
           <p className="text-sm text-muted-foreground">
-            {t("dashboard.account.twoFactorSection.enableDescription")}
+            {tAccount("twoFactorSection.enableDescription")}
           </p>
         </CardContent>
       </Card>
@@ -196,10 +191,10 @@ export function TwoFactorManager() {
         <AlertDialogContent className="max-w-lg">
           <AlertDialogHeader className="items-start text-left">
             <AlertDialogTitle>
-              {t("dashboard.account.twoFactorSetup.dialogTitle")}
+              {tAccount("twoFactorSetup.dialogTitle")}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {t("dashboard.account.twoFactorSetup.dialogDescription")}
+              {tAccount("twoFactorSetup.dialogDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -209,21 +204,21 @@ export function TwoFactorManager() {
                 <QRCodeSVG value={totpURI} size={180} includeMargin />
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  {t("dashboard.account.twoFactorSetup.totpError")}
+                  {tAccount("twoFactorSetup.totpError")}
                 </p>
               )}
               <p className="text-center text-xs text-muted-foreground">
-                {t("dashboard.account.twoFactorSetup.scanHint")}
+                {tAccount("twoFactorSetup.scanHint")}
               </p>
               <p className="w-full overflow-auto rounded bg-muted px-3 py-2 font-mono text-xs">
-                {totpURI || t("dashboard.account.twoFactorSetup.noTotpUri")}
+                {totpURI || tAccount("twoFactorSetup.noTotpUri")}
               </p>
             </div>
 
             <div className="rounded-md border p-4">
               <div className="mb-3 flex items-center justify-between">
                 <p className="font-medium">
-                  {t("dashboard.account.twoFactorSetup.backupCodes")}
+                  {tAccount("twoFactorSetup.backupCodes")}
                 </p>
                 <Button
                   type="button"
@@ -237,7 +232,7 @@ export function TwoFactorManager() {
                   ) : (
                     <Copy className="mr-2 h-4 w-4" />
                   )}
-                  {copiedBackupCodes ? t("common.copied") : t("common.copyAll")}
+                  {copiedBackupCodes ? tCommon("copied") : tCommon("copyAll")}
                 </Button>
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -252,7 +247,7 @@ export function TwoFactorManager() {
                   ))
                 ) : (
                   <p className="col-span-2 text-sm text-muted-foreground">
-                    {t("dashboard.account.twoFactorSetup.noBackupCodes")}
+                    {tAccount("twoFactorSetup.noBackupCodes")}
                   </p>
                 )}
               </div>
@@ -266,19 +261,19 @@ export function TwoFactorManager() {
                   setSavedRecoveryCodes(event.target.checked)
                 }
               />
-              {t("dashboard.account.twoFactorSetup.savedCodes")}
+              {tAccount("twoFactorSetup.savedCodes")}
             </label>
           </div>
 
           <AlertDialogFooter className="sm:justify-between">
             <p className="text-xs text-muted-foreground">
-              {t("dashboard.account.twoFactorSetup.regenerateHint")}
+              {tAccount("twoFactorSetup.regenerateHint")}
             </p>
             <Button
               onClick={handleCloseTwoFactorSetup}
               disabled={!savedRecoveryCodes}
             >
-              {t("dashboard.account.twoFactorSetup.continueToAccount")}
+              {tAccount("twoFactorSetup.continueToAccount")}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

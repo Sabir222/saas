@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { Locale } from "next-intl"
-import { getTranslations } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
 
 import { ForgotPasswordForm } from "./forgot-password-form"
@@ -22,7 +22,14 @@ export async function generateMetadata({
   }
 }
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale as Locale)
+
   return (
     <Suspense
       fallback={

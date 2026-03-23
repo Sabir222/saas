@@ -40,7 +40,7 @@ export function NavUser({
   }
   billingPath: string
 }) {
-  const t = useTranslations()
+  const t = useTranslations("navUser")
   const router = useRouter()
   const { isMobile } = useSidebar()
 
@@ -111,28 +111,28 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                {t("navUser.upgradeToPro")}
+                {t("upgradeToPro")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => router.push("/account")}>
                 <BadgeCheck />
-                {t("navUser.account")}
+                {t("account")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push(billingPath)}>
                 <CreditCard />
-                {t("navUser.billing")}
+                {t("billing")}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
-                {t("navUser.notifications")}
+                {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
-              {t("navUser.logOut")}
+              {t("logOut")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

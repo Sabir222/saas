@@ -1,11 +1,23 @@
+import { Geist, Geist_Mono } from "next/font/google"
 import { Locale, NextIntlClientProvider, hasLocale } from "next-intl"
 import { setRequestLocale, getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
 import { routing } from "@/lib/routing"
+import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
+
+const fontSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
+
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+})
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -48,10 +60,23 @@ export default async function LocaleLayout({
   setRequestLocale(locale)
 
   return (
-    <NextIntlClientProvider>
-      <ThemeProvider>
-        <TooltipProvider>{children}</TooltipProvider>
-      </ThemeProvider>
-    </NextIntlClientProvider>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        "font-sans",
+        fontSans.variable
+      )}
+    >
+      <body>
+        <NextIntlClientProvider>
+          <ThemeProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
   )
 }

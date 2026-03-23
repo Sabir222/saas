@@ -41,7 +41,7 @@ export default async function DashboardPage({
   const { locale } = await params
   setRequestLocale(locale as Locale)
 
-  const t = await getTranslations()
+  const t = await getTranslations("dashboard")
   const session = await getSession()
 
   const user = session?.user
@@ -64,13 +64,9 @@ export default async function DashboardPage({
           <CardHeader>
             <div className="flex items-center gap-2">
               <User className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-lg">
-                {t("dashboard.profile.title")}
-              </CardTitle>
+              <CardTitle className="text-lg">{t("profile.title")}</CardTitle>
             </div>
-            <CardDescription>
-              {t("dashboard.profile.description")}
-            </CardDescription>
+            <CardDescription>{t("profile.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
@@ -88,13 +84,9 @@ export default async function DashboardPage({
                 </p>
                 <div className="flex gap-2">
                   {currentUser.emailVerified ? (
-                    <Badge variant="secondary">
-                      {t("dashboard.profile.verified")}
-                    </Badge>
+                    <Badge variant="secondary">{t("profile.verified")}</Badge>
                   ) : (
-                    <Badge variant="outline">
-                      {t("dashboard.profile.unverified")}
-                    </Badge>
+                    <Badge variant="outline">{t("profile.unverified")}</Badge>
                   )}
                 </div>
               </div>
@@ -106,30 +98,26 @@ export default async function DashboardPage({
           <CardHeader>
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-lg">
-                {t("dashboard.security.title")}
-              </CardTitle>
+              <CardTitle className="text-lg">{t("security.title")}</CardTitle>
             </div>
-            <CardDescription>
-              {t("dashboard.security.description")}
-            </CardDescription>
+            <CardDescription>{t("security.description")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">
-                {t("dashboard.security.twoFactor")}
+                {t("security.twoFactor")}
               </span>
               <Badge
                 variant={currentUser.twoFactorEnabled ? "secondary" : "outline"}
               >
                 {currentUser.twoFactorEnabled
-                  ? t("dashboard.security.enabled")
-                  : t("dashboard.security.disabled")}
+                  ? t("security.enabled")
+                  : t("security.disabled")}
               </Badge>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">
-                {t("dashboard.security.userId")}
+                {t("security.userId")}
               </span>
               <span className="font-mono text-xs">
                 {currentUser.id.slice(0, 8)}...
@@ -137,7 +125,7 @@ export default async function DashboardPage({
             </div>
             <Link href="/account">
               <Button variant="outline" size="sm" className="w-full">
-                {t("dashboard.security.manageSecurity")}
+                {t("security.manageSecurity")}
               </Button>
             </Link>
           </CardContent>
@@ -148,24 +136,22 @@ export default async function DashboardPage({
             <div className="flex items-center gap-2">
               <Settings className="h-5 w-5 text-muted-foreground" />
               <CardTitle className="text-lg">
-                {t("dashboard.quickActions.title")}
+                {t("quickActions.title")}
               </CardTitle>
             </div>
-            <CardDescription>
-              {t("dashboard.quickActions.description")}
-            </CardDescription>
+            <CardDescription>{t("quickActions.description")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <Link href="/account">
               <Button variant="outline" className="w-full justify-start">
                 <User className="mr-2 h-4 w-4" />
-                {t("dashboard.quickActions.accountSettings")}
+                {t("quickActions.accountSettings")}
               </Button>
             </Link>
             <Link href="/account">
               <Button variant="outline" className="w-full justify-start">
                 <Shield className="mr-2 h-4 w-4" />
-                {t("dashboard.quickActions.securitySettings")}
+                {t("quickActions.securitySettings")}
               </Button>
             </Link>
           </CardContent>

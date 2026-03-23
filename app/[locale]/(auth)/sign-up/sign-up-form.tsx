@@ -20,7 +20,8 @@ import { authClient } from "@/lib/auth-client"
 import { useSignUpSchema } from "@/lib/schemas"
 
 export function SignUpForm() {
-  const t = useTranslations()
+  const t = useTranslations("auth.signUp")
+  const tc = useTranslations("common")
   const router = useRouter()
   const signUpSchema = useSignUpSchema()
   const [name, setName] = useState("")
@@ -65,7 +66,7 @@ export function SignUpForm() {
         },
         onError: (ctx) => {
           setErrors({
-            form: t("auth.signUp.failedToSignUp"),
+            form: t("failedToSignUp"),
           })
           setIsLoading(false)
         },
@@ -83,10 +84,8 @@ export function SignUpForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            {t("auth.signUp.title")}
-          </CardTitle>
-          <CardDescription>{t("auth.signUp.description")}</CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -96,11 +95,11 @@ export function SignUpForm() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">{t("auth.signUp.nameLabel")}</Label>
+              <Label htmlFor="name">{t("nameLabel")}</Label>
               <Input
                 id="name"
                 type="text"
-                placeholder={t("auth.signUp.namePlaceholder")}
+                placeholder={t("namePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isLoading}
@@ -110,11 +109,11 @@ export function SignUpForm() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">{t("common.email")}</Label>
+              <Label htmlFor="email">{tc("email")}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder={t("auth.signUp.emailPlaceholder")}
+                placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
@@ -124,11 +123,11 @@ export function SignUpForm() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t("auth.signUp.passwordLabel")}</Label>
+              <Label htmlFor="password">{t("passwordLabel")}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder={t("auth.signUp.passwordPlaceholder")}
+                placeholder={t("passwordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
@@ -139,12 +138,12 @@ export function SignUpForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">
-                {t("auth.signUp.confirmPasswordLabel")}
+                {t("confirmPasswordLabel")}
               </Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder={t("auth.signUp.confirmPasswordPlaceholder")}
+                placeholder={t("confirmPasswordPlaceholder")}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={isLoading}
@@ -159,7 +158,7 @@ export function SignUpForm() {
           <CardFooter className="mt-6 flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("auth.signUp.signUpButton")}
+              {t("signUpButton")}
             </Button>
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
@@ -167,7 +166,7 @@ export function SignUpForm() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
-                  {t("common.orContinueWith")}
+                  {tc("orContinueWith")}
                 </span>
               </div>
             </div>
@@ -211,9 +210,9 @@ export function SignUpForm() {
               </Button>
             </div>
             <p className="text-center text-sm text-muted-foreground">
-              {t("auth.signUp.hasAccount")}{" "}
+              {t("hasAccount")}{" "}
               <Link href="/sign-in" className="text-primary hover:underline">
-                {t("auth.signUp.signInLink")}
+                {t("signInLink")}
               </Link>
             </p>
           </CardFooter>

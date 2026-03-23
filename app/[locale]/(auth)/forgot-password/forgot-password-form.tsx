@@ -20,7 +20,8 @@ import { authClient } from "@/lib/auth-client"
 import { useForgotPasswordSchema } from "@/lib/schemas"
 
 export function ForgotPasswordForm() {
-  const t = useTranslations()
+  const t = useTranslations("auth.forgotPassword")
+  const tc = useTranslations("common")
   const forgotPasswordSchema = useForgotPasswordSchema()
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -58,7 +59,7 @@ export function ForgotPasswordForm() {
     )
 
     if (error) {
-      setError(t("auth.forgotPassword.failedToSend"))
+      setError(t("failedToSend"))
     }
     setIsLoading(false)
   }
@@ -69,16 +70,14 @@ export function ForgotPasswordForm() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">
-              {t("auth.forgotPassword.checkEmail")}
+              {t("checkEmail")}
             </CardTitle>
-            <CardDescription>
-              {t("auth.forgotPassword.checkEmailDescription")}
-            </CardDescription>
+            <CardDescription>{t("checkEmailDescription")}</CardDescription>
           </CardHeader>
           <CardFooter>
             <Link href="/sign-in" className="w-full">
               <Button variant="outline" className="w-full">
-                {t("auth.forgotPassword.backToSignIn")}
+                {t("backToSignIn")}
               </Button>
             </Link>
           </CardFooter>
@@ -91,12 +90,8 @@ export function ForgotPasswordForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            {t("auth.forgotPassword.title")}
-          </CardTitle>
-          <CardDescription>
-            {t("auth.forgotPassword.description")}
-          </CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -106,11 +101,11 @@ export function ForgotPasswordForm() {
               </div>
             )}
             <div className="mb-4 space-y-2">
-              <Label htmlFor="email">{t("common.email")}</Label>
+              <Label htmlFor="email">{tc("email")}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder={t("auth.forgotPassword.emailPlaceholder")}
+                placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
@@ -123,12 +118,12 @@ export function ForgotPasswordForm() {
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("auth.forgotPassword.sendResetLink")}
+              {t("sendResetLink")}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
-              {t("auth.forgotPassword.rememberPassword")}{" "}
+              {t("rememberPassword")}{" "}
               <Link href="/sign-in" className="text-primary hover:underline">
-                {t("auth.forgotPassword.signInLink")}
+                {t("signInLink")}
               </Link>
             </p>
           </CardFooter>

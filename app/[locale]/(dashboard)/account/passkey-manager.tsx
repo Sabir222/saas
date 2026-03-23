@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card"
 
 export function PasskeyManager() {
-  const t = useTranslations()
+  const t = useTranslations("dashboard.account")
   const { data: session } = authClient.useSession()
 
   const [isAddingPasskey, setIsAddingPasskey] = useState(false)
@@ -33,12 +33,12 @@ export function PasskeyManager() {
       })
 
       if (error) {
-        setPasskeyError(t("dashboard.account.failedToAddPasskey"))
+        setPasskeyError(t("failedToAddPasskey"))
       } else {
         setPasskeySuccess(true)
       }
     } catch {
-      setPasskeyError(t("dashboard.account.failedToAddPasskey"))
+      setPasskeyError(t("failedToAddPasskey"))
     } finally {
       setIsAddingPasskey(false)
     }
@@ -47,10 +47,8 @@ export function PasskeyManager() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("dashboard.account.passkeysSection.title")}</CardTitle>
-        <CardDescription>
-          {t("dashboard.account.passkeysSection.description")}
-        </CardDescription>
+        <CardTitle>{t("passkeysSection.title")}</CardTitle>
+        <CardDescription>{t("passkeysSection.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         {passkeyError && (
@@ -60,7 +58,7 @@ export function PasskeyManager() {
         )}
         {passkeySuccess && (
           <div className="mb-4 rounded-md bg-green-500/10 p-3 text-sm text-green-600">
-            {t("dashboard.account.passkeysSection.success")}
+            {t("passkeysSection.success")}
           </div>
         )}
         <div className="flex items-center justify-between">
@@ -69,11 +67,9 @@ export function PasskeyManager() {
               <KeyRound className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-medium">
-                {t("dashboard.account.passkeysSection.subtitle")}
-              </p>
+              <p className="font-medium">{t("passkeysSection.subtitle")}</p>
               <p className="text-sm text-muted-foreground">
-                {t("dashboard.account.passkeysSection.usePasskeys")}
+                {t("passkeysSection.usePasskeys")}
               </p>
             </div>
           </div>
@@ -88,7 +84,7 @@ export function PasskeyManager() {
             ) : (
               <Lock className="mr-2 h-4 w-4" />
             )}
-            {t("dashboard.account.passkeysSection.addPasskey")}
+            {t("passkeysSection.addPasskey")}
           </Button>
         </div>
       </CardContent>

@@ -29,7 +29,8 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 
 export function Navbar({ session }: { session: Session | null }) {
-  const t = useTranslations()
+  const tCommon = useTranslations("common")
+  const tNavbar = useTranslations("navbar")
   const pathname = usePathname()
   const user = session?.user
   const router = useRouter()
@@ -60,7 +61,7 @@ export function Navbar({ session }: { session: Session | null }) {
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <Home className="h-4 w-4" />
-            <span>{t("common.home")}</span>
+            <span>{tCommon("home")}</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -70,7 +71,7 @@ export function Navbar({ session }: { session: Session | null }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  aria-label={t("common.changeLanguage")}
+                  aria-label={tCommon("changeLanguage")}
                 >
                   <Globe className="h-4 w-4" />
                 </Button>
@@ -83,7 +84,7 @@ export function Navbar({ session }: { session: Session | null }) {
                     className="flex items-center justify-between"
                   >
                     English
-                    {t("common.locale") === "en" && (
+                    {tCommon("locale") === "en" && (
                       <Check className="h-4 w-4" />
                     )}
                   </Link>
@@ -95,7 +96,7 @@ export function Navbar({ session }: { session: Session | null }) {
                     className="flex items-center justify-between"
                   >
                     Français
-                    {t("common.locale") === "fr" && (
+                    {tCommon("locale") === "fr" && (
                       <Check className="h-4 w-4" />
                     )}
                   </Link>
@@ -133,23 +134,23 @@ export function Navbar({ session }: { session: Session | null }) {
                   <DropdownMenuGroup>
                     <DropdownMenuItem onClick={() => router.push("/dashboard")}>
                       <LayoutDashboard className="mr-2 h-4 w-4" />
-                      {t("navbar.dashboard")}
+                      {tNavbar("dashboard")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => router.push("/account")}>
                       <User className="mr-2 h-4 w-4" />
-                      {t("navbar.account")}
+                      {tNavbar("account")}
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem onClick={() => router.push("/admin")}>
                         <Shield className="mr-2 h-4 w-4" />
-                        {t("navbar.admin")}
+                        {tNavbar("admin")}
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    {t("common.signOut")}
+                    {tCommon("signOut")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -157,11 +158,11 @@ export function Navbar({ session }: { session: Session | null }) {
               <div className="flex items-center gap-2">
                 <Link href="/sign-in">
                   <Button variant="ghost" size="sm">
-                    {t("common.signIn")}
+                    {tCommon("signIn")}
                   </Button>
                 </Link>
                 <Link href="/sign-up">
-                  <Button size="sm">{t("common.signUp")}</Button>
+                  <Button size="sm">{tCommon("signUp")}</Button>
                 </Link>
               </div>
             )}

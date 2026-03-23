@@ -21,7 +21,8 @@ import { authClient } from "@/lib/auth-client"
 import { useResetPasswordSchema } from "@/lib/schemas"
 
 export function ResetPasswordForm() {
-  const t = useTranslations()
+  const t = useTranslations("auth.resetPassword")
+  const tf = useTranslations("auth.forgotPassword")
   const router = useRouter()
   const resetPasswordSchema = useResetPasswordSchema()
   const searchParams = useSearchParams()
@@ -54,7 +55,7 @@ export function ResetPasswordForm() {
     }
 
     if (!token) {
-      setErrors({ form: t("auth.resetPassword.invalidToken") })
+      setErrors({ form: t("invalidToken") })
       setIsLoading(false)
       return
     }
@@ -66,7 +67,7 @@ export function ResetPasswordForm() {
 
     if (error) {
       setErrors({
-        form: t("auth.resetPassword.failedToReset"),
+        form: t("failedToReset"),
       })
       setIsLoading(false)
     } else {
@@ -80,16 +81,14 @@ export function ResetPasswordForm() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">
-              {t("auth.resetPassword.invalidTokenTitle")}
+              {t("invalidTokenTitle")}
             </CardTitle>
-            <CardDescription>
-              {t("auth.resetPassword.invalidTokenDescription")}
-            </CardDescription>
+            <CardDescription>{t("invalidTokenDescription")}</CardDescription>
           </CardHeader>
           <CardFooter>
             <Link href="/forgot-password" className="w-full">
               <Button variant="outline" className="w-full">
-                {t("auth.resetPassword.requestNewLink")}
+                {t("requestNewLink")}
               </Button>
             </Link>
           </CardFooter>
@@ -102,12 +101,8 @@ export function ResetPasswordForm() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
-            {t("auth.resetPassword.title")}
-          </CardTitle>
-          <CardDescription>
-            {t("auth.resetPassword.description")}
-          </CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -117,13 +112,11 @@ export function ResetPasswordForm() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="password">
-                {t("auth.resetPassword.newPassword")}
-              </Label>
+              <Label htmlFor="password">{t("newPassword")}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder={t("auth.resetPassword.newPasswordPlaceholder")}
+                placeholder={t("newPasswordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
@@ -133,13 +126,11 @@ export function ResetPasswordForm() {
               )}
             </div>
             <div className="mb-4 space-y-2">
-              <Label htmlFor="confirmPassword">
-                {t("auth.resetPassword.confirmPassword")}
-              </Label>
+              <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder={t("auth.resetPassword.confirmPasswordPlaceholder")}
+                placeholder={t("confirmPasswordPlaceholder")}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={isLoading}
@@ -154,12 +145,12 @@ export function ResetPasswordForm() {
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("auth.resetPassword.resetButton")}
+              {t("resetButton")}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
-              {t("auth.forgotPassword.rememberPassword")}{" "}
+              {tf("rememberPassword")}{" "}
               <Link href="/sign-in" className="text-primary hover:underline">
-                {t("auth.forgotPassword.signInLink")}
+                {tf("signInLink")}
               </Link>
             </p>
           </CardFooter>

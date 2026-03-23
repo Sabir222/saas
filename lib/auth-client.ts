@@ -12,7 +12,8 @@ export const authClient = createAuthClient({
     adminClient(),
     twoFactorClient({
       onTwoFactorRedirect() {
-        window.location.href = "/2fa"
+        const locale = window.location.pathname.split("/")[1] || "en"
+        window.location.href = `/${locale}/2fa`
       },
     }),
     passkeyClient(),
