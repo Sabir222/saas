@@ -1,6 +1,8 @@
 import { z } from "zod"
 import { useTranslations } from "next-intl"
 
+type T = ReturnType<typeof useTranslations>
+
 // Type exports for form inputs
 export type SignInInput = { email: string; password: string }
 export type SignUpInput = {
@@ -18,14 +20,14 @@ export type ChangePasswordInput = {
 }
 
 // Factory functions usable in server actions, API routes, and non-React contexts
-export function createSignInSchema(t: (key: string) => string) {
+export function createSignInSchema(t: T) {
   return z.object({
     email: z.string().email(t("invalidEmail")),
     password: z.string().min(1, t("passwordRequired")),
   })
 }
 
-export function createSignUpSchema(t: (key: string) => string) {
+export function createSignUpSchema(t: T) {
   return z
     .object({
       name: z
@@ -47,13 +49,13 @@ export function createSignUpSchema(t: (key: string) => string) {
     })
 }
 
-export function createForgotPasswordSchema(t: (key: string) => string) {
+export function createForgotPasswordSchema(t: T) {
   return z.object({
     email: z.string().email(t("invalidEmail")),
   })
 }
 
-export function createResetPasswordSchema(t: (key: string) => string) {
+export function createResetPasswordSchema(t: T) {
   return z
     .object({
       password: z
@@ -69,7 +71,7 @@ export function createResetPasswordSchema(t: (key: string) => string) {
     })
 }
 
-export function createChangePasswordSchema(t: (key: string) => string) {
+export function createChangePasswordSchema(t: T) {
   return z
     .object({
       currentPassword: z.string().min(1, t("currentPasswordRequired")),

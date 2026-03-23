@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import { Locale } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"
 
@@ -10,7 +11,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: "auth.signIn" })
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "auth.signIn",
+  })
 
   return {
     title: t("title"),

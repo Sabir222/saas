@@ -1,5 +1,6 @@
+import { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -18,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({
-    locale,
+    locale: locale as Locale,
     namespace: "auth.verificationSent",
   })
 
@@ -34,7 +35,7 @@ export default async function VerificationSentPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  setRequestLocale(locale)
+  setRequestLocale(locale as Locale)
 
   const t = await getTranslations()
 

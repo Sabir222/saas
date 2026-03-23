@@ -1,5 +1,6 @@
+import { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import {
   ShieldCheck,
   ShieldAlert,
@@ -21,7 +22,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: "landing" })
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "landing",
+  })
 
   return {
     title: t("title"),
@@ -35,7 +39,7 @@ export default async function Page({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  setRequestLocale(locale)
+  setRequestLocale(locale as Locale)
 
   const t = await getTranslations()
   const session = await getSession()
