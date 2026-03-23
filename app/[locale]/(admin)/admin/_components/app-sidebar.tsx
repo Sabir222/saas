@@ -17,9 +17,7 @@ import {
 } from "lucide-react"
 
 import { Link } from "@/lib/navigation"
-import { NavMain } from "./nav-main"
-import { NavSecondary } from "./nav-secondary"
-import { NavUser } from "./nav-user"
+import { NavMain, NavSecondary, NavUser } from "@/components/sidebar"
 import {
   Sidebar,
   SidebarContent,
@@ -138,7 +136,7 @@ export function AppSidebar({
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user} billingPath="/admin/billing" />
       </SidebarFooter>
     </Sidebar>
   )

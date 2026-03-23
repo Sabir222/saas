@@ -21,7 +21,8 @@
     "email": "E-mail",
     "password": "Mot de passe",
     "name": "Nom",
-    "orContinueWith": "Ou continuer avec"
+    "orContinueWith": "Ou continuer avec",
+    "pageNotFound": "Page non trouvée"
   },
   "navbar": {
     "dashboard": "Tableau de bord",
@@ -140,6 +141,7 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "description": "Consultez votre tableau de bord et vos informations de compte",
     "profile": {
       "title": "Profil",
       "description": "Informations de votre compte",

@@ -2,8 +2,13 @@ import { setRequestLocale } from "next-intl/server"
 import { requireSession } from "@/lib/auth-session"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
-import { SiteHeader } from "./_components/site-header"
+import { SiteHeader } from "@/components/sidebar"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
+
+const routeLabels: Record<string, string> = {
+  dashboard: "Dashboard",
+  account: "Account",
+}
 
 export default async function DashboardLayout({
   children,
@@ -36,7 +41,7 @@ export default async function DashboardLayout({
       <AppSidebar variant="inset" user={sidebarUser} />
       <SidebarInset>
         <ImpersonationBanner session={session} />
-        <SiteHeader />
+        <SiteHeader routeLabels={routeLabels} />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
