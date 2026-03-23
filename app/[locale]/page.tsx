@@ -10,6 +10,7 @@ import {
 
 import { getSession } from "@/lib/auth-session"
 import { Navbar } from "@/components/navbar"
+import { EmailVerificationBanner } from "@/components/email-verification-banner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -53,19 +54,10 @@ export default async function Page() {
         ) : (
           <>
             {!user.emailVerified && (
-              <Card className="border-amber-300 bg-amber-50/70 dark:border-amber-900 dark:bg-amber-950/30">
-                <CardContent className="flex items-start gap-3 py-4">
-                  <ShieldAlert className="mt-0.5 h-5 w-5 text-amber-700 dark:text-amber-400" />
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
-                      {t("landing.verifyEmail")}
-                    </p>
-                    <p className="text-sm text-amber-800/90 dark:text-amber-300">
-                      {t("landing.verifyEmailDescription")}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <EmailVerificationBanner
+                emailVerified={false}
+                email={user.email}
+              />
             )}
 
             <Card>
