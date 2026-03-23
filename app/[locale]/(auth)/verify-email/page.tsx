@@ -1,11 +1,25 @@
-"use client"
-
 import { Suspense } from "react"
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
+import { Metadata } from "next"
+
 import { VerifyEmailForm } from "./verify-email-form"
 
-function LoadingState() {
-  const t = useTranslations()
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "auth.verifyEmail" })
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
+}
+
+async function LoadingState() {
+  const t = await getTranslations()
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
