@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
+import { Link } from "@/lib/navigation"
 import {
   LayoutDashboard,
   Users,
@@ -39,69 +39,68 @@ export function AppSidebar({
   user: { name: string; email: string; avatar: string }
 }) {
   const t = useTranslations()
-  const { locale } = useParams<{ locale: string }>()
 
   const data = {
     navMain: [
       {
         title: t("admin.dashboard"),
-        url: `/${locale}/admin`,
+        url: "/admin",
         icon: LayoutDashboard,
       },
       {
         title: t("admin.users"),
-        url: `/${locale}/admin/users`,
+        url: "/admin/users",
         icon: Users,
       },
       {
         title: t("admin.billing"),
-        url: `/${locale}/admin/billing`,
+        url: "/admin/billing",
         icon: CreditCard,
       },
       {
         title: t("admin.analytics"),
-        url: `/${locale}/admin/analytics`,
+        url: "/admin/analytics",
         icon: BarChart3,
       },
     ],
     navOperations: [
       {
         title: t("admin.systemHealth"),
-        url: `/${locale}/admin/system`,
+        url: "/admin/system",
         icon: Activity,
       },
       {
         title: t("admin.support"),
-        url: `/${locale}/admin/support`,
+        url: "/admin/support",
         icon: LifeBuoy,
       },
     ],
     navManagement: [
       {
         title: t("admin.auditLog"),
-        url: `/${locale}/admin/audit`,
+        url: "/admin/audit",
         icon: ScrollText,
       },
       {
         title: t("admin.featureFlags"),
-        url: `/${locale}/admin/features`,
+        url: "/admin/features",
         icon: Flag,
       },
     ],
     navSecondary: [
       {
         title: t("sidebar.home"),
-        url: `/${locale}`,
+        url: "/",
         icon: Home,
       },
       {
         title: t("admin.settings"),
-        url: `/${locale}/admin/settings`,
+        url: "/admin/settings",
         icon: Settings,
       },
       {
         title: t("admin.getHelp"),
-        url: `/${locale}/admin/help`,
+        url: "/admin/help",
         icon: HelpCircle,
       },
     ],
@@ -116,12 +115,12 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href={`/${locale}/admin`}>
+              <Link href="/admin">
                 <Shield className="size-5!" />
                 <span className="text-base font-semibold">
                   {t("admin.adminPanel")}
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
