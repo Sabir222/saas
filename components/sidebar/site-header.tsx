@@ -1,6 +1,5 @@
 "use client"
 
-import { useTranslations } from "next-intl"
 import { usePathname } from "@/lib/navigation"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -13,21 +12,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export function SiteHeader() {
-  const t = useTranslations()
+export function SiteHeader({
+  routeLabels,
+}: {
+  routeLabels: Record<string, string>
+}) {
   const pathname = usePathname()
 
-  const routeLabels: Record<string, string> = {
-    admin: t("admin.dashboard"),
-    users: t("admin.users"),
-    billing: t("admin.billing"),
-    analytics: t("admin.analytics"),
-    system: t("admin.systemHealth"),
-    support: t("admin.support"),
-    audit: t("admin.auditLog"),
-    features: t("admin.featureFlags"),
-  }
-
+  // Next-intl's usePathname automatically strips the locale (e.g. "/dashboard" instead of "/en/dashboard")
   const segments = pathname.split("/").filter(Boolean)
 
   const breadcrumbs = segments.map((segment, index) => ({

@@ -31,12 +31,14 @@ import {
 
 export function NavUser({
   user,
+  billingPath,
 }: {
   user: {
     name: string
     email: string
     avatar: string
   }
+  billingPath: string
 }) {
   const t = useTranslations()
   const router = useRouter()
@@ -118,7 +120,7 @@ export function NavUser({
                 <BadgeCheck />
                 {t("navUser.account")}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/admin/billing")}>
+              <DropdownMenuItem onClick={() => router.push(billingPath)}>
                 <CreditCard />
                 {t("navUser.billing")}
               </DropdownMenuItem>

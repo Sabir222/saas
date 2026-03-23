@@ -21,7 +21,8 @@
     "email": "Email",
     "password": "Password",
     "name": "Name",
-    "orContinueWith": "Or continue with"
+    "orContinueWith": "Or continue with",
+    "pageNotFound": "Page not found"
   },
   "navbar": {
     "dashboard": "Dashboard",
@@ -140,6 +141,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "description": "View your dashboard and account overview",
     "profile": {
       "title": "Profile",
       "description": "Your account information",
