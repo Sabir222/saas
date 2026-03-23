@@ -23,7 +23,8 @@
     "name": "Name",
     "orContinueWith": "Or continue with",
     "pageNotFound": "Page not found",
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "locale": "en"
   },
   "navbar": {
     "dashboard": "Dashboard",
