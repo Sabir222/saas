@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react"
 
 import { authClient } from "@/lib/auth-client"
 import { useChangePasswordSchema } from "@/lib/schemas"
+import { parseFormErrors } from "@/lib/parse-form-errors"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -33,25 +34,17 @@ export function PasswordChangeForm() {
     setPasswordError("")
     setPasswordSuccess(false)
 
-    const result = changePasswordSchema.safeParse({
+    const parsed = parseFormErrors(changePasswordSchema, {
       currentPassword,
       newPassword,
       confirmPassword,
     })
 
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {}
-      result.error.issues.forEach(
-        (err: { path: (string | number | symbol)[]; message: string }) => {
-          if (err.path[0]) {
-            fieldErrors[err.path[0] as string] = err.message
-          }
-        }
-      )
+    if (!parsed.success) {
       setPasswordError(
-        fieldErrors.confirmPassword ||
-          fieldErrors.newPassword ||
-          fieldErrors.currentPassword ||
+        parsed.errors.confirmPassword ||
+          parsed.errors.newPassword ||
+          parsed.errors.currentPassword ||
           t("validationFailed")
       )
       return
