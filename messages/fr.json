@@ -229,7 +229,11 @@
         "noBackupCodes": "Aucun code de secours retourné.",
         "savedCodes": "J'ai sauvegardé mes codes de secours en lieu sûr.",
         "regenerateHint": "Vous pourrez régénérer les codes de secours plus tard dans les paramètres du compte.",
-        "continueToAccount": "Continuer vers le compte"
+        "continueToAccount": "Continuer vers le compte",
+        "verifyCodeHint": "Entrez le code à 6 chiffres de votre application d'authentification pour vérifier la configuration.",
+        "verify": "Vérifier",
+        "invalidCode": "Code invalide. Vérifiez votre application d'authentification et réessayez.",
+        "verified": "Vérifié"
       }
     }
   },
