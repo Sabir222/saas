@@ -1,79 +1,78 @@
+import { cache } from "react"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import type { Session } from "@/lib/auth"
 import { logger } from "@/lib/logger"
 
+export type { Session } from "@/lib/auth"
+
 /**
- * Get the current session from the server
+ * Core session fetch. Cached per-request via React.cache().
+ * Layout + page both call this → one DB hit per request.
+ * Returns null if unauthenticated.
  */
-export async function getSession(): Promise<Session | null> {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
-  return session
+export const session = cache(async (): Promise<Session | null> => {
+  return auth.api.getSession({ headers: await headers() })
+})
+
+/**
+ * Require an authenticated session with optional role constraint.
+ * Accepts a callback redirect for i18n compatibility.
+ *
+ * - No options → any authenticated user
+ * - { role: "admin" } → authenticated + admin role
+ * - { redirect: () => redirect({href,locale}) } → custom redirect (i18n)
+ */
+export async function requireAuth(opts?: {
+  role?: string
+  redirect?: () => never
+}): Promise<Session> {
+  const s = await session()
+
+  if (!s) {
+    logger.warning("Unauthenticated access attempt")
+    if (opts?.redirect) {
+      opts.redirect()
+    } else {
+      redirect("/sign-in")
+    }
+  }
+
+  if (opts?.role && s!.user.role !== opts.role) {
+    logger.warning("Unauthorized role access", {
+      userId: s!.user.id,
+      required: opts.role,
+      actual: s!.user.role,
+    })
+    if (opts?.redirect) {
+      opts.redirect()
+    } else {
+      redirect("/dashboard")
+    }
+  }
+
+  return s!
 }
 
 /**
- * Require a session - redirects to sign-in if not authenticated
+ * Convenience: require any authenticated session.
+ * Uses default next/navigation redirect (no locale prefix).
  */
 export async function requireSession(): Promise<Session> {
-  const session = await getSession()
-  if (!session) {
-    logger.warning("Unauthenticated access attempt, redirecting to sign-in")
-    redirect("/sign-in")
-  }
-  return session
+  return requireAuth()
 }
 
 /**
- * Get session or redirect to a specific page
+ * Pure predicate — check if session has admin role.
  */
-export async function getSessionOrRedirect(
-  redirectTo: string = "/sign-in"
-): Promise<Session> {
-  const session = await getSession()
-  if (!session) {
-    logger.warning("Unauthenticated access attempt", { redirectTo })
-    redirect(redirectTo)
-  }
-  return session
+export function isAdmin(s: Session | null): boolean {
+  return s?.user.role === "admin"
 }
 
 /**
- * Check if the current user is an admin
+ * Pure predicate — check if user is banned.
  */
-export async function isAdmin(session: Session | null): Promise<boolean> {
-  if (!session) return false
-  return session.user.role === "admin"
-}
-
-/**
- * Require admin role - redirects to dashboard if not an admin
- */
-export async function requireAdmin(): Promise<Session> {
-  const session = await requireSession()
-
-  if (session.user.role !== "admin") {
-    logger.warning("Non-admin user attempted admin access", {
-      userId: session.user.id,
-      role: session.user.role,
-    })
-    redirect("/dashboard")
-  }
-
-  return session
-}
-
-/**
- * Check if user is banned
- */
-export async function isUserBanned(session: Session | null): Promise<boolean> {
-  if (!session) return false
-
-  const user = session.user as Session["user"] & { banned?: boolean }
-  if (user.banned === true) {
-    logger.warning("Banned user detected", { userId: session.user.id })
-  }
-  return user.banned === true
+export function isBanned(s: Session | null): boolean {
+  return Boolean((s?.user as Record<string, unknown>)?.banned)
 }

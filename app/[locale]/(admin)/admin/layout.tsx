@@ -1,6 +1,6 @@
 import { Locale } from "next-intl"
 import { setRequestLocale, getTranslations } from "next-intl/server"
-import { requireSession } from "@/lib/auth-session"
+import { requireAuth } from "@/lib/auth-session"
 import { redirect } from "@/lib/navigation"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "./_components/app-sidebar"
@@ -31,11 +31,10 @@ export default async function AdminLayout({
     help: t("help"),
   }
 
-  const session = await requireSession()
-
-  if (session.user.role !== "admin") {
-    redirect({ href: "/dashboard", locale: locale as Locale })
-  }
+  const session = await requireAuth({
+    role: "admin",
+    redirect: () => redirect({ href: "/dashboard", locale: locale as Locale }),
+  })
 
   const user = session.user
   const sidebarUser = {
