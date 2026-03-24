@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { Link } from "@/lib/navigation"
-import { getSession } from "@/lib/auth-session"
+import { session } from "@/lib/auth-session"
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -43,12 +43,12 @@ export default async function Page({
 
   const tLanding = await getTranslations("landing")
   const tCommon = await getTranslations("common")
-  const session = await getSession()
-  const user = session?.user
+  const s = await session()
+  const user = s?.user
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Navbar session={session} />
+      <Navbar session={s} />
 
       <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-16 md:px-6">
         <header className="space-y-2">

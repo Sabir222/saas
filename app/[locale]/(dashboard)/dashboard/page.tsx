@@ -1,7 +1,7 @@
 import { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import type { Metadata } from "next"
-import { getSession } from "@/lib/auth-session"
+import { session } from "@/lib/auth-session"
 import { redirect } from "@/lib/navigation"
 import {
   Card,
@@ -42,13 +42,11 @@ export default async function DashboardPage({
   setRequestLocale(locale as Locale)
 
   const t = await getTranslations("dashboard")
-  const session = await getSession()
+  const s = await session()
+  if (!s) redirect({ href: "/sign-in", locale: locale as Locale })
 
-  const user = session?.user
-  if (!user) redirect({ href: "/sign-in", locale: locale as Locale })
-
-  // user is guaranteed non-null after redirect guard
-  const currentUser = user!
+  // s is guaranteed non-null after redirect guard
+  const currentUser = s!.user
 
   const initials =
     currentUser.name
