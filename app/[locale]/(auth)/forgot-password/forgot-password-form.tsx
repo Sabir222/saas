@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
 import { useForgotPasswordSchema } from "@/lib/schemas"
+import { parseFormErrors } from "@/lib/parse-form-errors"
 
 export function ForgotPasswordForm() {
   const t = useTranslations("auth.forgotPassword")
@@ -35,16 +36,10 @@ export function ForgotPasswordForm() {
     setError("")
     setEmailError("")
 
-    const result = forgotPasswordSchema.safeParse({ email })
+    const parsed = parseFormErrors(forgotPasswordSchema, { email })
 
-    if (!result.success) {
-      result.error.issues.forEach(
-        (err: { path: (string | number | symbol)[]; message: string }) => {
-          if (err.path[0]) {
-            setEmailError(err.message)
-          }
-        }
-      )
+    if (!parsed.success) {
+      setEmailError(parsed.errors.email ?? "")
       setIsLoading(false)
       return
     }

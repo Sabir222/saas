@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
 import { useSignInSchema } from "@/lib/schemas"
+import { parseFormErrors } from "@/lib/parse-form-errors"
 
 export function SignInForm() {
   const t = useTranslations("auth.signIn")
@@ -34,18 +35,10 @@ export function SignInForm() {
     setIsLoading(true)
     setErrors({})
 
-    const result = signInSchema.safeParse({ email, password })
+    const parsed = parseFormErrors(signInSchema, { email, password })
 
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {}
-      result.error.issues.forEach(
-        (err: { path: (string | number | symbol)[]; message: string }) => {
-          if (err.path[0]) {
-            fieldErrors[err.path[0] as string] = err.message
-          }
-        }
-      )
-      setErrors(fieldErrors)
+    if (!parsed.success) {
+      setErrors(parsed.errors)
       setIsLoading(false)
       return
     }
