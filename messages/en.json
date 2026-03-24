@@ -229,7 +229,11 @@
         "noBackupCodes": "No backup codes returned.",
         "savedCodes": "I saved my backup codes in a safe place.",
         "regenerateHint": "You can regenerate backup codes later from account settings.",
-        "continueToAccount": "Continue to account"
+        "continueToAccount": "Continue to account",
+        "verifyCodeHint": "Enter the 6-digit code from your authenticator app to verify setup.",
+        "verify": "Verify",
+        "invalidCode": "Invalid code. Please check your authenticator app and try again.",
+        "verified": "Verified"
       }
     }
   },

@@ -44,6 +44,10 @@ export function TwoFactorManager() {
   const [backupCodes, setBackupCodes] = useState<string[]>([])
   const [savedRecoveryCodes, setSavedRecoveryCodes] = useState(false)
   const [copiedBackupCodes, setCopiedBackupCodes] = useState(false)
+  const [verificationCode, setVerificationCode] = useState("")
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [verificationError, setVerificationError] = useState("")
+  const [isVerified, setIsVerified] = useState(false)
 
   const handleToggle2FA = () => {
     setTwoFactorError("")
@@ -72,6 +76,9 @@ export function TwoFactorManager() {
         setBackupCodes(data?.backupCodes ?? [])
         setSavedRecoveryCodes(false)
         setCopiedBackupCodes(false)
+        setVerificationCode("")
+        setVerificationError("")
+        setIsVerified(false)
         setShowTwoFactorSetup(true)
       } else {
         setTwoFactorError(tAccount("failedToEnable2FA"))
@@ -94,8 +101,25 @@ export function TwoFactorManager() {
     }
   }
 
+  const handleVerifyTOTP = async () => {
+    setVerificationError("")
+    setIsVerifying(true)
+
+    const { error } = await authClient.twoFactor.verifyTotp({
+      code: verificationCode,
+    })
+
+    if (!error) {
+      setIsVerified(true)
+    } else {
+      setVerificationError(tAccount("twoFactorSetup.invalidCode"))
+    }
+
+    setIsVerifying(false)
+  }
+
   const handleCloseTwoFactorSetup = () => {
-    if (!savedRecoveryCodes) return
+    if (!savedRecoveryCodes || !isVerified) return
     setShowTwoFactorSetup(false)
     setTwoFactorEnabled(true)
   }
@@ -215,6 +239,42 @@ export function TwoFactorManager() {
               </p>
             </div>
 
+            <div className="space-y-2 rounded-md border p-4">
+              <p className="text-sm font-medium">
+                {tAccount("twoFactorSetup.verifyCodeHint")}
+              </p>
+              {verificationError && (
+                <p className="text-sm text-destructive">{verificationError}</p>
+              )}
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={verificationCode}
+                  onChange={(e) =>
+                    setVerificationCode(e.target.value.replace(/\D/g, ""))
+                  }
+                  placeholder="000000"
+                  disabled={isVerified}
+                  className="text-center font-mono tracking-widest"
+                />
+                <Button
+                  onClick={handleVerifyTOTP}
+                  disabled={
+                    isVerifying || verificationCode.length !== 6 || isVerified
+                  }
+                >
+                  {isVerifying && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isVerified
+                    ? tAccount("twoFactorSetup.verified")
+                    : tAccount("twoFactorSetup.verify")}
+                </Button>
+              </div>
+            </div>
+
             <div className="rounded-md border p-4">
               <div className="mb-3 flex items-center justify-between">
                 <p className="font-medium">
@@ -271,7 +331,7 @@ export function TwoFactorManager() {
             </p>
             <Button
               onClick={handleCloseTwoFactorSetup}
-              disabled={!savedRecoveryCodes}
+              disabled={!savedRecoveryCodes || !isVerified}
             >
               {tAccount("twoFactorSetup.continueToAccount")}
             </Button>
