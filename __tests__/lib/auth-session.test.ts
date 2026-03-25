@@ -212,4 +212,31 @@ describe("isBanned", () => {
     const { isBanned } = await importModule()
     expect(isBanned(null)).toBe(false)
   })
+
+  it("returns true when banned is a truthy string", async () => {
+    const { isBanned } = await importModule()
+    const mockSession = {
+      user: { id: "1", banned: "Spamming" },
+      session: { id: "s1" },
+    }
+    expect(isBanned(mockSession as unknown as Session)).toBe(true)
+  })
+
+  it("returns false when banned is undefined", async () => {
+    const { isBanned } = await importModule()
+    const mockSession = {
+      user: { id: "1" },
+      session: { id: "s1" },
+    }
+    expect(isBanned(mockSession as unknown as Session)).toBe(false)
+  })
+
+  it("returns false when banned is null", async () => {
+    const { isBanned } = await importModule()
+    const mockSession = {
+      user: { id: "1", banned: null },
+      session: { id: "s1" },
+    }
+    expect(isBanned(mockSession as unknown as Session)).toBe(false)
+  })
 })
